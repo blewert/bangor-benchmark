@@ -71,6 +71,11 @@
      <Compile Include="Assets\Scripts\Controllers\EnemyAI.cs" />
      <Compile Include="Assets\Scripts\Controllers\NPCKeyboardController.cs" />
      <Compile Include="Assets\Scripts\Controllers\TestNPCController.cs" />
+     <Compile Include="Assets\Scripts\Forest Generation\IForestGenerator.cs" />
+     <Compile Include="Assets\Scripts\Forest Generation\MasterForestGenerator.cs" />
+     <Compile Include="Assets\Scripts\Forest Generation\NaiveForestGenerator.cs" />
+     <Compile Include="Assets\Scripts\Forest Generation\NaiveWithPropsForestGenerator.cs" />
+     <Compile Include="Assets\Scripts\Forest Generation\PropSpawner.cs" />
      <Compile Include="Assets\Scripts\HordeMode\AlphaPulse.cs" />
      <Compile Include="Assets\Scripts\HordeMode\CharacterStart.cs" />
      <Compile Include="Assets\Scripts\HordeMode\DroneWobble.cs" />

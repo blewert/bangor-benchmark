@@ -1,14 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Misc\HoverWobbleTest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Forest Generation\MasterForestGenerator.cs">
     <Files>
       <File FileName="Assets\Scripts\CaptureTheFlag\TeamSpawner.cs" Line="94" Column="36" />
       <File FileName="Assets\Standard Assets\Utility\SmoothFollow.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CaptureTheFlag\AIController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CaptureTheFlag\HumanController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Interfaces\NPC\NPCcontroler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Misc\HoverWobbleTest.cs" Line="28" Column="3" />
-      <File FileName="Assets\Standard Assets\Cameras\Scripts\HandHeldCam.cs" Line="29" Column="12" />
+      <File FileName="Assets\Scripts\Misc\HoverWobbleTest.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Cameras\Scripts\HandHeldCam.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Forest Generation\IForestGenerator.cs" Line="56" Column="79" />
+      <File FileName="Assets\Scripts\Forest Generation\MasterForestGenerator.cs" Line="9" Column="17" />
+      <File FileName="Assets\Scripts\Forest Generation\PropSpawner.cs" Line="24" Column="31" />
+      <File FileName="Assets\Scripts\Forest Generation\NaiveWithPropsForestGenerator.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

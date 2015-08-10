@@ -93,6 +93,7 @@
      <Compile Include="Assets\Scripts\MazeGen\mazeGen.cs" />
      <Compile Include="Assets\Scripts\MazeGen\wallSegment.cs" />
      <Compile Include="Assets\Scripts\Misc\Follow.cs" />
+     <Compile Include="Assets\Scripts\Misc\HoverWobbleTest.cs" />
      <Compile Include="Assets\Scripts\Sensors\Castdar.cs" />
      <Compile Include="Assets\Scripts\Sensors\CastdarTrig.cs" />
      <Compile Include="Assets\Scripts\Sensors\Sweep.cs" />

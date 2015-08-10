@@ -5,6 +5,8 @@ Project("{431978B3-9DD5-20CA-FC6C-9741F528BD33}") = "bangor-benchmark", "Assembl
 EndProject
 Project("{431978B3-9DD5-20CA-FC6C-9741F528BD33}") = "bangor-benchmark", "Assembly-CSharp-vs.csproj", "{ADE9C20B-9E21-F277-FACF-24AC86A9FB6A}"
 EndProject
+Project("{431978B3-9DD5-20CA-FC6C-9741F528BD33}") = "bangor-benchmark", "Assembly-CSharp-Editor-vs.csproj", "{4BCA67BC-BF8A-7B67-412C-BA4B79803FB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +21,15 @@ Global
 		{ADE9C20B-9E21-F277-FACF-24AC86A9FB6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADE9C20B-9E21-F277-FACF-24AC86A9FB6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADE9C20B-9E21-F277-FACF-24AC86A9FB6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BCA67BC-BF8A-7B67-412C-BA4B79803FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BCA67BC-BF8A-7B67-412C-BA4B79803FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BCA67BC-BF8A-7B67-412C-BA4B79803FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BCA67BC-BF8A-7B67-412C-BA4B79803FB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-					GlobalSection(MonoDevelopProperties) = preSolution
+										GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

@@ -23,11 +23,6 @@ namespace UnityStandardAssets.Utility
 		// Use this for initialization
 		void Start() { }
 
-		public void setTarget(Transform target)
-		{
-			this.target = target;
-		}
-		
 		// Update is called once per frame
 		void LateUpdate()
 		{

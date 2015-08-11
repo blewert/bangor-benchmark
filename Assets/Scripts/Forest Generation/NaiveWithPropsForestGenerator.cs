@@ -35,11 +35,10 @@ public class NaiveWithPropsForestGenerator : IForestGenerator
 		foreach(var prop in props)
 		{
 			var renderer = prop.GetComponent<Renderer>();
-			
-			Vector3 centre = renderer.bounds.center;
+
 			float radius = renderer.bounds.extents.magnitude;
 			
-			treePositions.RemoveAll (t => Vector3.Distance (t, centre) < radius);
+			treePositions.RemoveAll (t => Vector3.Distance (t, prop.transform.position) < radius);	
 		}
 	}
 	

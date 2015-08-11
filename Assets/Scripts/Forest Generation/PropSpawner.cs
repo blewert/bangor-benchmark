@@ -9,7 +9,7 @@ public class PropSpawner : MonoBehaviour
 	public float range;
 	public float yCull;
 	
-	public void Start()
+	public void Awake()
 	{
 		for(int i = 0; i < spawnAmount; i++)
 		{

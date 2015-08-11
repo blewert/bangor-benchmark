@@ -43,7 +43,10 @@ public class MasterForestGenerator : MonoBehaviour
 		
 		foreach(Vector3 position in treePositions)
 		{
-			treePrefabs.Add ((GameObject)Instantiate((GameObject)treePrefab, position, Quaternion.identity));
+			var tree = (GameObject)Instantiate((GameObject)treePrefab, position, ForestGeneration.randomYRotation(Quaternion.identity));
+			treePrefabs.Add (tree);
+			
+			tree.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class PropSpawner : MonoBehaviour 
 {
@@ -9,14 +10,31 @@ public class PropSpawner : MonoBehaviour
 	public float range;
 	public float yCull;
 	
-	public void Awake()
+	public void Start()
 	{
+		var flags = GetComponent<FlagSpawner>().flags;
+		
 		for(int i = 0; i < spawnAmount; i++)
 		{
 			Vector3 consideredPoint = ForestGeneration.randomXZAroundPoint(originPoint.transform.position, range);
 			
+			int t = 0;
+			
 			while(consideredPoint.y <= yCull)
-				consideredPoint = ForestGeneration.randomXZAroundPoint(originPoint.transform.position, range);
+			{
+				var tempPoint = ForestGeneration.randomXZAroundPoint(originPoint.transform.position, range);
+			
+				if(++t >= 1000)
+				{
+					consideredPoint = tempPoint;
+					break;
+				}
+				
+				if(flags.Any (x => Vector3.Distance (x.transform.position, tempPoint) <= 25f))
+					continue;
+					
+				consideredPoint = tempPoint;
+			}
 				
 			Quaternion randomRotation = ForestGeneration.randomYRotation(Quaternion.identity);
 			

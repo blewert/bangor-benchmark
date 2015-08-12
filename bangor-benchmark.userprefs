@@ -1,18 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Forest Generation\MasterForestGenerator.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Forest Generation\NaiveWithPropsForestGenerator.cs">
     <Files>
-      <File FileName="Assets\Scripts\CaptureTheFlag\TeamSpawner.cs" Line="94" Column="36" />
-      <File FileName="Assets\Standard Assets\Utility\SmoothFollow.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CaptureTheFlag\AIController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CaptureTheFlag\HumanController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Interfaces\NPC\NPCcontroler.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Misc\HoverWobbleTest.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Cameras\Scripts\HandHeldCam.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Forest Generation\IForestGenerator.cs" Line="56" Column="79" />
-      <File FileName="Assets\Scripts\Forest Generation\MasterForestGenerator.cs" Line="9" Column="17" />
-      <File FileName="Assets\Scripts\Forest Generation\PropSpawner.cs" Line="24" Column="31" />
-      <File FileName="Assets\Scripts\Forest Generation\NaiveWithPropsForestGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Forest Generation\IForestGenerator.cs" Line="44" Column="1" />
+      <File FileName="Assets\Scripts\Forest Generation\MasterForestGenerator.cs" Line="36" Column="3" />
+      <File FileName="Assets\Scripts\Forest Generation\PropSpawner.cs" Line="33" Column="36" />
+      <File FileName="Assets\Scripts\Forest Generation\NaiveWithPropsForestGenerator.cs" Line="45" Column="90" />
+      <File FileName="Assets\Scripts\Forest Generation\NaiveForestGenerator.cs" Line="4" Column="19" />
+      <File FileName="Assets\Scripts\CaptureTheFlag\FlagSpawner.cs" Line="47" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

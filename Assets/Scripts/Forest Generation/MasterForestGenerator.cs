@@ -28,7 +28,7 @@ public class MasterForestGenerator : MonoBehaviour
 			
 		else if(generationMethod == ForestGenerationMethod.NAIVEWITHPROPS)
 			forestGenerator = new NaiveWithPropsForestGenerator();
-			
+	
 		forestGenerator.setOriginPoint(originPoint.transform.position);
 		forestGenerator.setCullY(cullY);
 		forestGenerator.setDensity(generationDensity);

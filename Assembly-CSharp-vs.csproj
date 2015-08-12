@@ -63,6 +63,7 @@
      <Compile Include="Assets\MazeGenerator2.cs" />
      <Compile Include="Assets\Scripts\CaptureTheFlag\AIController.cs" />
      <Compile Include="Assets\Scripts\CaptureTheFlag\Crosshair.cs" />
+     <Compile Include="Assets\Scripts\CaptureTheFlag\FlagSpawner.cs" />
      <Compile Include="Assets\Scripts\CaptureTheFlag\HumanController.cs" />
      <Compile Include="Assets\Scripts\CaptureTheFlag\Logger.cs" />
      <Compile Include="Assets\Scripts\CaptureTheFlag\NameTag.cs" />

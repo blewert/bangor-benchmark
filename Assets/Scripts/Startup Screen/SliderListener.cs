@@ -9,5 +9,6 @@ public class SliderListener : MonoBehaviour
 	public void OnSliderChanged(float value)
 	{
 		textToChange.text = value.ToString ();		
+		StartButtonListener.numberOfPlayers = (int)value;
 	}
 }

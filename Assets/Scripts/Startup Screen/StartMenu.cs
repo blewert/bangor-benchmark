@@ -30,7 +30,7 @@ public class StartMenu : MonoBehaviour
 			
 			button.onClick.AddListener(() => 
 			{ 
-				GetComponent<EnvironmentButtonListener>().OnButtonClick();
+				GetComponent<EnvironmentButtonListener>().OnButtonClick(button, mode);
 			});
 			
 			button.transform.position = position; 
@@ -47,9 +47,9 @@ public class StartMenu : MonoBehaviour
 			
 			position.y -= offset + i * offset;
 			
-			button.onClick.AddListener(() => 
+			button.onClick.AddListener(() =>
 			{ 
-				GetComponent<CharacterButtonListener>().OnButtonClick();
+				GetComponent<CharacterButtonListener>().OnButtonClick(button, mode);
 			});
 			
 			button.transform.position = position; 

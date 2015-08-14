@@ -39,6 +39,7 @@ public class AIController : MonoBehaviour
 	public Vector3 myBasePos;
 	
 	private Logger logger;
+	private float yCull = 12f;
 	
 	// Use this for initialization
 	void Start () 
@@ -173,7 +174,19 @@ public class AIController : MonoBehaviour
 		{
 			var wallObjects = castdar.GetSeenWalls();
 			
-			if(wallObjects.Find(x => x.seenOBJ.tag == "Wall") != null)
+			if(npc.transform.position.y <= yCull)
+			{
+				var direction = getSteerDirection(myBasePos);
+				
+				if(direction == Direction.LEFT)
+					npc.turnLeft ();
+					
+				else
+					npc.turnRight ();
+			
+				npc.moveForward();
+			}
+			else if(wallObjects.Find(x => x.seenOBJ.tag == "Obstacle" || x.seenOBJ.tag == "Prop") != null)
 			{
 				//Walls found
 				avoid (walls);
@@ -249,18 +262,6 @@ public class AIController : MonoBehaviour
 	
 	private void wander()
 	{
-//		if(Random.value > 0.5)
-//			npc.turnRight ();
-//		else
-//			npc.turnLeft ();
-		
-//		if(steerDirection == Direction.RIGHT)
-//			npc.turnRight();
-//			
-//		else if(steerDirection == Direction.LEFT)
-//			npc.turnLeft ();
-		
-				
 		npc.moveForward ();
 	}
 	

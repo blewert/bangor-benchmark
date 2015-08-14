@@ -26,11 +26,11 @@ public class TeamSpawner : MonoBehaviour
 	};
 	
 	private const int NUMBER_OF_TEAMS = 2;
-	private const int NUMBER_OF_AGENTS = 16;
-	private const float MAX_SPAWN_RADIUS = 10f;
+	public int NUMBER_OF_AGENTS = 16;
+	public float MAX_SPAWN_RADIUS = 10f;
 	
-	public Transform redTeamSpawn;
-	public Transform blueTeamSpawn;
+	private Transform redTeamSpawn;
+	private Transform blueTeamSpawn;
 	
 	public GameObject agentPrefab;
 	
@@ -38,6 +38,9 @@ public class TeamSpawner : MonoBehaviour
 	void Start () 
 	{
 		npcNames = npcNames.OrderBy(x => Random.value).ToArray(); 
+		
+		redTeamSpawn = GameObject.Find("Red Team Spawn").transform;
+		blueTeamSpawn = GameObject.Find("Blue Team Spawn").transform;
 		
 		NameTag redFlagNameTag = redTeamSpawn.gameObject.AddComponent<NameTag>();
 		redFlagNameTag.obj = redTeamSpawn.gameObject;

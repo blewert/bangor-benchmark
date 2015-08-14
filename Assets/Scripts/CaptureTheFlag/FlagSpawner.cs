@@ -41,13 +41,25 @@ public class FlagSpawner : MonoBehaviour
 				randPosition = consideredPoint;
 			}
 			
+			var tempBase = (GameObject)Instantiate(basePrefab, randPosition, Quaternion.identity);
+			var tempSpawn = (GameObject)Instantiate(spawnPrefab, randPosition, Quaternion.identity);
+			
 			if(i == 0)
+			{
 				flags[i] = (GameObject)Instantiate(redFlagPrefab, randPosition, Quaternion.identity);
+				tempBase.name = "Red Base";
+				tempBase.tag = "Base";
+				tempSpawn.name = "Red Team Spawn";
+			}
 			else
+			{
 				flags[i] = (GameObject)Instantiate(blueFlagPrefab, randPosition, Quaternion.identity);
+				tempBase.name = "Blue Base";
+				tempBase.tag = "Base";
+				tempSpawn.name = "Blue Team Spawn";
+			}
 				
-			Instantiate(basePrefab, randPosition, Quaternion.identity);
-			Instantiate(spawnPrefab, randPosition, Quaternion.identity);
+			
 		}
 	}
 	

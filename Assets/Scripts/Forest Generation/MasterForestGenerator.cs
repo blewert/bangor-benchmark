@@ -47,6 +47,8 @@ public class MasterForestGenerator : MonoBehaviour
 			treePrefabs.Add (tree);
 			
 			tree.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+			
+			tree.tag = "Obstacle";
 		}
 	}
 }

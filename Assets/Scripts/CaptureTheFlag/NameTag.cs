@@ -9,6 +9,7 @@ public class NameTag : MonoBehaviour
 	public bool bold = false;
 	public int fontSize = 12;
 	private Color tempColor;
+	public float nametagDrawDist = 25f;
 	  
 	void Start()
 	{
@@ -45,6 +46,9 @@ public class NameTag : MonoBehaviour
 		
 		var heading = pos - Camera.main.transform.position;
 		
+		if(Vector3.Distance (pos, Camera.main.transform.position) >= nametagDrawDist)
+			return;
+			
 		if (Vector3.Dot(Camera.main.transform.forward, heading) <= 0)
 			return;
 		

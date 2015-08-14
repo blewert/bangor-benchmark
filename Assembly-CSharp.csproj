@@ -104,6 +104,9 @@
      <Compile Include="Assets\Scripts\Sensors\CastdarTrig.cs" />
      <Compile Include="Assets\Scripts\Sensors\Sweep.cs" />
      <Compile Include="Assets\Scripts\Sensors\Vision.cs" />
+     <Compile Include="Assets\Scripts\Startup Screen\SliderListener.cs" />
+     <Compile Include="Assets\Scripts\Startup Screen\StartButtonListener.cs" />
+     <Compile Include="Assets\Scripts\Startup Screen\StartMenu.cs" />
      <Compile Include="Assets\TerrainGenerator.cs" />
      <None Include="Assets\Container Barrel\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Container Barrel\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseEffectShaderRGB.shader" />

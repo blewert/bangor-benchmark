@@ -104,6 +104,8 @@
      <Compile Include="Assets\Scripts\Sensors\CastdarTrig.cs" />
      <Compile Include="Assets\Scripts\Sensors\Sweep.cs" />
      <Compile Include="Assets\Scripts\Sensors\Vision.cs" />
+     <Compile Include="Assets\Scripts\Startup Screen\CharacterButtonListener.cs" />
+     <Compile Include="Assets\Scripts\Startup Screen\EnvironmentButtonListener.cs" />
      <Compile Include="Assets\Scripts\Startup Screen\Mode.cs" />
      <Compile Include="Assets\Scripts\Startup Screen\ModeConfigurationParser.cs" />
      <Compile Include="Assets\Scripts\Startup Screen\SliderListener.cs" />

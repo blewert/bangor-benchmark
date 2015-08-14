@@ -11,7 +11,7 @@ using System.Collections.Generic;
 public class ModeConfigurationParser : MonoBehaviour 
 {
 	public string pathToXMLFile; 
-	private List<Mode> modes = new List<Mode>();
+	public static List<Mode> modes = new List<Mode>();
 	
 	// Use this for initialization
 	void Start ()
@@ -72,11 +72,6 @@ public class ModeConfigurationParser : MonoBehaviour
 			}
 			
 			modes.Add (gamemode);
-		}
-		
-		foreach(var env in modes[0].supportedEnvironments)
-		{
-			print (env.name + " -> "+ env.path);
 		}
 	}
 	

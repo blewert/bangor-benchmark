@@ -7,7 +7,11 @@
 		<supportedEnvironments>
 			<environment>
 				<name>Forest</name>
-				<path>Assets/Scenes/forest.unity</path>
+				<path>forestScene</path>
+			</environment>
+			<environment>
+				<name>Forest2</name>
+				<path>forestScene</path>
 			</environment>
 		</supportedEnvironments>
 		

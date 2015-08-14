@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<modes>
+	<mode>
+		<name>Capture the Flag</name>
+		
+		<supportedEnvironments>
+			<environment>
+				<name>Forest</name>
+				<path>Assets/Scenes/forest.unity</path>
+			</environment>
+		</supportedEnvironments>
+		
+		<supportedCharacters>
+			<character>
+				<name>Hover NPC with Gun</name>
+				<path>Assets/Prefab/NPCs/GenericNPCWithGun.prefab</path>
+			</character>
+		</supportedCharacters>
+		
+	</mode>
+</modes>

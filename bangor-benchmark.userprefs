@@ -1,10 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Startup Screen\SliderListener.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Startup Screen\Mode.cs">
     <Files>
       <File FileName="Assets\Scripts\CaptureTheFlag\FlagSpawner.cs" Line="55" Column="5" />
       <File FileName="Assets\Scripts\Forest Generation\IForestGenerator.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Forest Generation\MasterForestGenerator.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Forest Generation\PropSpawner.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Forest Generation\NaiveWithPropsForestGenerator.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Forest Generation\NaiveForestGenerator.cs" Line="1" Column="1" />
@@ -13,8 +12,10 @@
       <File FileName="Assets\Scripts\CaptureTheFlag\AIController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CaptureTheFlag\HumanController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\CaptureTheFlag\NameTag.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Startup Screen\StartMenu.cs" Line="18" Column="54" />
-      <File FileName="Assets\Scripts\Startup Screen\SliderListener.cs" Line="8" Column="1" />
+      <File FileName="Assets\Scripts\Startup Screen\StartMenu.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Startup Screen\SliderListener.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Startup Screen\StartButtonListener.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Startup Screen\Mode.cs" Line="14" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

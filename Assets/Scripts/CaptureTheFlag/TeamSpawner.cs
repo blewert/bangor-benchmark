@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define DEBUG_NON_RELEASE
+
+using UnityEngine;
 using System.Linq;
 using System.Collections;
 using UnityStandardAssets.Utility;
@@ -25,7 +27,7 @@ public class TeamSpawner : MonoBehaviour
 		"L. ap Cenydd"
 	};
 	
-	private const int NUMBER_OF_TEAMS = 2;
+	private int NUMBER_OF_TEAMS = 2;
 	public int NUMBER_OF_AGENTS = 16;
 	public float MAX_SPAWN_RADIUS = 10f;
 	
@@ -37,6 +39,11 @@ public class TeamSpawner : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		#if !DEBUG_NON_RELEASE
+		NUMBER_OF_AGENTS = PlayerPrefs.GetInt ("numberOfPlayers");
+		agentPrefab = (GameObject)Resources.LoadAssetAtPath(PlayerPrefs.GetString ("characterPrefab"), typeof(GameObject));
+		#endif
+
 		npcNames = npcNames.OrderBy(x => Random.value).ToArray(); 
 		
 		redTeamSpawn = GameObject.Find("Red Team Spawn").transform;
@@ -103,6 +110,7 @@ public class TeamSpawner : MonoBehaviour
 	{
 		position.x += Random.Range (-MAX_SPAWN_RADIUS, MAX_SPAWN_RADIUS);
 		position.z += Random.Range (-MAX_SPAWN_RADIUS, MAX_SPAWN_RADIUS);
+		position.y = Terrain.activeTerrain.SampleHeight(position);
 		
 		Vector3 euler = new Vector3(0, Random.Range (0, 360), 0); 
 		

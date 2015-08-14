@@ -10,15 +10,19 @@
 				<path>forestScene</path>
 			</environment>
 			<environment>
-				<name>Forest2</name>
-				<path>forestScene</path>
+				<name>Room</name>
+				<path>captureTheFlag</path>
 			</environment>
 		</supportedEnvironments>
 		
 		<supportedCharacters>
 			<character>
-				<name>Hover NPC with Gun</name>
+				<name>Hover NPC with Gun (Red)</name>
 				<path>Assets/Prefab/NPCs/GenericNPCWithGun.prefab</path>
+			</character>
+			<character>
+				<name>Hover NPC with Gun (Blue)</name>
+				<path>Assets/Prefab/NPCs/GenericNPCWithGunBlueTrail.prefab</path>
 			</character>
 		</supportedCharacters>
 		

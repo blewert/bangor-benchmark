@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CaptureTheFlag\TeamSpawner.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Startup Screen\UpdateOptionsText.cs">
     <Files>
       <File FileName="Assets\Scripts\Startup Screen\SliderListener.cs" Line="12" Column="52" />
       <File FileName="Assets\Scripts\Startup Screen\StartButtonListener.cs" Line="19" Column="2" />
@@ -10,6 +10,7 @@
       <File FileName="Assets\Scripts\Startup Screen\CharacterButtonListener.cs" Line="13" Column="41" />
       <File FileName="Assets\Scripts\Startup Screen\StartMenu.cs" Line="52" Column="71" />
       <File FileName="Assets\Scripts\CaptureTheFlag\TeamSpawner.cs" Line="114" Column="3" />
+      <File FileName="Assets\Scripts\Startup Screen\UpdateOptionsText.cs" Line="19" Column="74" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

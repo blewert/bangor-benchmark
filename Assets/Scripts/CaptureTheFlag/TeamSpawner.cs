@@ -41,7 +41,7 @@ public class TeamSpawner : MonoBehaviour
 	{
 		#if !DEBUG_NON_RELEASE
 		NUMBER_OF_AGENTS = PlayerPrefs.GetInt ("numberOfPlayers");
-		agentPrefab = (GameObject)Resources.LoadAssetAtPath(PlayerPrefs.GetString ("characterPrefab"), typeof(GameObject));
+		agentPrefab = (GameObject)UnityEditor.AssetDatabase.LoadAssetAtPath(PlayerPrefs.GetString ("characterPrefab"), typeof(GameObject));
 		#endif
 
 		npcNames = npcNames.OrderBy(x => Random.value).ToArray(); 

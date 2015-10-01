@@ -6,7 +6,7 @@ public class MasterForestGenerator : MonoBehaviour
 {
 	public enum ForestGenerationMethod
 	{ 
-		NAIVE, NAIVEWITHPROPS
+		NAIVE, NAIVEWITHPROPS, XMLNAIVE
 	}
 	
 	[Header("Tree settings")]
@@ -28,6 +28,9 @@ public class MasterForestGenerator : MonoBehaviour
 			
 		else if(generationMethod == ForestGenerationMethod.NAIVEWITHPROPS)
 			forestGenerator = new NaiveWithPropsForestGenerator();
+
+		else if(generationMethod == ForestGenerationMethod.XMLNAIVE)
+			forestGenerator = new XMLForestGenerator();
 	
 		forestGenerator.setOriginPoint(originPoint.transform.position);
 		forestGenerator.setCullY(cullY);

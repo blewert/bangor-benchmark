@@ -13,6 +13,10 @@
 				<name>Room</name>
 				<path>captureTheFlag</path>
 			</environment>
+			<environment>
+				<name>Tanks</name>
+				<path>tankScene</path>
+			</environment>
 		</supportedEnvironments>
 		
 		<supportedCharacters>
@@ -23,6 +27,10 @@
 			<character>
 				<name>Hover NPC with Gun (Blue)</name>
 				<path>Assets/Prefab/NPCs/GenericNPCWithGunBlueTrail.prefab</path>
+			</character>
+			<character>
+				<name>Tank</name>
+				<path>Assets/Prefab/XML Forest/Tank.prefab</path>
 			</character>
 		</supportedCharacters>
 		

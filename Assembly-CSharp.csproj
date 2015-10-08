@@ -96,6 +96,7 @@
      <Compile Include="Assets\Scripts\Interfaces\Weapons\Mine.cs" />
      <Compile Include="Assets\Scripts\Interfaces\Weapons\Mortar.cs" />
      <Compile Include="Assets\Scripts\Interfaces\Weapons\Projectile.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\Weapons\TestGunFire.cs" />
      <Compile Include="Assets\Scripts\MazeGen\lightSwitch.cs" />
      <Compile Include="Assets\Scripts\MazeGen\mazeGen.cs" />
      <Compile Include="Assets\Scripts\MazeGen\wallSegment.cs" />

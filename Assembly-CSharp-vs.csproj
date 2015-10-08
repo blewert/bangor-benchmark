@@ -96,6 +96,7 @@
      <Compile Include="Assets\Scripts\Interfaces\Weapons\Mine.cs" />
      <Compile Include="Assets\Scripts\Interfaces\Weapons\Mortar.cs" />
      <Compile Include="Assets\Scripts\Interfaces\Weapons\Projectile.cs" />
+     <Compile Include="Assets\Scripts\Interfaces\Weapons\TestGunFire.cs" />
      <Compile Include="Assets\Scripts\MazeGen\lightSwitch.cs" />
      <Compile Include="Assets\Scripts\MazeGen\mazeGen.cs" />
      <Compile Include="Assets\Scripts\MazeGen\wallSegment.cs" />
@@ -192,7 +193,7 @@
      <None Include="Assets\Container Barrel\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
      <None Include="Assets\Container Barrel\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendForBloom.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
- <HintPath>C:/University/git/bangor-benchmark/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
+ <HintPath>T:/git/bangor-benchmark/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

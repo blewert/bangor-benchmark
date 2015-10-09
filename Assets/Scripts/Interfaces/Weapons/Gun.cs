@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿
+#define DEBUG
+
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -98,6 +101,10 @@ public class Gun : MonoBehaviour
 				//Apply random inaccuracies on local x + y (z would make no difference)
 				bulletDirection.x += Random.Range(-mag, mag);
 				bulletDirection.y += Random.Range(-mag, mag);
+				
+				#if DEBUG
+				Debug.DrawLine (transform.position, transform.position + bulletDirection, Color.yellow, 3f);
+				#endif
 			}
 			
 			//Cast data, call invokation for callback

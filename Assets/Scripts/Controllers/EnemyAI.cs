@@ -111,7 +111,7 @@ public class EnemyAI : MonoBehaviour
 	
 	private void fireMortar()
 	{
-		mortar.Fire (24f);
+		mortar.Fire ();
 	}
 	
 	// Update is called once per frame

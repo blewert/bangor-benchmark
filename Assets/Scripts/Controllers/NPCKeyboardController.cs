@@ -51,7 +51,7 @@ public class NPCKeyboardController : MonoBehaviour
 		if(Input.GetKeyUp (KeyCode.Space))
 		{
 			if(attachedMortar != null)
-				attachedMortar.Fire (20f);
+				attachedMortar.Fire ();
 		}
 	}
 }

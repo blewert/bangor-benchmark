@@ -32,11 +32,13 @@ public class TestGunFire : MonoBehaviour
 	
 	public void OnBulletHit(RaycastHit[] hitData)
 	{
+		//Debug.Log ("hit: " + Time.time);
+		
 		if(hitData.Length == 0)
 			return;
 			
 		RaycastHit hit = hitData[0];
 		
-		Debug.Log ("Name of hit object: " + hit.transform.name);
+		Debug.Log ("Name of hit object: " + hit.transform.tag);
 	}
 }

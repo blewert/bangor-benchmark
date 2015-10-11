@@ -17,13 +17,20 @@ public class TestMortarFire : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Input.GetKeyDown(KeyCode.Space))
+		if(mortar is IContinousMortar)
 		{
-			mortar.StartFiring();
+			var castMortar = mortar as IContinousMortar;
+			
+			if(Input.GetKeyDown(KeyCode.Space))
+				castMortar.StartFiring();
+	
+			else if(Input.GetKeyUp (KeyCode.Space))
+				castMortar.StopFiring();
 		}
-		else if(Input.GetKeyUp (KeyCode.Space))
+		else if(mortar is IMortar)
 		{
-			mortar.StopFiring();
+			if(Input.GetKeyUp (KeyCode.Space))
+				mortar.Fire ();
 		}
 	}
 	
@@ -37,6 +44,9 @@ public class TestMortarFire : MonoBehaviour
 		position.y += offsetY;
 		
 		GameObject explosionObject = (GameObject)Instantiate (particleSystemObject, position, Quaternion.identity);
-		explosionObject.GetComponent<ParticleSystem>().Emit (3);
+		explosionObject.GetComponent<ParticleSystem>().Play();
+		
+		Destroy (explosionObject, 1f);
 	}
+	
 }

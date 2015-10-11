@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Mortar : MonoBehaviour, IMortar
+public class Mortar : MonoBehaviour, IContinousMortar
 {
 	public event OnProjectileHitHandler OnProjectileHit;
 	

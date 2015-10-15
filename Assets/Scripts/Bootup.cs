@@ -12,13 +12,17 @@ public class Bootup : MonoBehaviour
 		
 		foreach(var primitive in primitives)
 		{
-			EnvironmentInstance[] linkedInstances = instances.Select(x => x.name == primitive.name);
+			var linkedInstances = instances.Where (x => primitive.name == x.primitiveName);
 			
 			foreach(var instance in linkedInstances)
 			{
 				Debug.Log("Instance linked to " + primitive.name + " -> " + instance.name);
 			}
 		}
+		
+		var attached = gameObject.AddComponent<ForestPrimitive>();
+		attached.instance = instances[0];
+		
 	}
 
 }

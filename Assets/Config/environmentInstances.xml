@@ -14,7 +14,7 @@
 		<settings>
 			<setting>
 				<name>terrainToLoad</name>
-				<value>Resources/terrains/flat.terrain</value>
+				<value>Resources/terrains/flat.prefab</value>
 			</setting>
 			<setting>
 				<name>density</name>
@@ -23,4 +23,51 @@
 		</settings>
 		
 	</instance>
+	
+	<instance>
+		<name>Forest (Medium)</name>
+		<primitive>Forest</primitive>
+		
+		<!--
+		<scriptsToAttach>
+			<script>Scripts/blah/gun.cs</script>
+		</scriptsToAttach>
+		-->
+		
+		<settings>
+			<setting>
+				<name>terrainToLoad</name>
+				<value>Resources/terrains/flat.terrain</value>
+			</setting>
+			<setting>
+				<name>density</name>
+				<value>Medium</value>
+			</setting>
+		</settings>
+		
+	</instance>
+	
+	<instance>
+		<name>Room</name>
+		<primitive>Room</primitive>
+		
+		<!--
+		<scriptsToAttach>
+			<script>Scripts/blah/gun.cs</script>
+		</scriptsToAttach>
+		-->
+		
+		<settings>
+			<setting>
+				<name>terrainToLoad</name>
+				<value>Resources/terrains/flat.terrain</value>
+			</setting>
+			<setting>
+				<name>colour</name>
+				<value>red</value>
+			</setting>
+		</settings>
+		
+	</instance>
+	
 </environmentInstances>

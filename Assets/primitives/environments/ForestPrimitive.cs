@@ -3,9 +3,10 @@ using System.Collections;
 
 public class ForestPrimitive : MonoBehaviour 
 {
-	//Use this for initialization
+	public EnvironmentInstance instance;
+	
 	void Start () 
 	{
-		
+		Debug.Log ("hello");	
 	}
 }

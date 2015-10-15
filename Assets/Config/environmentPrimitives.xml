@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<environments>
+	<environment>
+		<name>Forest</name>
+		<scriptPath>Assets/primitives/environments/ForestPrimitive.cs</scriptPath>
+	</environment>
+	
+	<!--
+	<environment>
+		<name>Room</name>
+		<scriptPath>Scripts/primitives/environments/room.cs</scriptPath>
+	</environment>
+	-->
+</environments>

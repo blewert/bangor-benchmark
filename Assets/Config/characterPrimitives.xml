@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<characters>
+	<character>
+		<name>Tank</name>
+		<prefab>Prefabs/Tank.prefab</prefab>
+	</character>
+	<character>
+		<name>hoverDrone</name>
+		<prefab>Prefabs/HoverNPC.prefab</prefab>
+	</character>
+</characters>

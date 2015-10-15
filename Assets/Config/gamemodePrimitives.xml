@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<modes>
+	<mode>
+		<name>Capture the Flag</name>
+		<scriptPath>Scripts/primitives/gamemodes/capturetheflag.cs</scriptPath>
+		
+		<playerLimits>
+			<min>2</min>
+			<max>8</max>
+		</playerLimits>
+		
+		<characterExclusions>
+			<exclusion>Tank</exclusion>
+			<exclusion>wheeledDrone</exclusion>
+		</characterExclusions>
+		
+	</mode>
+</modes>

@@ -14,7 +14,7 @@
 		<settings>
 			<setting>
 				<name>terrainToLoad</name>
-				<value>Resources/terrains/flat.prefab</value>
+				<value>terrains/flat</value>
 			</setting>
 			<setting>
 				<name>density</name>
@@ -47,15 +47,16 @@
 		
 	</instance>
 	
+	<!---
 	<instance>
 		<name>Room</name>
 		<primitive>Room</primitive>
 		
-		<!--
+	
 		<scriptsToAttach>
 			<script>Scripts/blah/gun.cs</script>
 		</scriptsToAttach>
-		-->
+	
 		
 		<settings>
 			<setting>
@@ -69,5 +70,6 @@
 		</settings>
 		
 	</instance>
+	-->
 	
 </environmentInstances>

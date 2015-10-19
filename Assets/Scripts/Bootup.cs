@@ -20,8 +20,8 @@ public class Bootup : MonoBehaviour
 			}
 		}
 		
-		var attached = gameObject.AddComponent<ForestPrimitive>();
-		attached.instance = instances[0];
+		var environment = gameObject.AddComponent<ForestPrimitive>();
+		environment.instance = instances[0]; //change to selected value
 		
 	}
 

@@ -14,6 +14,13 @@ public static class PrimitivesParser
 	
 	private static string environmentInstancesPath  = BASE_PATH + "environmentInstances.xml";
 	
+	public enum SettingType
+	{	
+		STRING_TEXT, STRING_PATH, 
+		INTEGER, FLOAT, INTEGER_RANGE, FLOAT_RANGE,
+		BOOLEAN, COLOR
+	}
+	
 	public static EnvironmentPrimitive[] getEnvironmentPrimitives()
 	{
 		return EnvironmentPrimitivesParser.parse (environmentPrimitivesPath);
@@ -23,4 +30,6 @@ public static class PrimitivesParser
 	{
 		return EnvironmentInstancesParser.parse (environmentInstancesPath);
 	}
+	
+	
 }

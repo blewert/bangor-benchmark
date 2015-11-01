@@ -22,16 +22,19 @@ public class ForestPrimitive : MonoBehaviour
 		// (later on, the algorithm type - naive, spawnpoints, real)
 		//
 		// Find a way to tweak density/algorithm - new Instance(density, algorithm)(?)
+
+		//Get density setting, algorithm and terrain to load
+		var densitySetting   = (string)SettingParser.getSetting(instance, "density");
+		var algorithmSetting = (string)SettingParser.getSetting(instance, "algorithm");
+		var terrainToLoad    = (string)SettingParser.getSetting(instance, "terrainToLoad");
 		
-		//Show debug if needed
-		foreach(var setting in instance.settings)	
-			DebugLogger.Log("Setting <b>" + setting.Key + "</b>" + " = " + setting.Value);
-	
+		DebugLogger.Log (instance.name + ": Algorithm is " +  algorithmSetting + ", density is " + densitySetting + ". The terrain that needs to be loaded is " + terrainToLoad);
+		
 		//Instantiate terrain at (0, 0, 0)
-		terrain = (GameObject)Instantiate(Resources.Load (instance.settings["terrainToLoad"]));
+		terrain = (GameObject)Instantiate(Resources.Load (terrainToLoad));
 		
 		//Set up density
-		density = densityStringToEnum(instance.settings["density"]);
+		density = densityStringToEnum(densitySetting);
 		
 		if(density == Density.INVALID)
 		{

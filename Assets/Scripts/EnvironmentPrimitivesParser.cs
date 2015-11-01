@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 public static class EnvironmentPrimitivesParser
 {
+	private static EnvironmentPrimitive[] lastParsedPrimitives;
+	
 	public static EnvironmentPrimitive[] parse(string xmlFile)
 	{
 		if(!File.Exists(xmlFile))
@@ -47,7 +49,14 @@ public static class EnvironmentPrimitivesParser
 			returnValue.Add (new EnvironmentPrimitive(name, script, settings));
 		}
 		
+		lastParsedPrimitives = returnValue.ToArray();
+		
 		return returnValue.ToArray();
+	}
+	
+	public static EnvironmentPrimitive[] getLastPrimitives()
+	{
+		return lastParsedPrimitives;
 	}
 }
 
@@ -63,4 +72,5 @@ public class EnvironmentPrimitive
 		this.scriptPath = scriptPath;
 		this.possibleSettings = possibleSettings;
 	}
+	
 }

@@ -13,6 +13,10 @@
 				<name>density</name>
 				<type>string/choice{"sparse", "medium", "dense"}</type>
 			</possibleSetting>
+			<possibleSetting>
+				<name>algorithm</name>
+				<type>string/choice{"naive", "spawns", "realistic"}</type>
+			</possibleSetting>
 		</possibleSettings>
 	</environment>
 	

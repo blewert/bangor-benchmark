@@ -2,7 +2,7 @@
 
 <environmentInstances>
 	<instance>
-		<name>Forest (Sparse)</name>
+		<name>Naive Forest (Sparse)</name>
 		<primitive>Forest</primitive>
 		
 		<!--
@@ -18,14 +18,18 @@
 			</setting>
 			<setting>
 				<name>density</name>
-				<value>Sparse</value>
+				<value>sparse</value>
+			</setting>
+			<setting>
+				<name>algorithm</name>
+				<value>naive</value>
 			</setting>
 		</settings>
 		
 	</instance>
 	
 	<instance>
-		<name>Forest (Medium)</name>
+		<name>Naive Forest (Medium)</name>
 		<primitive>Forest</primitive>
 		
 		<!--
@@ -42,6 +46,10 @@
 			<setting>
 				<name>density</name>
 				<value>Medium</value>
+			</setting>
+			<setting>
+				<name>algorithm</name>
+				<value>naive</value>
 			</setting>
 		</settings>
 		

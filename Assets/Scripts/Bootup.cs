@@ -28,6 +28,9 @@ public class Bootup : MonoBehaviour
 		//Does the menu object exist?
 		if(menu == null)
 			throw new UnityException("The menu object which has been specified is null.");
+		
+		//Instantiate the menu
+		menu = Instantiate (menu, Vector3.zero, Quaternion.identity) as GameObject;
 			
 		//If so, get it's menu handler script (for the UI changing functionality)
 		menuComponent = menu.GetComponent<MenuHandler>();

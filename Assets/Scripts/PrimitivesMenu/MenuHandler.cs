@@ -8,6 +8,9 @@ using System.Linq;
 /// Menu handler class for the start-up primitives/instances selection menu. Performs UI interaction and provides events/callbacks 
 /// to be hooked by the start-up script.
 /// </summary>
+using System;
+
+
 public class MenuHandler : MonoBehaviour
 {
 	[Header("Menu header labels")]
@@ -46,6 +49,29 @@ public class MenuHandler : MonoBehaviour
 	public delegate void ViewUpdateHandler(View view);
 	public event ViewUpdateHandler onViewUpdate;
 	
+	//Callback called when start is called, to fix UI update when instantiating menu prefab
+	private delegate void ScriptStartedHandler();
+	private event ScriptStartedHandler onScriptStart;
+				
+	//Has the script started yet?
+	private bool startedYet = false;
+	
+	public void Start()
+	{
+		//Set startedYet to true, and invocate method to add buttons late
+		startedYet = true;
+		StartCoroutine(lateInvoke());
+	}
+	
+	/// <summary>
+	/// Invokes the onScriptStart callback after a specified time
+	/// </summary>
+	/// <returns>Basically, void</returns>
+	private IEnumerator lateInvoke()
+	{
+		yield return new WaitForSeconds(0.1f);
+		onScriptStart.Invoke ();
+	}
 	
 	/// <summary>
 	/// Gets the header label for either the primitives or instances column.
@@ -114,14 +140,21 @@ public class MenuHandler : MonoBehaviour
 	/// <param name="strs">The strings for each button.</param>
 	/// <param name="referrer">The referring script to hook the each button's callback.</param>
 	public void addPrimitivesButtons(string[] buttonTexts, Bootup referrer)
-	{
+	{		
+		if(!startedYet)
+		{
+			//If the script is not started yet, call this method again when it is started
+			onScriptStart += () => addPrimitivesButtons(buttonTexts, referrer);
+			return;
+		}
+		
 		//Get the start label to offset each button from, and find the starting position.
 		var startLabel = getHeaderLabel(MenuButtonType.PRIMITIVES);
 		Vector3 startPosition = startLabel.transform.position;
 		
 		for(int i = 0; i < buttonTexts.Length; i++)
 		{
-			//Run through each button string, and instantiate a button for this string.
+			//Run through each button string, and instantiate a button for this 
 			var button = (Button)Instantiate(buttonPrefab, startPosition, Quaternion.identity);
 			
 			//Set this menu as the button's root, and set the text of the button to this string.
@@ -157,6 +190,13 @@ public class MenuHandler : MonoBehaviour
 	/// <param name="referrer">The referring script to hook the each button's callback.</param>
 	public void addInstancesButtons(string[] buttonTexts, Bootup referrer)
 	{
+		if(!startedYet)
+		{
+			//If the script is not started yet, call this method again when it is started
+			onScriptStart += () => addPrimitivesButtons(buttonTexts, referrer);
+			return;
+		}
+		
 		//Get the start label to offset each button from, and find the starting position.
 		var startLabel = getHeaderLabel(MenuButtonType.INSTANCES);
 		Vector3 startPosition = startLabel.transform.position;

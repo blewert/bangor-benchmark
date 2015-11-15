@@ -17,6 +17,9 @@ public class MenuHandler : MonoBehaviour
 	public RectTransform primitivesMenuLabel;
 	public RectTransform instancesMenuLabel;
 	
+	[Header("Settings panel UI components")]
+	public RectTransform settingsPanelText;
+	
 	[Header("Navigation buttons")]
 	public Button leftButton;
 	public Button rightButton;
@@ -49,30 +52,7 @@ public class MenuHandler : MonoBehaviour
 	public delegate void ViewUpdateHandler(View view);
 	public event ViewUpdateHandler onViewUpdate;
 	
-	//Callback called when start is called, to fix UI update when instantiating menu prefab
-	private delegate void ScriptStartedHandler();
-	private event ScriptStartedHandler onScriptStart;
-				
-	//Has the script started yet?
-	private bool startedYet = false;
-	
-	public void Start()
-	{
-		//Set startedYet to true, and invocate method to add buttons late
-		startedYet = true;
-		StartCoroutine(lateInvoke());
-	}
-	
-	/// <summary>
-	/// Invokes the onScriptStart callback after a specified time
-	/// </summary>
-	/// <returns>Basically, void</returns>
-	private IEnumerator lateInvoke()
-	{
-		yield return new WaitForSeconds(0.1f);
-		onScriptStart.Invoke ();
-	}
-	
+
 	/// <summary>
 	/// Gets the header label for either the primitives or instances column.
 	/// </summary>
@@ -89,6 +69,24 @@ public class MenuHandler : MonoBehaviour
 		return null;
 	}
 	
+	/// <summary>
+	/// Updates the settings panel.
+	/// </summary>
+	/// <param name="pairs">The key/value setting pairs to display.</param>
+	public void updateSettingsPanel(Dictionary<string, string> pairs)
+	{
+		//Get the text component, set it to an empty string so we dont append
+		var textBox = settingsPanelText.GetComponentInChildren<Text>();
+		textBox.text = "";
+		
+		//Was any data passed? If not, just refresh
+		if(pairs == null)
+			return;	
+			
+		//Add each key/value pair on a separate line
+		foreach(var pair in pairs)
+			textBox.text += (pair.Key + ": " + pair.Value) + "\n";
+	}
 	
 	/// <summary>
 	/// Sets up click callbacks for the navigation buttons, from a referring script.
@@ -140,14 +138,7 @@ public class MenuHandler : MonoBehaviour
 	/// <param name="strs">The strings for each button.</param>
 	/// <param name="referrer">The referring script to hook the each button's callback.</param>
 	public void addPrimitivesButtons(string[] buttonTexts, Bootup referrer)
-	{		
-		if(!startedYet)
-		{
-			//If the script is not started yet, call this method again when it is started
-			onScriptStart += () => addPrimitivesButtons(buttonTexts, referrer);
-			return;
-		}
-		
+	{				
 		//Get the start label to offset each button from, and find the starting position.
 		var startLabel = getHeaderLabel(MenuButtonType.PRIMITIVES);
 		Vector3 startPosition = startLabel.transform.position;
@@ -158,7 +149,7 @@ public class MenuHandler : MonoBehaviour
 			var button = (Button)Instantiate(buttonPrefab, startPosition, Quaternion.identity);
 			
 			//Set this menu as the button's root, and set the text of the button to this string.
-			button.transform.SetParent (transform);
+			button.gameObject.transform.SetParent (transform);
 			button.GetComponentInChildren<Text>().text = buttonTexts[i];
 			
 			//Get the button's position, height and the height of the starting label
@@ -190,13 +181,6 @@ public class MenuHandler : MonoBehaviour
 	/// <param name="referrer">The referring script to hook the each button's callback.</param>
 	public void addInstancesButtons(string[] buttonTexts, Bootup referrer)
 	{
-		if(!startedYet)
-		{
-			//If the script is not started yet, call this method again when it is started
-			onScriptStart += () => addPrimitivesButtons(buttonTexts, referrer);
-			return;
-		}
-		
 		//Get the start label to offset each button from, and find the starting position.
 		var startLabel = getHeaderLabel(MenuButtonType.INSTANCES);
 		Vector3 startPosition = startLabel.transform.position;

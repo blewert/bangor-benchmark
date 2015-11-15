@@ -17,6 +17,8 @@ public class Bootup : MonoBehaviour
 	private EnvironmentPrimitive[] environmentPrimitives;
 	private EnvironmentInstance[] environmentInstances;
 	
+	//Settings panel: current chosen instances
+	private EnvironmentInstance chosenEnvironmentInstance;
 	
 	// Use this for initialization
 	void Start () 
@@ -26,11 +28,11 @@ public class Bootup : MonoBehaviour
 		environmentInstances  = PrimitivesParser.getEnvironmentInstances();
 
 		//Does the menu object exist?
-		if(menu == null)
-			throw new UnityException("The menu object which has been specified is null.");
+		//if(menu == null)
+		//	throw new UnityException("The menu object which has been specified is null.");
 		
 		//Instantiate the menu
-		menu = Instantiate (menu, Vector3.zero, Quaternion.identity) as GameObject;
+		//menu = Instantiate (menu, Vector3.zero, Quaternion.identity) as GameObject;
 			
 		//If so, get it's menu handler script (for the UI changing functionality)
 		menuComponent = menu.GetComponent<MenuHandler>();
@@ -76,6 +78,7 @@ public class Bootup : MonoBehaviour
 		
 		var associatedInstances = environmentInstances.Where(x => x.primitiveName.Equals(buttonText));
 		
+		menuComponent.updateSettingsPanel(null);
 		menuComponent.removeInstanceButtons();
 		menuComponent.addInstancesButtons(associatedInstances.Select (x => x.name), this);		
 	}
@@ -87,7 +90,12 @@ public class Bootup : MonoBehaviour
 	/// <param name="buttonText">The text of the button.</param>
 	public void onInstancesButtonClick(Button button, string buttonText)
 	{
-		//Debug.Log ("Instance button clicked: " + buttonText);
+		if(menuComponent.getCurrentView() == MenuHandler.View.ENVIRONMENT)
+		{
+			var linkedInstance = environmentInstances.Where (x => x.name == buttonText).FirstOrDefault();
+			
+			menuComponent.updateSettingsPanel(linkedInstance.settings);
+		}
 	}
 	
 	/// <summary>

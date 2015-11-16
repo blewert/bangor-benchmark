@@ -17,8 +17,10 @@ public class MenuHandler : MonoBehaviour
 	public RectTransform primitivesMenuLabel;
 	public RectTransform instancesMenuLabel;
 	
-	[Header("Settings panel UI components")]
+	[Header("UI component settings")]
 	public RectTransform settingsPanelText;
+	public RectTransform errorText;
+	public Button startButton;
 	
 	[Header("Navigation buttons")]
 	public Button leftButton;
@@ -51,8 +53,16 @@ public class MenuHandler : MonoBehaviour
 	//Event to hook when the view is updated.
 	public delegate void ViewUpdateHandler(View view);
 	public event ViewUpdateHandler onViewUpdate;
-	
 
+	/// <summary>
+	/// Sets the error text for the menu, when something goes wrong.
+	/// </summary>
+	/// <param name="text">The text to set to.</param>
+	public void setErrorText(string text)
+	{
+		errorText.GetComponentInChildren<Text>().text = text;
+	}
+	
 	/// <summary>
 	/// Gets the header label for either the primitives or instances column.
 	/// </summary>
@@ -70,22 +80,58 @@ public class MenuHandler : MonoBehaviour
 	}
 	
 	/// <summary>
+	/// Updates the settings panel, sets to an empty string.
+	/// </summary>
+	public void updateSettingsPanel()
+	{
+		settingsPanelText.GetComponentInChildren<Text>().text = "";
+	}
+	
+	/// <summary>
 	/// Updates the settings panel.
 	/// </summary>
 	/// <param name="pairs">The key/value setting pairs to display.</param>
-	public void updateSettingsPanel(Dictionary<string, string> pairs)
+	public void updateSettingsPanel(Instance environment, Instance gamemode, Instance character)
 	{
 		//Get the text component, set it to an empty string so we dont append
 		var textBox = settingsPanelText.GetComponentInChildren<Text>();
 		textBox.text = "";
 		
-		//Was any data passed? If not, just refresh
-		if(pairs == null)
-			return;	
+		if(environment != null)
+		{
+			textBox.text += "Selected environment:\n---------------------\n";
+			textBox.text += "Name: " + environment.name + "\n";
 			
-		//Add each key/value pair on a separate line
-		foreach(var pair in pairs)
-			textBox.text += (pair.Key + ": " + pair.Value) + "\n";
+			//Environment settings:
+			foreach(var pair in environment.settings)
+				textBox.text += (pair.Key + ": " + pair.Value) + "\n";
+				
+			textBox.text += "\n";
+		}
+		
+		if(gamemode != null)
+		{
+			textBox.text += "Selected gamemode:\n------------------\n";
+			textBox.text += "Name: " + gamemode.name + "\n";
+			
+			//Gamemode settings:
+			foreach(var pair in gamemode.settings)
+				textBox.text += (pair.Key + ": " + pair.Value) + "\n";
+				
+			textBox.text += "\n";
+		}
+		
+		if(character != null)
+		{
+			textBox.text += "Selected character:\n-------------------\n";
+			textBox.text += "Name: " + character.name + "\n";
+			
+			//Character settings:
+			foreach(var pair in character.settings)
+				textBox.text += (pair.Key + ": " + pair.Value) + "\n";
+				
+			textBox.text += "\n";
+		}
 	}
 	
 	/// <summary>
@@ -104,6 +150,12 @@ public class MenuHandler : MonoBehaviour
 		rightButton.onClick.AddListener(delegate
 		{
 			referrer.onRightArrowClick();		
+		});
+		
+		//Start button
+		startButton.onClick.AddListener(delegate 
+		{
+			referrer.onStartButtonClick();
 		});
 	}
 	

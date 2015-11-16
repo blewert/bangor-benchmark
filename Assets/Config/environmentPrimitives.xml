@@ -3,7 +3,7 @@
 <environments>
 	<environment>
 		<name>Forest</name>
-		<scriptPath>Assets/primitives/environments/ForestPrimitive.cs</scriptPath>
+		<scriptPath>ForestPrimitive</scriptPath>
 		<possibleSettings>
 			<possibleSetting>
 				<name>terrainToLoad</name>
@@ -22,7 +22,7 @@
 	
 	<environment>
 		<name>Room</name>
-		<scriptPath>Assets/primitives/environments/ForestPrimitive.cs</scriptPath>
+		<scriptPath>ForestPrimitive</scriptPath>
 		<possibleSettings>
 			<possibleSetting>
 				<name>terrainToLoad</name>

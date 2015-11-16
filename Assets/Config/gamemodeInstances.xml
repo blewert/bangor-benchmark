@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<gamemodeInstances>
+	<instance>
+		<name>CTF (2 player)</name>
+		<primitive>Capture the Flag</primitive>
+		
+		<settings>
+			<setting>
+				<name>singleRound</name>
+				<value>true</value>
+			</setting>
+			<setting>
+				<name>playerCount</name>
+				<value>2</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>CTF (4 player)</name>
+		<primitive>Capture the Flag</primitive>
+		
+		<settings>
+			<setting>
+				<name>singleRound</name>
+				<value>false</value>
+			</setting>
+			<setting>
+				<name>playerCount</name>
+				<value>4</value>
+			</setting>
+		</settings>
+	</instance>
+</gamemodeInstances>

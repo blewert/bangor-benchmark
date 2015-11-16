@@ -40,11 +40,11 @@ public static class EnvironmentPrimitivesParser
 				settings.Add (settingName, settingType);
 			}
 			
-			if(!File.Exists (script))
+			/*if(!File.Exists (script))
 			{
 				Debug.LogError("Couldn't parse primitive '" +  name + "' in '" + xmlFile + "' - script path doesn't exist.");
 				return null;
-			}
+			}*/
 			
 			returnValue.Add (new EnvironmentPrimitive(name, script, settings));
 		}

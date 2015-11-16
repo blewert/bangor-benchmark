@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
+using System;
 
 /// <summary>
 /// The start-up script for loading dynamically loading in primitives/instances; provides logic for MenuHandler script.
@@ -17,8 +18,13 @@ public class Bootup : MonoBehaviour
 	private EnvironmentPrimitive[] environmentPrimitives;
 	private EnvironmentInstance[] environmentInstances;
 	
+	//Gamemode primitives and instances
+	private GamemodePrimitive[] gamemodePrimitives;
+	private GamemodeInstance[] gamemodeInstances;
+	
 	//Settings panel: current chosen instances
 	private EnvironmentInstance chosenEnvironmentInstance;
+	private GamemodeInstance chosenGamemodeInstance;
 	
 	// Use this for initialization
 	void Start () 
@@ -26,6 +32,10 @@ public class Bootup : MonoBehaviour
 		//Get all environment primitives and instances
 		environmentPrimitives = PrimitivesParser.getEnvironmentPrimitives();
 		environmentInstances  = PrimitivesParser.getEnvironmentInstances();
+		
+		//Get all gamemode primitives and instances
+		gamemodePrimitives = PrimitivesParser.getGamemodePrimitives();
+		gamemodeInstances  = PrimitivesParser.getGamemodeInstances();
 
 		//Does the menu object exist?
 		//if(menu == null)
@@ -52,18 +62,9 @@ public class Bootup : MonoBehaviour
 		//Add the initial primitive buttons (initially the environment buttons)
 		menuComponent.addPrimitivesButtons(environmentPrimitives.Select(x => x.name), this);
 		
-		/*foreach(var primitive in primitives)
-		{
-			var linkedInstances = instances.Where (x => primitive.name == x.primitiveName);
-			
-			foreach(var instance in linkedInstances)
-			{
-				Debug.Log("Instance linked to " + primitive.name + " -> " + instance.name);
-			}
-		}
 		
-		var environment = gameObject.AddComponent<ForestPrimitive>();
-		environment.instance = instances[0]; //change to selected value*/
+		/**/
+		//Now setup gamemode..
 		
 	} 
 	
@@ -76,11 +77,18 @@ public class Bootup : MonoBehaviour
 	{
 		//Debug.Log ("Primitive button clicked: " + buttonText);
 		
-		var associatedInstances = environmentInstances.Where(x => x.primitiveName.Equals(buttonText));
-		
-		menuComponent.updateSettingsPanel(null);
 		menuComponent.removeInstanceButtons();
-		menuComponent.addInstancesButtons(associatedInstances.Select (x => x.name), this);		
+		
+		if(menuComponent.getCurrentView() == MenuHandler.View.ENVIRONMENT)
+		{
+			var associatedInstances = environmentInstances.Where(x => x.primitiveName.Equals(buttonText));
+			menuComponent.addInstancesButtons(associatedInstances.Select (x => x.name), this);		
+		}
+		else if(menuComponent.getCurrentView() == MenuHandler.View.GAMEMODE)
+		{
+			var associatedInstances = gamemodeInstances.Where (x => x.primitiveName.Equals (buttonText));
+			menuComponent.addInstancesButtons(associatedInstances.Select (x => x.name), this);
+		}	
 	}
 	
 	/// <summary>
@@ -92,10 +100,51 @@ public class Bootup : MonoBehaviour
 	{
 		if(menuComponent.getCurrentView() == MenuHandler.View.ENVIRONMENT)
 		{
+			//Update settings panel
 			var linkedInstance = environmentInstances.Where (x => x.name == buttonText).FirstOrDefault();
 			
-			menuComponent.updateSettingsPanel(linkedInstance.settings);
+			//Set chosen instance to the found one
+			chosenEnvironmentInstance = linkedInstance;
 		}
+		else if(menuComponent.getCurrentView() == MenuHandler.View.GAMEMODE)
+		{
+			//Update settings panel
+			var linkedInstance = gamemodeInstances.Where(x => x.name == buttonText).FirstOrDefault();
+			
+			//Set chosen instance to the found one
+			chosenGamemodeInstance = linkedInstance;
+		}
+		
+		menuComponent.updateSettingsPanel(chosenEnvironmentInstance, chosenGamemodeInstance, null);
+	}
+	
+	/// <summary>
+	/// Called when the start button of the menu is clicked.
+	/// </summary>
+	public void onStartButtonClick()
+	{
+		if(chosenEnvironmentInstance == null)
+		{
+			menuComponent.setErrorText("You have not chosen an environment instance.");
+			return;
+		}
+		else if(chosenGamemodeInstance == null)
+		{
+			menuComponent.setErrorText("You have not chosen a gamemode instance.");
+			return;
+		}
+		
+		var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
+		var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));
+		
+		environmentScript.instance = chosenEnvironmentInstance;
+		
+		var gamemodePrimitive = gamemodePrimitives.Where (x => chosenGamemodeInstance.primitiveName == x.name).FirstOrDefault();
+		var gamemodeScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
+		
+		gamemodeScript.instance = chosenGamemodeInstance;
+		
+		menu.SetActive(false);
 	}
 	
 	/// <summary>
@@ -123,6 +172,9 @@ public class Bootup : MonoBehaviour
 		//At this point, all the buttons in the menu have been deleted.
 		//..
 		
+		//Get rid of warnings
+		menuComponent.setErrorText("");
+		
 		if(view == MenuHandler.View.ENVIRONMENT)
 		{
 			//Environment
@@ -131,6 +183,7 @@ public class Bootup : MonoBehaviour
 		else if(view == MenuHandler.View.GAMEMODE)
 		{
 			//Add gamemode buttons...
+			menuComponent.addPrimitivesButtons(gamemodePrimitives.Select(x => x.name), this);
 		}
 		else if(view == MenuHandler.View.CHARACTER)
 		{

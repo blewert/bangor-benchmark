@@ -39,13 +39,19 @@ class SettingParser
 		return new Color(r, g, b);
 	}
 	 
-	private static string getTypeFromPrimitive(string primitiveName, string settingName) 
+	private static string getTypeFromPrimitive(Instance instance, string settingName) 
 	{
-		var primitives = EnvironmentPrimitivesParser.getLastPrimitives();
-		
-		var primitive = primitives.First (x => x.name == primitiveName);
-		
-		return primitive.possibleSettings[settingName];
+		if(instance is EnvironmentInstance)
+		{
+			var primitive = EnvironmentPrimitivesParser.getLastPrimitives().First (x => x.name == instance.primitiveName);
+			return primitive.possibleSettings[settingName];
+		}
+		else if(instance is GamemodeInstance)
+		{
+			var primitive = GamemodePrimitivesParser.getLastPrimitives().First (x => x.name == instance.primitiveName);
+			return primitive.possibleSettings[settingName];
+		}		
+		return null;
 	}
 	
 	/// <summary>
@@ -54,9 +60,9 @@ class SettingParser
 	/// <returns>The setting value if valid (the value adheres to the type given), otherwise null.</returns>
 	/// <param name="instance">The instance which the lookup is for.</param>
 	/// <param name="settingName">The name of the setting for lookup.</param>
-	public static object getSetting(EnvironmentInstance instance, string settingName)
+	public static object getSetting(Instance instance, string settingName)
 	{
-		string stype = getTypeFromPrimitive(instance.primitiveName, settingName);
+		string stype = getTypeFromPrimitive(instance, settingName);
 		string input = instance.settings[settingName];
 		
 		SettingType type = getSettingType(stype);
@@ -184,8 +190,6 @@ class SettingParser
 		
 		float min = Math.Min(v1, v2);
 		float max = Math.Max(v1, v2);
-		
-		Console.WriteLine("Range is from {0} to {1}", min, max);
 		
 		float comparisonInput = float.Parse(input);
 		

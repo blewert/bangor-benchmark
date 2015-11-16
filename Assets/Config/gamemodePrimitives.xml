@@ -3,17 +3,27 @@
 <modes>
 	<mode>
 		<name>Capture the Flag</name>
-		<scriptPath>Scripts/primitives/gamemodes/capturetheflag.cs</scriptPath>
-		
-		<playerLimits>
-			<min>2</min>
-			<max>8</max>
-		</playerLimits>
+		<scriptPath>CaptureTheFlagPrimitive</scriptPath>
 		
 		<characterExclusions>
 			<exclusion>Tank</exclusion>
 			<exclusion>wheeledDrone</exclusion>
 		</characterExclusions>
+		
+		<environmentExclusions>
+			<exclusion>Forest</exclusion>
+		</environmentExclusions>
+		
+		<possibleSettings>
+			<possibleSetting>
+				<name>singleRound</name>
+				<type>boolean</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>playerCount</name>
+				<type>int/range{2, 8}</type>
+			</possibleSetting>
+		</possibleSettings>
 		
 	</mode>
 </modes>

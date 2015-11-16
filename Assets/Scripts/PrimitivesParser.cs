@@ -13,12 +13,16 @@ public static class PrimitivesParser
 	private static string gamemodePrimitivesPath    = BASE_PATH + "gamemodePrimitives.xml";
 	
 	private static string environmentInstancesPath  = BASE_PATH + "environmentInstances.xml";
+	private static string gamemodeInstancesPath     = BASE_PATH + "gamemodeInstances.xml";
 	
-	public enum SettingType
-	{	
-		STRING_TEXT, STRING_PATH, 
-		INTEGER, FLOAT, INTEGER_RANGE, FLOAT_RANGE,
-		BOOLEAN, COLOR
+	public static GamemodePrimitive[] getGamemodePrimitives()
+	{
+		return GamemodePrimitivesParser.parse(gamemodePrimitivesPath);
+	}
+	
+	public static GamemodeInstance[] getGamemodeInstances()
+	{
+		return GamemodeInstancesParser.parse(gamemodeInstancesPath);
 	}
 	
 	public static EnvironmentPrimitive[] getEnvironmentPrimitives()

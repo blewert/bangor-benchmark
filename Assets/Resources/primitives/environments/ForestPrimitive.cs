@@ -3,18 +3,17 @@ using System.Collections;
 using System.Linq;
 using System;
 
-public class ForestPrimitive : MonoBehaviour 
+public class ForestPrimitive : PrimitiveScript
 {
 	private enum Density
 	{
 		LOW, MEDIUM, HIGH, INVALID
 	}
 	
-	public EnvironmentInstance instance;
 	private GameObject terrain;
 	private Density density;
 	
-	void Start () 
+	public void Start () 
 	{
 		//Two settings:
 		// - Terrain to instantiate at Vector3.zero

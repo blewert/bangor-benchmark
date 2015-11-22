@@ -10,6 +10,14 @@
 				<type>string/path</type>
 			</possibleSetting>
 			<possibleSetting>
+				<name>treePrefab</name>
+				<type>string/path</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>treeSpawnRadius</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
 				<name>density</name>
 				<type>string/choice{"sparse", "medium", "dense"}</type>
 			</possibleSetting>

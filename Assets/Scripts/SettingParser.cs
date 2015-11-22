@@ -22,7 +22,8 @@ class SettingParser
 		"string/text", "string/path", "string/choice",
 		"float/scalar", "float/range", "float/choice",
 		"int/scalar", "int/range", "int/choice",
-		"boolean", "color/scalar", "color/choice"
+		"boolean", "color/scalar", "color/choice",
+		"terrain"
 	};
 	
 	private static object parseColor(string input)
@@ -52,6 +53,17 @@ class SettingParser
 			return primitive.possibleSettings[settingName];
 		}		
 		return null;
+	}
+	
+	public static Vector3 getTerrainOriginPoint(Terrain terrain)
+	{
+		foreach(Transform ter in terrain.transform)
+		{
+			if(ter.tag.Equals("Origin"))
+				return ter.position;	
+		}
+		
+		return Vector3.zero;
 	}
 	
 	/// <summary>

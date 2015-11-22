@@ -17,6 +17,14 @@
 				<value>terrains/flat</value>
 			</setting>
 			<setting>
+				<name>treePrefab</name>
+				<value>terrains/trees/cube</value>
+			</setting>
+			<setting>
+				<name>treeSpawnRadius</name>
+				<value>50</value>
+			</setting>
+			<setting>
 				<name>density</name>
 				<value>sparse</value>
 			</setting>
@@ -42,6 +50,14 @@
 			<setting>
 				<name>terrainToLoad</name>
 				<value>Resources/terrains/flat.terrain</value>
+			</setting>
+			<setting>
+				<name>treePrefab</name>
+				<value>terrains/trees/cube</value>
+			</setting>
+			<setting>
+				<name>treeSpawnRadius</name>
+				<value>50</value>
 			</setting>
 			<setting>
 				<name>density</name>

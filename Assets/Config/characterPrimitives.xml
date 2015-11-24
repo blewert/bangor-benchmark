@@ -2,11 +2,15 @@
 
 <characters>
 	<character>
-		<name>Tank</name>
-		<prefab>Prefabs/Tank.prefab</prefab>
-	</character>
-	<character>
-		<name>hoverDrone</name>
-		<prefab>Prefabs/HoverNPC.prefab</prefab>
+		<name>Capsule</name>
+		<prefab>primitives/characters/capsule/capsulePrefab</prefab>
+		<locomotionScript>CapsuleLocomotion</locomotionScript>	
+		
+		<possibleSettings>
+			<possibleSetting>
+				<name>hasGun</name>
+				<type>boolean</type>
+			</possibleSetting>
+		</possibleSettings>	
 	</character>
 </characters>

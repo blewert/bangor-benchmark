@@ -71,29 +71,14 @@
 		
 	</instance>
 	
-	<!---
+	
 	<instance>
 		<name>Room</name>
 		<primitive>Room</primitive>
 		
-	
-		<scriptsToAttach>
-			<script>Scripts/blah/gun.cs</script>
-		</scriptsToAttach>
-	
-		
 		<settings>
-			<setting>
-				<name>terrainToLoad</name>
-				<value>Resources/terrains/flat.terrain</value>
-			</setting>
-			<setting>
-				<name>colour</name>
-				<value>red</value>
-			</setting>
 		</settings>
 		
 	</instance>
-	-->
 	
 </environmentInstances>

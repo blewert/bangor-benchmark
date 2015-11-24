@@ -183,7 +183,12 @@ public class Bootup : MonoBehaviour
 		else if(view == MenuHandler.View.GAMEMODE)
 		{
 			//Add gamemode buttons...
-			menuComponent.addPrimitivesButtons(gamemodePrimitives.Select(x => x.name), this);
+			//..
+			
+			//We need to exclude gamemodes where the current selected environment is not in the exclusions
+			//of this gamemode:
+			var gamemodes = gamemodePrimitives.Where (x => !x.environmentExclusions.Contains (chosenEnvironmentInstance.primitiveName)).Select (x => x.name);
+			menuComponent.addPrimitivesButtons(gamemodes, this);
 		}
 		else if(view == MenuHandler.View.CHARACTER)
 		{

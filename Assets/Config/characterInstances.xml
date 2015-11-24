@@ -2,11 +2,16 @@
 
 <characterInstances>
 	<instance>
-		<name>NPC with Gun</name>
-		<primitive>hoverDrone</primitive>
+		<name>Capsule NPC (Human)</name>
+		<primitive>Capsule</primitive>
 		
-		<scriptsToAttach>
-			<script>Scripts/blah/gun.cs</script>
-		</scriptsToAttach>
+		<controllerScript>HumanKeyboardController</controllerScript>
+		
+		<settings>
+			<setting>
+				<name>hasGun</name>
+				<value>true</value>
+			</setting>
+		</settings>
 	</instance>
 </characterInstances>

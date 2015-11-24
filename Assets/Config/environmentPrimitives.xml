@@ -32,25 +32,7 @@
 		<name>Room</name>
 		<scriptPath>ForestPrimitive</scriptPath>
 		<possibleSettings>
-			<possibleSetting>
-				<name>terrainToLoad</name>
-				<type>string/path</type>
-			</possibleSetting>
-			<possibleSetting>
-				<name>density</name>
-				<type>string/choice{"sparse", "medium", "dense"}</type>
-			</possibleSetting>
-			<possibleSetting>
-				<name>algorithm</name>
-				<type>string/choice{"naive", "spawns", "realistic"}</type>
-			</possibleSetting>
 		</possibleSettings>
 	</environment>
 	
-	<!--
-	<environment>
-		<name>Room</name>
-		<scriptPath>Scripts/primitives/environments/room.cs</scriptPath>
-	</environment>
-	-->
 </environments>

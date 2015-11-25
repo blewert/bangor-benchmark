@@ -9,11 +9,22 @@ public static class PrimitivesParser
 	private const string BASE_PATH = "Assets/Config/";
 	
 	private static string environmentPrimitivesPath = BASE_PATH + "environmentPrimitives.xml";
-	private static string charactersPrimitivesPath  = BASE_PATH + "charactersPrimitives.xml";
+	private static string charactersPrimitivesPath  = BASE_PATH + "characterPrimitives.xml";
 	private static string gamemodePrimitivesPath    = BASE_PATH + "gamemodePrimitives.xml";
 	
 	private static string environmentInstancesPath  = BASE_PATH + "environmentInstances.xml";
+	private static string charactersInstancesPath    = BASE_PATH + "characterInstances.xml";
 	private static string gamemodeInstancesPath     = BASE_PATH + "gamemodeInstances.xml";
+	
+	public static CharacterInstance[] getCharacterInstances()
+	{
+		return CharacterInstancesParser.parse(charactersInstancesPath);
+	}
+	
+	public static CharacterPrimitive[] getCharacterPrimitives()
+	{
+		return CharacterPrimitivesParser.parse(charactersPrimitivesPath);
+	}
 	
 	public static GamemodePrimitive[] getGamemodePrimitives()
 	{

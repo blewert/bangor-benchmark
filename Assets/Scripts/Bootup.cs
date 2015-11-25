@@ -7,6 +7,9 @@ using System;
 /// <summary>
 /// The start-up script for loading dynamically loading in primitives/instances; provides logic for MenuHandler script.
 /// </summary>
+using System.Collections.Generic;
+
+
 public class Bootup : MonoBehaviour 
 {
 	//The menu object and it's MenuHandler component
@@ -22,9 +25,15 @@ public class Bootup : MonoBehaviour
 	private GamemodePrimitive[] gamemodePrimitives;
 	private GamemodeInstance[] gamemodeInstances;
 	
+	//Character primitives and instances
+	private CharacterPrimitive[] characterPrimitives;
+	private CharacterInstance[] characterInstances;
+	
 	//Settings panel: current chosen instances
 	private EnvironmentInstance chosenEnvironmentInstance;
 	private GamemodeInstance chosenGamemodeInstance;
+	private CharacterInstance chosenCharacterInstance;
+	
 	
 	// Use this for initialization
 	void Start () 
@@ -36,6 +45,10 @@ public class Bootup : MonoBehaviour
 		//Get all gamemode primitives and instances
 		gamemodePrimitives = PrimitivesParser.getGamemodePrimitives();
 		gamemodeInstances  = PrimitivesParser.getGamemodeInstances();
+		
+		//Get all character primitives and instances
+		characterPrimitives = PrimitivesParser.getCharacterPrimitives();
+		characterInstances  = PrimitivesParser.getCharacterInstances();
 
 		//Does the menu object exist?
 		//if(menu == null)
@@ -62,10 +75,6 @@ public class Bootup : MonoBehaviour
 		//Add the initial primitive buttons (initially the environment buttons)
 		menuComponent.addPrimitivesButtons(environmentPrimitives.Select(x => x.name), this);
 		
-		
-		/**/
-		//Now setup gamemode..
-		
 	} 
 	
 	/// <summary>
@@ -89,6 +98,11 @@ public class Bootup : MonoBehaviour
 			var associatedInstances = gamemodeInstances.Where (x => x.primitiveName.Equals (buttonText));
 			menuComponent.addInstancesButtons(associatedInstances.Select (x => x.name), this);
 		}	
+		else if(menuComponent.getCurrentView() == MenuHandler.View.CHARACTER)
+		{
+			var associatedInstances = characterInstances.Where (x => x.primitiveName.Equals (buttonText));
+			menuComponent.addInstancesButtons(associatedInstances.Select (x => x.name), this);
+		}
 	}
 	
 	/// <summary>
@@ -114,8 +128,16 @@ public class Bootup : MonoBehaviour
 			//Set chosen instance to the found one
 			chosenGamemodeInstance = linkedInstance;
 		}
+		else if(menuComponent.getCurrentView() == MenuHandler.View.CHARACTER)
+		{
+			//Update settings panel
+			var linkedInstance = characterInstances.Where(x => x.name == buttonText).FirstOrDefault();
+			
+			//Set chosen instance to the found one
+			chosenCharacterInstance = linkedInstance;
+		}
 		
-		menuComponent.updateSettingsPanel(chosenEnvironmentInstance, chosenGamemodeInstance, null);
+		menuComponent.updateSettingsPanel(chosenEnvironmentInstance, chosenGamemodeInstance, chosenCharacterInstance);
 	}
 	
 	/// <summary>
@@ -133,6 +155,11 @@ public class Bootup : MonoBehaviour
 			menuComponent.setErrorText("You have not chosen a gamemode instance.");
 			return;
 		}
+		else if(chosenCharacterInstance == null)
+		{
+			menuComponent.setErrorText("You have not chosen a character instance.");
+			return;
+		}
 		
 		var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
 		var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));
@@ -140,9 +167,10 @@ public class Bootup : MonoBehaviour
 		environmentScript.instance = chosenEnvironmentInstance;
 		
 		var gamemodePrimitive = gamemodePrimitives.Where (x => chosenGamemodeInstance.primitiveName == x.name).FirstOrDefault();
-		var gamemodeScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
+		var gamemodeScript = (GamemodeScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
 		
 		gamemodeScript.instance = chosenGamemodeInstance;
+		gamemodeScript.characterInstance = chosenCharacterInstance;
 		
 		menu.SetActive(false);
 	}
@@ -187,12 +215,20 @@ public class Bootup : MonoBehaviour
 			
 			//We need to exclude gamemodes where the current selected environment is not in the exclusions
 			//of this gamemode:
-			var gamemodes = gamemodePrimitives.Where (x => !x.environmentExclusions.Contains (chosenEnvironmentInstance.primitiveName)).Select (x => x.name);
-			menuComponent.addPrimitivesButtons(gamemodes, this);
+			
+			if(chosenEnvironmentInstance != null)
+			{
+				var gamemodes = gamemodePrimitives.Where (x => !x.environmentExclusions.Contains (chosenEnvironmentInstance.primitiveName)).Select (x => x.name);
+				menuComponent.addPrimitivesButtons(gamemodes, this);
+			}
+			else
+				menuComponent.addPrimitivesButtons(gamemodePrimitives.Select(x => x.name), this);
+
 		}
 		else if(view == MenuHandler.View.CHARACTER)
 		{
 			//Add character buttons...
+			menuComponent.addPrimitivesButtons(characterPrimitives.Select (x => x.name), this);
 		}
 	}
 	

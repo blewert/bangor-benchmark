@@ -2,7 +2,7 @@
 
 <characterInstances>
 	<instance>
-		<name>Capsule NPC (Human)</name>
+		<name>Capsule (H, Slow)</name>
 		<primitive>Capsule</primitive>
 		
 		<controllerScript>HumanKeyboardController</controllerScript>
@@ -12,6 +12,29 @@
 				<name>hasGun</name>
 				<value>true</value>
 			</setting>
+			<setting>
+				<name>speed</name>
+				<value>1.5f</value>
+			</setting>
 		</settings>
 	</instance>
+	
+	<instance>
+		<name>Capsule (H, Fast)</name>
+		<primitive>Capsule</primitive>
+		
+		<controllerScript>HumanKeyboardController</controllerScript>
+		
+		<settings>
+			<setting>
+				<name>hasGun</name>
+				<value>true</value>
+			</setting>
+			<setting>
+				<name>speed</name>
+				<value>5.5f</value>
+			</setting>
+		</settings>
+	</instance>
+	
 </characterInstances>

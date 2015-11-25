@@ -15,5 +15,9 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		//var character = (GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), Vector3.zero, Quaternion.identity);
 		//character.AddComponent(Types.GetType(characterInstance.primitive.locomotionScriptPath));
 		//character.AddComponent(Types.GetType (characterInstance.controllerScript));
+		
+		//Actually could we just use:
+		var originPoint = getOriginPoint();
+		Debug.Log (originPoint);
 	}
 }

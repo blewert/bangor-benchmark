@@ -161,16 +161,23 @@ public class Bootup : MonoBehaviour
 			return;
 		}
 		
+		//Find primitive associated with chosen environment instance. Then, add the environment script onto the observer object.
 		var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
 		var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));
 		
+		//Pass instance settings into the environment primitive so it can do its stuff.
 		environmentScript.instance = chosenEnvironmentInstance;
 		
+		//Find gamemode associated with chosen gamemode instance. Then, add the gamemode script onto the observer object too.
 		var gamemodePrimitive = gamemodePrimitives.Where (x => chosenGamemodeInstance.primitiveName == x.name).FirstOrDefault();
 		var gamemodeScript = (GamemodeScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
 		
+		//Pass instance settings so it can do its stuff.
 		gamemodeScript.instance = chosenGamemodeInstance;
+		
+		//Pass in character and environment instance so the gamemode knows what to work with.
 		gamemodeScript.characterInstance = chosenCharacterInstance;
+		gamemodeScript.environmentInstance = chosenEnvironmentInstance;
 		
 		menu.SetActive(false);
 	}

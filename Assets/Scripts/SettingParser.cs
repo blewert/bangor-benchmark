@@ -60,7 +60,7 @@ class SettingParser
 		foreach(Transform ter in terrain.transform)
 		{
 			if(ter.tag.Equals("Origin"))
-				return ter.position;	
+				return ter.position;
 		}
 		
 		return Vector3.zero;

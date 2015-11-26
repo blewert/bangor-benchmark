@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CaptureTheFlagPrimitive : GamemodeScript
 {
@@ -12,8 +13,9 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		Debug.Log ("Player count? " + playerCount);
 		
 		//Need to attach script, and also add environment instance into GamemodePrimitive so we can access the origin point.
-		//var character = (GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), Vector3.zero, Quaternion.identity);
-		//character.AddComponent(Types.GetType(characterInstance.primitive.locomotionScriptPath));
+		var character = (GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), Vector3.zero, Quaternion.identity);
+		
+		character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
 		//character.AddComponent(Types.GetType (characterInstance.controllerScript));
 		
 		//Actually could we just use:

@@ -1,32 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class CaptureTheFlagPrimitive : GamemodeScript
 {
+	private List<GameObject> blueTeam;
+	private List<GameObject> redTeam;
+	
+	private GameObject human;
+	
 	void Start () 
 	{
-		var singleRound = (bool)SettingParser.getSetting(instance, "singleRound");
+		var spawnHuman  = (bool)SettingParser.getSetting(instance, "spawnHuman");
 		var playerCount = (int)SettingParser.getSetting (instance, "playerCount");
-		
-		Debug.Log ("Single round? " + singleRound);
-		Debug.Log ("Player count? " + playerCount);
-		
-		//Need to attach script, and also add environment instance into GamemodePrimitive so we can access the origin point.
-		var character = (GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), Vector3.zero, Quaternion.identity);
-		
-		var script = (ILocomotionScript)character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
-		
-		script.instance = characterInstance;
-		
-		//character.AddComponent(Types.GetType (characterInstance.controllerScript));
-		
+
 		//Actually could we just use:
 		var originPoint = getOriginPoint();
 		var randomOffset = randomXZAroundPoint(originPoint, 3f);
 		
-		randomOffset.y += character.GetComponent<MeshRenderer>().bounds.extents.y * character.transform.localScale.y;
-	
-		character.transform.position = randomOffset;
+		//Spawn red and blue team	
+		blueTeam = spawnTeam (() => randomXZAroundPoint(originPoint, 5f), playerCount / 2, characterInstance.controllerScript, "Blue");
+		redTeam  = spawnTeam (() => randomXZAroundPoint(originPoint, 5f), playerCount / 2, characterInstance.controllerScript, "Red");
+		
+		if(spawnHuman)
+		{
+			//A human needs to be spawned. First pick a team to pull a single agent from.
+			var pickedTeam = (UnityEngine.Random.value > 0.5f) ? (blueTeam) : (redTeam);
+			
+			//Then pick a random agent within this team.
+			var pickedElem = pickedTeam.randomElement();
+			
+			//Remove controller
+			Destroy(pickedElem.GetComponent(Type.GetType (characterInstance.controllerScript)));
+			
+			Debug.Log("spawn human.. " + pickedElem.getTeam ());
+						
+			//Add human controller
+			//pickedElem.AddComponent (Type.GetType ("HumanKeyboardController"));
+			
+			human = pickedElem;
+			
+			var script = gameObject.AddComponent<CameraFollowCharacter>();
+			script.target = human;
+		}
 	}
 }

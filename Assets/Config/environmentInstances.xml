@@ -49,7 +49,7 @@
 		<settings>
 			<setting>
 				<name>terrainToLoad</name>
-				<value>Resources/terrains/flat.terrain</value>
+				<value>terrains/flat</value>
 			</setting>
 			<setting>
 				<name>treePrefab</name>
@@ -61,7 +61,7 @@
 			</setting>
 			<setting>
 				<name>density</name>
-				<value>Medium</value>
+				<value>medium</value>
 			</setting>
 			<setting>
 				<name>algorithm</name>

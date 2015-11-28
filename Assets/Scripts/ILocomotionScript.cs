@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class ILocomotionScript : MonoBehaviour
 {
-	public Instance instance;
+	public CharacterInstance instance;
 	
 	public abstract void turnLeft();
 	public abstract void turnRight();

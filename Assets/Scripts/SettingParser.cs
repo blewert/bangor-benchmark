@@ -52,6 +52,12 @@ class SettingParser
 			var primitive = GamemodePrimitivesParser.getLastPrimitives().First (x => x.name == instance.primitiveName);
 			return primitive.possibleSettings[settingName];
 		}		
+		else if(instance is CharacterInstance)
+		{
+			var primitive = CharacterPrimitivesParser.getLastParsedPrimitives().First (x => x.name == instance.primitiveName);
+			return primitive.possibleSettings[settingName];
+		}
+		
 		return null;
 	}
 	
@@ -109,7 +115,7 @@ class SettingParser
 				break;
 
 		}
-		
+				
 		if(returnValue == null)
 			throw new SettingTypeInvalidException("Setting type '" + stype + "' for name '" + settingName + "' has an invalid value, or was unmatched.");
 			

@@ -16,12 +16,12 @@
 		
 		<possibleSettings>
 			<possibleSetting>
-				<name>singleRound</name>
-				<type>boolean</type>
-			</possibleSetting>
-			<possibleSetting>
 				<name>playerCount</name>
 				<type>int/range{2, 8}</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>spawnHuman</name>
+				<type>boolean</type>
 			</possibleSetting>
 		</possibleSettings>
 		

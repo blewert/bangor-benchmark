@@ -14,7 +14,11 @@
 			</setting>
 			<setting>
 				<name>speed</name>
-				<value>1.5f</value>
+				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>turnSpeed</name>
+				<value>2</value>
 			</setting>
 		</settings>
 	</instance>
@@ -32,7 +36,11 @@
 			</setting>
 			<setting>
 				<name>speed</name>
-				<value>5.5f</value>
+				<value>5.5</value>
+			</setting>
+			<setting>
+				<name>turnSpeed</name>
+				<value>4</value>
 			</setting>
 		</settings>
 	</instance>

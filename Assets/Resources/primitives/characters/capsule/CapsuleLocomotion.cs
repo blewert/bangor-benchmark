@@ -10,7 +10,9 @@ public class CapsuleLocomotion : ILocomotionScript
 	public void Start()
 	{
 		characterController = GetComponent<CharacterController>();	
-		Debug.Log (instance.settings["speed"]);
+		
+		speed = (float)SettingParser.getSetting(instance, "speed");
+		turnSpeed = (float)SettingParser.getSetting(instance, "turnSpeed");
 	}
 	
 	/// <summary>

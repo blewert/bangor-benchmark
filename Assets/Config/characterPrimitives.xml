@@ -15,6 +15,10 @@
 				<name>speed</name>
 				<type>float/scalar</type>
 			</possibleSetting>
+			<possibleSetting>
+				<name>turnSpeed</name>
+				<type>float/scalar</type>
+			</possibleSetting>
 		</possibleSettings>	
 	</character>
 </characters>

@@ -23,6 +23,14 @@
 				<name>spawnHuman</name>
 				<type>boolean</type>
 			</possibleSetting>
+			<possibleSetting>
+				<name>flagSpawnRadius</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>flagPrefab</name>
+				<type>string/path</type>
+			</possibleSetting>
 		</possibleSettings>
 		
 	</mode>

@@ -14,6 +14,14 @@
 				<name>playerCount</name>
 				<value>4</value>
 			</setting>
+			<setting>
+				<name>flagSpawnRadius</name>
+				<value>15</value>
+			</setting>
+			<setting>
+				<name>flagPrefab</name>
+				<value>prefabs/flag</value>
+			</setting>
 		</settings>
 	</instance>
 	
@@ -29,6 +37,14 @@
 			<setting>
 				<name>playerCount</name>
 				<value>4</value>
+			</setting>
+			<setting>
+				<name>flagSpawnRadius</name>
+				<value>15</value>
+			</setting>
+			<setting>
+				<name>flagPrefab</name>
+				<value>prefabs/flag</value>
 			</setting>
 		</settings>
 	</instance>

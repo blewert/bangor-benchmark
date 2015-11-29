@@ -11,11 +11,16 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 	
 	private GameObject human;
 	
+	private GameObject flagPrefab;
+	
 	void Start () 
 	{
 		var spawnHuman  = (bool)SettingParser.getSetting(instance, "spawnHuman");
 		var playerCount = (int)SettingParser.getSetting (instance, "playerCount");
-
+		var flagSpawnRadius = (float)SettingParser.getSetting (instance, "flagSpawnRadius");
+		
+		flagPrefab = (GameObject)Resources.Load ((string)SettingParser.getSetting (instance, "flagPrefab"));
+		
 		//Actually could we just use:
 		var originPoint = getOriginPoint();
 		var randomOffset = randomXZAroundPoint(originPoint, 3f);
@@ -23,6 +28,8 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		//Spawn red and blue team	
 		blueTeam = spawnTeam (() => randomXZAroundPoint(originPoint, 5f), playerCount / 2, characterInstance.controllerScript, "Blue");
 		redTeam  = spawnTeam (() => randomXZAroundPoint(originPoint, 5f), playerCount / 2, characterInstance.controllerScript, "Red");
+		
+		var script = gameObject.AddComponent<CameraFollowCharacter>();
 		
 		if(spawnHuman)
 		{
@@ -34,16 +41,46 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 			
 			//Remove controller
 			Destroy(pickedElem.GetComponent(Type.GetType (characterInstance.controllerScript)));
-			
-			Debug.Log("spawn human.. " + pickedElem.getTeam ());
 						
 			//Add human controller
-			//pickedElem.AddComponent (Type.GetType ("HumanKeyboardController"));
+			pickedElem.AddComponent (Type.GetType ("HumanKeyboardController"));
 			
 			human = pickedElem;
 			
-			var script = gameObject.AddComponent<CameraFollowCharacter>();
 			script.target = human;
 		}
+		else
+		{
+			script.targets = redTeam.Concat (blueTeam).ToList();
+		}
+		
+		spawnFlags(flagSpawnRadius);
+	}
+	
+	private void spawnFlags(float radius)
+	{
+		var originPoint = getOriginPoint();
+		
+		var firstRandomAngle = UnityEngine.Random.Range (0f, 360f);
+		var secondRandomAngle = (firstRandomAngle + 180f) % 360f;
+		
+		var firstPosition = originPoint;
+		firstPosition.x += Mathf.Cos(firstRandomAngle * Mathf.Deg2Rad) * radius;
+		firstPosition.z += Mathf.Sin(firstRandomAngle * Mathf.Deg2Rad) * radius;
+		firstPosition.y  = Terrain.activeTerrain.SampleHeight(firstPosition);
+		
+		var secondPosition = originPoint;
+		secondPosition.x += Mathf.Cos(secondRandomAngle * Mathf.Deg2Rad) * radius;
+		secondPosition.z += Mathf.Sin(secondRandomAngle * Mathf.Deg2Rad) * radius;
+		secondPosition.y  = Terrain.activeTerrain.SampleHeight(secondPosition);
+		
+		var obj1 = Instantiate (flagPrefab, firstPosition, randomYRotation()) as GameObject;
+		var obj2 = Instantiate (flagPrefab, secondPosition, randomYRotation()) as GameObject;
+		
+		obj1.setTeam ("Red");
+		obj2.setTeam ("Blue");
+		
+		obj1.tag = "Prop";
+		obj2.tag = "Prop";
 	}
 }

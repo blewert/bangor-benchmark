@@ -83,6 +83,12 @@ public class Castdar : MonoBehaviour {
 	private int tickCount = 0;
 	private long tickTotal = 0;
 	
+	public void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.blue;
+		Gizmos.DrawLine (transform.position, transform.position + transform.TransformDirection (Vector3.forward) * 3f);
+	}
+	
 	// Vision Sweep
 	public void VisionSweep () {
 		// Empty the list

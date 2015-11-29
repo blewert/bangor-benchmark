@@ -5,7 +5,7 @@
 		<name>Capsule (H, Slow)</name>
 		<primitive>Capsule</primitive>
 		
-		<controllerScript>HumanKeyboardController</controllerScript>
+		<controllerScript>CaptureTheFlagAIController</controllerScript>
 		
 		<settings>
 			<setting>
@@ -18,7 +18,7 @@
 			</setting>
 			<setting>
 				<name>turnSpeed</name>
-				<value>2</value>
+				<value>0.5</value>
 			</setting>
 		</settings>
 	</instance>
@@ -27,7 +27,7 @@
 		<name>Capsule (H, Fast)</name>
 		<primitive>Capsule</primitive>
 		
-		<controllerScript>HumanKeyboardController</controllerScript>
+		<controllerScript>CaptureTheFlagAIController</controllerScript>
 		
 		<settings>
 			<setting>
@@ -40,7 +40,7 @@
 			</setting>
 			<setting>
 				<name>turnSpeed</name>
-				<value>4</value>
+				<value>0.5</value>
 			</setting>
 		</settings>
 	</instance>

@@ -53,7 +53,7 @@ public abstract class GamemodeScript : PrimitiveScript
 		
 		//Finally, add the controller script
 		character.AddComponent(Type.GetType (controllerScript));
-		
+				
 		//Set up team and assign an id
 		character.setTeam("Default");
 		character.assignID();

@@ -48,7 +48,7 @@ public static class ExtensionMethods
 	public static string getTeam(this GameObject obj)
 	{
 		//Return the value in the dictionary where the key matches the object, or return "unspecified"
-		return teamIndex.Where(x => x.Key == obj).Select (x => x.Value).FirstOrDefault() ?? "Unspecified";
+		return teamIndex.Where(x => x.Key == obj).Select (x => x.Value).FirstOrDefault() ?? "None";
 	}
 	
 	/// <summary>

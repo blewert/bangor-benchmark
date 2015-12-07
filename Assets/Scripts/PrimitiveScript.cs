@@ -58,6 +58,8 @@ public abstract class GamemodeScript : PrimitiveScript
 		character.setTeam("Default");
 		character.assignID();
 		
+		character.setData ("NPC");
+		
 		//Return the character
 		return character;
 	}

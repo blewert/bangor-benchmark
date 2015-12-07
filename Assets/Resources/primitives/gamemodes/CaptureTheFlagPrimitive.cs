@@ -80,6 +80,9 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		obj1.setTeam ("Red");
 		obj2.setTeam ("Blue");
 		
+		obj1.setData ("Flag");
+		obj2.setData ("Flag");
+		
 		obj1.tag = "Prop";
 		obj2.tag = "Prop";
 	}

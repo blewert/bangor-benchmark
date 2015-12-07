@@ -29,8 +29,6 @@ public class CameraFollowCharacter : MonoBehaviour
 			   
 			else if(Input.GetKeyDown(KeyCode.RightArrow))
 			   targetIdx = (targetIdx + 1) % (targets.Count);
-		
-			Debug.Log (targetIdx);
 			
 			target = targets[targetIdx];	
 		}

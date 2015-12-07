@@ -17,6 +17,8 @@ public static class ExtensionMethods
 	//The index of teams (tags) for each gameobject that been assigned (map obj -> string)	
 	private static Dictionary<GameObject, string> teamIndex = new Dictionary<GameObject, string>();
 	
+	private static Dictionary<GameObject, string> dataIndex = new Dictionary<GameObject, string>();
+	
 	/// <summary>
 	/// Assigns an unique id to the GameObject, based on previous assignments.
 	/// </summary>
@@ -32,6 +34,17 @@ public static class ExtensionMethods
 	{
 		return idIndex[obj];
 	}	
+	
+	public static string getData(this GameObject obj)
+	{
+		//Return the value in the dictionary where the key matches the object, or return "unspecified"
+		return dataIndex.Where(x => x.Key == obj).Select (x => x.Value).FirstOrDefault() ?? "None";
+	}
+	
+	public static void setData(this GameObject obj, string data)
+	{
+		dataIndex[obj] = data;
+	}
 	
 	/// <summary>
 	/// Assigns a team label to the current object.

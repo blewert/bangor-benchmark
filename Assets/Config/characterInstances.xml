@@ -40,7 +40,7 @@
 			</setting>
 			<setting>
 				<name>turnSpeed</name>
-				<value>0.5</value>
+				<value>1.5</value>
 			</setting>
 		</settings>
 	</instance>

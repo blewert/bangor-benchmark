@@ -18,98 +18,147 @@ public class CaptureTheFlagAIController : MonoBehaviour
 	
 	private int steerDirection = 1;
 	
+	private GameObject myFlag;
+	private Vector3 basePos;
+	private float safeRadius = 5f;
+	
+	private Vector3 helpPosition;
+	private bool underFire = false;
+	
 	// Use this for initialization
 	void Start () 
 	{
-		InvokeRepeating("updateSteerDirection", 0f, 2f);
-		
 		npc = GetComponent<ILocomotionScript>();
-		//gun = GetComponentInChildren<Gun>();
 		castdar = GetComponentInChildren<Castdar>();
 		
 		if(npc.gameObject.getTeam() == "Red")
+		{
 			myTeam = Team.RED;
+			myFlag = GameObject.FindGameObjectsWithTag("Prop").Where (x => x.getTeam ().Equals ("Red") && x.getData ().Equals ("Flag")).FirstOrDefault();
+		}
 		else
+		{
 			myTeam = Team.BLUE;
+			myFlag = GameObject.FindGameObjectsWithTag("Prop").Where (x => x.getTeam ().Equals ("Blue") && x.getData ().Equals ("Flag")).FirstOrDefault();
+		}
 		
+		basePos = myFlag.transform.position;
 	}
-	
-	private void updateSteerDirection()
-	{
-		steerDirection = UnityEngine.Random.Range (0, 2) - 1;
-	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
-		var walls = castdar.GetWalls();
-		var objects = castdar.GetSeenObject(); 
+		Debug.Log (gameObject.getID() + " .. " + npc.getHealth());
 		
-		if(castdar.GetSeen () > 0)
+		//Is the npc dead?
+		if(npc.dead)
 		{
-			//They've hit something..
+			//Call up to gamemode instance to decrement team count. Or just monitor globally?
+			Destroy (gameObject);
+			Destroy(this);
+		}
+		
+		//Are they inside a base? If so, give health
+		if(isInsideBase())
+			npc.giveHealth(2f);
+		
+		//Check for obstacles:
+		if(castdar.GetSeen() > 0)
+		{
+			var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.tag.Equals ("Prop"));
 			
-			var props = objects.Where(x => x.seenOBJ.tag.Equals ("Prop"));
-			var enemies = objects.Where (x => x.seenOBJ.getTeam () != gameObject.getTeam () && x.seenOBJ.getTeam () != "None");
-			
-			if(props.Count() > 0)
-				avoidObstacles(props);
+			//if(objs.Count > 0)
+			//	avoidObstacles();
+		}
+		
+		if(!opponentSeen())
+		{
+			if(healthIsLow ())
+				fleeToBase();
 				
-			else if(enemies.Count() > 0)
-				attackEnemies(enemies);
+			//else
+				//wander
 				
+			underFire = false;
 		}
 		else
 		{
-			//Nothing hit, wander!
-			wander();
+			attackEnemy ();
 		}
+		//if(npc.getHealth() <= 50f)
+		//	fleeToBase();
 	}
 	
-	public void avoidObstacles(IEnumerable<Castdar.HitObject> obstacles)
+	private bool healthIsLow()
 	{
-		//Find closest object
-		var closest = obstacles.OrderBy(x => x.distance).FirstOrDefault();
-		
-		//Debug.DrawLine (transform.position, closest.seenOBJ.transform.position, Color.yellow, 3f);
-		
-		if(getSteerDirection(closest.seenOBJ.transform.position) > 0)
-			npc.turnRight();
-		
-		else
-			npc.turnLeft();
+		return npc.getHealth() <= 50f;
 	}
 	
-	
-	public void wander()
-	{	
-		if(steerDirection < 0)
-			npc.turnLeft();
-			
-		else
+	private void attackEnemy()
+	{
+		var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.getData ().Equals ("NPC") && x.seenOBJ.getTeam () != gameObject.getTeam());
+		
+		var closestObj = objs.OrderBy(x => Vector3.Distance (x.seenOBJ.transform.position, transform.position)).FirstOrDefault();
+		
+		if(getSteerDirection(closestObj.seenOBJ.transform.position) > 0)
 			npc.turnRight ();
+		else
+			npc.turnLeft ();
 			
-		npc.moveForward();
+		if(Vector3.Distance (closestObj.seenOBJ.transform.position, transform.position) <= 8f)
+			closestObj.seenOBJ.GetComponent<ILocomotionScript>().takeHealth(0.5f);
+		else
+			npc.moveForward();
 	}
 	
-	public void attackEnemies(IEnumerable<Castdar.HitObject> enemies)
+	private bool opponentSeen()
 	{
-		//Find closest enemy
-		var closest = enemies.OrderBy(x => x.distance).FirstOrDefault();
+		var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.getData ().Equals ("NPC") && x.seenOBJ.getTeam () != gameObject.getTeam());
 		
-		if(getSteerDirection(closest.seenOBJ.transform.position) > 0)
-			npc.turnLeft();
+		return objs.Count() > 0;
+	}
+	
+	private bool isInsideBase()
+	{
+		return Vector3.Distance (transform.position, basePos) <= safeRadius;
+	}
+	
+	private void fleeToBase()
+	{
+		if(!isInsideBase())
+		{
+			if(getSteerDirection(basePos) < 0)
+				npc.turnLeft ();
+			else
+				npc.turnRight();
 			
-		else
-			npc.turnRight();
-			
-		npc.moveForward();		
+			npc.moveForward();
+		}
+	}
+	
+	public void onReceiveHelpRequest(Vector3 position)
+	{
+		helpPosition = position;
+	}
+	
+	public void signal()
+	{
+		var allObjects = GameObject.FindObjectsOfType<GameObject>();
+		var otherNPCs = allObjects.Where (x => x.getTeam ().Equals (gameObject.getTeam ()) && x.getData().Equals ("NPC"));
+		
+		foreach(var npc in otherNPCs)
+			npc.SendMessage ("onReceiveHelpRequest", transform.position); 
+	}
+	
+	private bool hasBeenSignalled()
+	{
+		return helpPosition != default(Vector3);
 	}
 	
 	public int getSteerDirection(Vector3 position)
 	{
 		var localPosition = transform.InverseTransformPoint(position);
 		
-		return -Math.Sign (localPosition.x);
+		return Math.Sign (localPosition.x);
 	}
 }

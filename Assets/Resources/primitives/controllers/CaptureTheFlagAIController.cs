@@ -21,6 +21,7 @@ public class CaptureTheFlagAIController : MonoBehaviour
 	private GameObject myFlag;
 	private Vector3 basePos;
 	private float safeRadius = 5f;
+	private float closeRadius = 5f;
 	
 	private Vector3 helpPosition;
 	private bool underFire = false;
@@ -48,8 +49,6 @@ public class CaptureTheFlagAIController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		Debug.Log (gameObject.getID() + " .. " + npc.getHealth());
-		
 		//Is the npc dead?
 		if(npc.dead)
 		{
@@ -67,26 +66,78 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		{
 			var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.tag.Equals ("Prop"));
 			
-			//if(objs.Count > 0)
-			//	avoidObstacles();
+			if(objs.Count() > 0)
+				avoidObstacles();
 		}
 		
 		if(!opponentSeen())
 		{
+			//An opponent is not seen, and their health is low. So go back to base:
 			if(healthIsLow ())
 				fleeToBase();
-				
-			//else
-				//wander
+			
+			//Otherwise just wander.				
+			else
+				wander();
 				
 			underFire = false;
 		}
 		else
 		{
-			attackEnemy ();
+			if(teammatesNearby())
+			{
+				//They have seen an opponent and there are team-mates nearby. If they have low hp, signal and go to base.
+				if(healthIsLow())
+					signalAndFlee();
+				
+				//If they have high hp, signal and attack.
+				else
+					signalAndAttack();
+			}
+			else
+			{
+				//Otherwise, there are no team-mates nearby. If they have low hp, go back to base.
+				if(healthIsLow())
+					fleeToBase();
+					
+				else
+				{
+					//However if they do have health, and there are enemies nearby, flee to base.
+					if(enemyTeammatesNearby())
+						fleeToBase();
+						
+					//Otherwise, attack the enemy (because they're on their own).
+					else
+						attackEnemy();
+				}					
+			}
 		}
 		//if(npc.getHealth() <= 50f)
 		//	fleeToBase();
+	}
+	
+	private void avoidObstacles()
+	{
+		npc.turnRight ();
+	}
+	
+	private void wander()
+	{
+		npc.moveForward();
+	}
+	
+	private bool enemyTeammatesNearby()
+	{
+		var npcs = GameObject.FindObjectsOfType<GameObject>().Where (x => x.getTeam ().Equals (gameObject.getTeam ()) && x.getData().Equals ("NPC"));
+		
+		return npcs.Any (x => Vector3.Distance (transform.position, x.transform.position) <= closeRadius);
+	}
+	
+	private bool teammatesNearby()
+	{
+		var npcs = GameObject.FindObjectsOfType<GameObject>().Where (x => x.getTeam().Equals(gameObject.getTeam ()) && x.getData ().Equals("NPC"));
+		
+		return npcs.Any(x => Vector3.Distance (transform.position, x.transform.position) <= closeRadius);
 	}
 	
 	private bool healthIsLow()
@@ -141,10 +192,22 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		helpPosition = position;
 	}
 	
+	private void signalAndAttack()
+	{
+		signal ();
+		attackEnemy();
+	}
+	
+	private void signalAndFlee()
+	{
+		signal ();
+		fleeToBase();
+	}
+	
 	public void signal()
 	{
 		var allObjects = GameObject.FindObjectsOfType<GameObject>();
-		var otherNPCs = allObjects.Where (x => x.getTeam ().Equals (gameObject.getTeam ()) && x.getData().Equals ("NPC"));
+		var otherNPCs = allObjects.Where (x => x.getTeam ().Equals (gameObject.getTeam ()) && x.getData().Equals ("NPC") && Vector3.Distance (transform.position, x.transform.position) <= closeRadius);
 		
 		foreach(var npc in otherNPCs)
 			npc.SendMessage ("onReceiveHelpRequest", transform.position); 

@@ -6,26 +6,26 @@ using System.Collections.Generic;
 public class NetworkServer : MonoBehaviour
 {
 	[Header("Multiplayer settings")]
-	public static bool isMultiplayer = false;
+	public bool isMultiplayer = false;
 	public static int NUMBER_OF_CONNECTIONS = 8;
 	
 	[Header("Connection settings")]
-	public static bool startTypeClient = false;
+	public bool startTypeClient = false;
 	
 	//Shared network view for this player/server/whatever
-	public static NetworkView networkView;
+	public NetworkView networkView;
 	
 	//List of objects
-	public static List<GameObject> objects = new List<GameObject>();
-	public static List<NetworkPlayer> players = new List<NetworkPlayer>();
-	public static List<GameObject> characters = new List<GameObject>();
+	public List<GameObject> objects = new List<GameObject>();
+	public List<NetworkPlayer> players = new List<NetworkPlayer>();
+	public List<GameObject> characters = new List<GameObject>();
 	
 	public void Start()
 	{
 		networkView = new NetworkView();
 	}
 	
-	public static void connect(string ip, int port, string password)
+	public void connect(string ip, int port, string password)
 	{
 		//A server cannot connect to stuff..
 		if(!startTypeClient)
@@ -57,7 +57,7 @@ public class NetworkServer : MonoBehaviour
 	}
 	
 	// Use this for initialization
-	public static void start(int port, string serverPassword) 
+	public void start(int port, string serverPassword) 
 	{
 		//Clients can't start the server..
 		if(startTypeClient)
@@ -73,12 +73,12 @@ public class NetworkServer : MonoBehaviour
 	} 
 	
 	[RPC]
-	public static void testRPC(string message)
+	public void testRPC(string message)
 	{
 		Debug.Log ("RPC ... " + message);
 	}
 	
-	public static GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
+	public GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
 	{
 		//Creates an object locally or on the network.
 		//..
@@ -95,7 +95,7 @@ public class NetworkServer : MonoBehaviour
 		return addedObject;
 	}
 	
-	public static GameObject createObject(Object prefab, Vector3 position, Quaternion rotation)
+	public GameObject createObject(Object prefab, Vector3 position, Quaternion rotation)
 	{
 		//Creates an object locally or on the network.
 		//..

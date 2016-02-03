@@ -35,7 +35,7 @@ public class ForestPrimitive : PrimitiveScript
 		DebugLogger.Log (instance.name + ": Algorithm is " +  algorithmSetting + ", density is " + densitySetting + ". The terrain that needs to be loaded is " + terrainToLoad);
 		
 		//Instantiate terrain at (0, 0, 0)
-		var gameObjectTerrain = NetworkServer.createObject(Resources.Load (terrainToLoad), Vector3.zero, Quaternion.identity); 
+		var gameObjectTerrain = network.createObject(Resources.Load (terrainToLoad), Vector3.zero, Quaternion.identity); 
 		//Instantiate(Resources.Load (terrainToLoad), Vector3.zero, Quaternion.identity) as GameObject;
 		terrain = gameObjectTerrain.GetComponent<Terrain>();
 		
@@ -73,7 +73,7 @@ public class ForestPrimitive : PrimitiveScript
 			amountToSpawn = (uint)Mathf.Pow (2, 8);
 				
 		for(uint i = 0; i < amountToSpawn; i++)
-			NetworkServer.createObject(treePrefab, randomXZAroundPoint(originPoint, radius), Quaternion.identity);
+			network.createObject(treePrefab, randomXZAroundPoint(originPoint, radius), Quaternion.identity);
 	}
 	
 	private Vector3 randomXZAroundPoint(Vector3 point, float magnitude)

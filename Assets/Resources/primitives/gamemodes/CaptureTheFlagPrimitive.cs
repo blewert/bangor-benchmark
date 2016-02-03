@@ -74,8 +74,8 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		secondPosition.z += Mathf.Sin(secondRandomAngle * Mathf.Deg2Rad) * radius;
 		secondPosition.y  = Terrain.activeTerrain.SampleHeight(secondPosition);
 		
-		var obj1 = NetworkServer.createObject(flagPrefab, firstPosition, randomYRotation());
-		var obj2 = NetworkServer.createObject(flagPrefab, secondPosition, randomYRotation());
+		var obj1 = network.createObject(flagPrefab, firstPosition, randomYRotation());
+		var obj2 = network.createObject(flagPrefab, secondPosition, randomYRotation());
 		
 		obj1.setTeam ("Red");
 		obj2.setTeam ("Blue");

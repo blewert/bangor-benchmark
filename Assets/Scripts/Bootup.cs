@@ -39,12 +39,16 @@ public class Bootup : MonoBehaviour
 	public GameObject multiplayerMenu;
 	public LobbyMenuHandler lobbyMenu;
 	
+	private NetworkServer network;
+	
 	
 	// Use this for initialization
 	void Start () 
 	{
+		network = GameObject.Find ("NetworkManager").GetComponent<NetworkServer>(); 
+		
 		//Set up multiplayer flag for broadcasting to other scripts
-		NetworkServer.isMultiplayer = isMultiplayer;
+		network.isMultiplayer = isMultiplayer;
 		
 		//Get all environment primitives and instances
 		environmentPrimitives = PrimitivesParser.getEnvironmentPrimitives();
@@ -228,7 +232,7 @@ public class Bootup : MonoBehaviour
 			lobbyMenu.updateLobbyGUI();
 			
 			//Start server
-			NetworkServer.start (7777, "hello");
+			network.start (7777, "hello");
 			
 			//
 		}

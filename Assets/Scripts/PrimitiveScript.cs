@@ -7,6 +7,12 @@ using System.Linq;
 public abstract class PrimitiveScript : MonoBehaviour
 {
 	public Instance instance;
+	public NetworkServer network;
+	
+	public void Start()
+	{
+		network = GameObject.Find ("NetworkManager").GetComponent<NetworkServer>();
+	}
 }
 
 public abstract class GamemodeScript : PrimitiveScript
@@ -43,7 +49,7 @@ public abstract class GamemodeScript : PrimitiveScript
 	public GameObject instantiateCharacter(Vector3 position, Quaternion rotation, string controllerScript)
 	{
 		//Instantiate the character at the position and rotation
-		var character = NetworkServer.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
+		var character = network.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
 		//(GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
 		
 		//Set up team and assign an id
@@ -52,7 +58,7 @@ public abstract class GamemodeScript : PrimitiveScript
 		
 		character.setData ("NPC");
 		
-		if(!NetworkServer.isMultiplayer)
+		if(!network.isMultiplayer)
 		{
 			//Attach the locomotion script to the character.
 			var script = (ILocomotionScript)character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
@@ -65,7 +71,7 @@ public abstract class GamemodeScript : PrimitiveScript
 		}
 		else
 		{
-			NetworkServer.networkView.RPC("testRPC", RPCMode.Others, "hello my name is ben and i like RPCs");
+			network.networkView.RPC("testRPC", RPCMode.All, "hello my name is ben and i like RPCs");
 			
 			/*
 			//Attach the locomotion script to the character.

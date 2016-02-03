@@ -20,15 +20,17 @@ public class NetworkServer : MonoBehaviour
 	public static List<NetworkPlayer> players = new List<NetworkPlayer>();
 	public static List<GameObject> characters = new List<GameObject>();
 	
+	public void Start()
+	{
+		networkView = new NetworkView();
+	}
+	
 	public static void connect(string ip, int port, string password)
 	{
 		//A server cannot connect to stuff..
 		if(!startTypeClient)
 			return;
 			
-		//Get the attached network view for RPCs
-		networkView = new NetworkView();
-		
 		//Attempt to connect to the server
 		Network.Connect(ip, port, password);
 	}
@@ -66,9 +68,6 @@ public class NetworkServer : MonoBehaviour
 		
 		//And finally initialize the server
 		Network.InitializeServer(NUMBER_OF_CONNECTIONS, port);
-		
-		//Get network view for script
-		networkView = new NetworkView();
 		
 		Debug.Log ("Initialized the server... " + Network.isServer);
 	} 

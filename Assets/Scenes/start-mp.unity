@@ -493,7 +493,6 @@ MonoBehaviour:
   startTypeClient: 0
   networkView: {fileID: 0}
   objects: []
-  characters: []
 --- !u!4 &185310630
 Transform:
   m_ObjectHideFlags: 0

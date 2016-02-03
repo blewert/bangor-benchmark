@@ -18,7 +18,7 @@ public class NetworkServer : MonoBehaviour
 	//List of objects
 	public List<GameObject> objects = new List<GameObject>();
 	public List<NetworkPlayer> players = new List<NetworkPlayer>();
-	public List<GameObject> characters = new List<GameObject>();
+	public Dictionary<uint, GameObject> characters = new Dictionary<uint, GameObject>();
 	
 	public void Start()
 	{
@@ -79,6 +79,23 @@ public class NetworkServer : MonoBehaviour
 		Debug.Log ("RPC ... " + message);
 	}
 	
+	[RPC]
+	public void addAIScriptsToCharacter(GameObject character, CharacterInstance instance, string controllerScript)
+	{
+		var characterId = character.getID ();
+		
+		var foundCharacter = characters[characterId];
+		
+		//Attach scripts
+		var script = (ILocomotionScript)character.AddComponent(System.Type.GetType(instance.primitive.locomotionScriptPath));
+		
+		//Pass in instance settings for locomotion (to get values)
+		script.instance = instance;
+		
+		//Finally, add the controller script
+		character.AddComponent(System.Type.GetType (controllerScript));
+	}
+	
 	public GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
 	{
 		//Creates an object locally or on the network.
@@ -91,7 +108,7 @@ public class NetworkServer : MonoBehaviour
 		else
 			addedObject = (GameObject)Instantiate(prefab, position, rotation);
 		
-		characters.Add (addedObject);
+		characters.Add (addedObject.getID (), addedObject);
 		
 		return addedObject;
 	}

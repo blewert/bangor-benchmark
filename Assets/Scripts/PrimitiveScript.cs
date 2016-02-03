@@ -71,10 +71,13 @@ public abstract class GamemodeScript : PrimitiveScript
 		}
 		else
 		{
-			Debug.Log ("network = " + network);
-			Debug.Log ("networkView = " + network.networkView);
+			//The server will run this only.
+			network.networkView.RPC ("addAIScriptsToCharacter", RPCMode.Others, characterInstance, controllerScript);
 			
-			network.networkView.RPC("testRPC", RPCMode.All, "hello my name is ben and i like RPCs");
+			//Debug.Log ("network = " + network);
+			//Debug.Log ("networkView = " + network.networkView);
+			
+			//network.networkView.RPC("testRPC", RPCMode.All, "hello my name is ben and i like RPCs");
 			
 			/*
 			//Attach the locomotion script to the character.

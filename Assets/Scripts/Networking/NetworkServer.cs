@@ -13,7 +13,7 @@ public class NetworkServer : MonoBehaviour
 	public static bool startTypeClient = false;
 	
 	//Shared network view for this player/server/whatever
-	private static NetworkView networkView;
+	public static NetworkView networkView;
 	
 	//List of objects
 	public static List<GameObject> objects = new List<GameObject>();
@@ -72,6 +72,12 @@ public class NetworkServer : MonoBehaviour
 		
 		Debug.Log ("Initialized the server... " + Network.isServer);
 	} 
+	
+	[RPC]
+	public static void testRPC(string message)
+	{
+		Debug.Log ("RPC ... " + message);
+	}
 	
 	public static GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
 	{

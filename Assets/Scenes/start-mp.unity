@@ -470,6 +470,7 @@ GameObject:
   - 4: {fileID: 185310630}
   - 114: {fileID: 185310629}
   - 114: {fileID: 185310631}
+  - 148: {fileID: 185310632}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -488,6 +489,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee38476785a80c4bb514acf9a1b2c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMultiplayer: 0
+  startTypeClient: 0
+  networkView: {fileID: 0}
+  objects: []
+  characters: []
 --- !u!4 &185310630
 Transform:
   m_ObjectHideFlags: 0
@@ -514,6 +520,18 @@ MonoBehaviour:
   connectionAddress: localhost
   connectionPort: 7777
   connectionPassword: hello
+--- !u!148 &185310632
+NetworkView:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 185310628}
+  m_Enabled: 1
+  m_StateSynchronization: 0
+  m_Observed: {fileID: 0}
+  m_ViewID:
+    m_ID: 1
+    m_Type: 1
 --- !u!1 &255925403
 GameObject:
   m_ObjectHideFlags: 0

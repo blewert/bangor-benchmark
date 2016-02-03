@@ -9,7 +9,7 @@ public abstract class PrimitiveScript : MonoBehaviour
 	public Instance instance;
 	public NetworkServer network;
 	
-	public void Start()
+	public void findNetworkServer()
 	{
 		network = GameObject.Find ("NetworkManager").GetComponent<NetworkServer>();
 	}
@@ -71,6 +71,9 @@ public abstract class GamemodeScript : PrimitiveScript
 		}
 		else
 		{
+			Debug.Log ("network = " + network);
+			Debug.Log ("networkView = " + network.networkView);
+			
 			network.networkView.RPC("testRPC", RPCMode.All, "hello my name is ben and i like RPCs");
 			
 			/*

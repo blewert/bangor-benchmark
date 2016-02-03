@@ -15,6 +15,8 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 	
 	void Start () 
 	{
+		findNetworkServer();
+		
 		var spawnHuman  = (bool)SettingParser.getSetting(instance, "spawnHuman");
 		var playerCount = (int)SettingParser.getSetting (instance, "playerCount");
 		var flagSpawnRadius = (float)SettingParser.getSetting (instance, "flagSpawnRadius");

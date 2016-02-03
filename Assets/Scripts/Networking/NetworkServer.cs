@@ -22,7 +22,8 @@ public class NetworkServer : MonoBehaviour
 	
 	public void Start()
 	{
-		networkView = new NetworkView();
+		networkView = GetComponent<NetworkView>();
+		Debug.Log ("Network view created: " + networkView);	
 	}
 	
 	public void connect(string ip, int port, string password)

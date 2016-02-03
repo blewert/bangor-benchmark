@@ -18,6 +18,8 @@ public class ForestPrimitive : PrimitiveScript
 	
 	public void Start () 
 	{
+		findNetworkServer();
+		
 		//Two settings:
 		// - Terrain to instantiate at Vector3.zero
 		// - forestDensity: how much trees are we to spawn?

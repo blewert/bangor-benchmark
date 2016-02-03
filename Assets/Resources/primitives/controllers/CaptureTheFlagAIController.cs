@@ -26,6 +26,8 @@ public class CaptureTheFlagAIController : MonoBehaviour
 	private Vector3 helpPosition;
 	private bool underFire = false;
 	
+	private float targetRotation = default(float);
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -44,8 +46,27 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		}
 		
 		basePos = myFlag.transform.position;
+		
+		targetRotation = transform.rotation.eulerAngles.y;
+		StartCoroutine("updateHeading");
 	}
-
+	
+	IEnumerator updateHeading()
+	{
+		while(true)
+		{	
+			float oldHeading = transform.rotation.eulerAngles.y;
+			float newHeading = oldHeading + UnityEngine.Random.Range (-80f, 80f); 
+			
+			targetRotation = newHeading;
+			
+			if(gameObject.getID () == 2)
+				DebugLogger.Log (oldHeading + " ...  " + newHeading + " : " + gameObject.getID());
+			
+			yield return new WaitForSeconds(3f);
+		}
+	}
+	
 	// Update is called once per frame
 	void Update () 
 	{
@@ -60,6 +81,11 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		//Are they inside a base? If so, give health
 		if(isInsideBase())
 			npc.giveHealth(2f);
+		
+		//If they're outside of the terrain boundaries, move them back to the base
+		if(!inTerrainBounds(transform.position))
+			fleeToBase();
+		
 		
 		//Check for obstacles:
 		if(castdar.GetSeen() > 0)
@@ -123,6 +149,17 @@ public class CaptureTheFlagAIController : MonoBehaviour
 	
 	private void wander()
 	{
+		if(!inTerrainBounds(transform.position))
+		{
+			fleeToBase();
+			return;
+		}
+		
+		if(transform.rotation.eulerAngles.y > targetRotation)
+			npc.turnLeft();
+		else
+			npc.turnRight ();
+		
 		npc.moveForward();
 	}
 	
@@ -223,5 +260,10 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		var localPosition = transform.InverseTransformPoint(position);
 		
 		return Math.Sign (localPosition.x);
+	}
+	
+	public bool inTerrainBounds(Vector3 position)
+	{
+		return SettingParser.getTerrainBoundaries(Terrain.activeTerrain).Contains(position);
 	}
 }

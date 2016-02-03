@@ -26,6 +26,30 @@
 	</instance>
 	
 	<instance>
+		<name>CTF (12 player AI)</name>
+		<primitive>Capture the Flag</primitive>
+		
+		<settings>
+			<setting>
+				<name>spawnHuman</name>
+				<value>false</value>
+			</setting>
+			<setting>
+				<name>playerCount</name>
+				<value>12</value>
+			</setting>
+			<setting>
+				<name>flagSpawnRadius</name>
+				<value>15</value>
+			</setting>
+			<setting>
+				<name>flagPrefab</name>
+				<value>prefabs/flag</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
 		<name>CTF (4 player Human)</name>
 		<primitive>Capture the Flag</primitive>
 		

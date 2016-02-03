@@ -34,10 +34,18 @@ public class Bootup : MonoBehaviour
 	private GamemodeInstance chosenGamemodeInstance;
 	private CharacterInstance chosenCharacterInstance;
 	
+	[Header("Multiplayer settings")]
+	public bool isMultiplayer;
+	public GameObject multiplayerMenu;
+	public LobbyMenuHandler lobbyMenu;
+	
 	
 	// Use this for initialization
 	void Start () 
 	{
+		//Set up multiplayer flag for broadcasting to other scripts
+		NetworkServer.isMultiplayer = isMultiplayer;
+		
 		//Get all environment primitives and instances
 		environmentPrimitives = PrimitivesParser.getEnvironmentPrimitives();
 		environmentInstances  = PrimitivesParser.getEnvironmentInstances();
@@ -59,6 +67,7 @@ public class Bootup : MonoBehaviour
 			
 		//If so, get it's menu handler script (for the UI changing functionality)
 		menuComponent = menu.GetComponent<MenuHandler>();
+		lobbyMenu = multiplayerMenu.GetComponent<LobbyMenuHandler>();
 		
 		//Does this exist?
 		if(menuComponent == null)
@@ -72,10 +81,36 @@ public class Bootup : MonoBehaviour
 		menuComponent.registerNavigationButtonHandlers(this);
 		menuComponent.onViewUpdate += onViewUpdate;
 		
+		//Register MP ui events
+		lobbyMenu.hookStartButton(this);
+		
 		//Add the initial primitive buttons (initially the environment buttons)
 		menuComponent.addPrimitivesButtons(environmentPrimitives.Select(x => x.name), this);
 		
 	} 
+	
+	public void onMultiplayerStartButtonClick()
+	{
+		//Find primitive associated with chosen environment instance. Then, add the environment script onto the observer object.
+		var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
+		var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));
+		
+		//Pass instance settings into the environment primitive so it can do its stuff.
+		environmentScript.instance = chosenEnvironmentInstance;
+		
+		//Find gamemode associated with chosen gamemode instance. Then, add the gamemode script onto the observer object too.
+		var gamemodePrimitive = gamemodePrimitives.Where (x => chosenGamemodeInstance.primitiveName == x.name).FirstOrDefault();
+		var gamemodeScript = (GamemodeScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
+		
+		//Pass instance settings so it can do its stuff.
+		gamemodeScript.instance = chosenGamemodeInstance;
+		
+		//Pass in character and environment instance so the gamemode knows what to work with.
+		gamemodeScript.characterInstance = chosenCharacterInstance;
+		gamemodeScript.environmentInstance = chosenEnvironmentInstance;
+		
+		menu.SetActive(false);
+	}
 	
 	/// <summary>
 	/// Callback when a primitives button is clicked in the menu. This could be an environment primitive button, a gamemode primitive button or a character primitive button.
@@ -161,25 +196,58 @@ public class Bootup : MonoBehaviour
 			return;
 		}
 		
-		//Find primitive associated with chosen environment instance. Then, add the environment script onto the observer object.
-		var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
-		var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));
+		if(!isMultiplayer)
+		{
+			//Find primitive associated with chosen environment instance. Then, add the environment script onto the observer object.
+			var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
+			var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));
+			
+			//Pass instance settings into the environment primitive so it can do its stuff.
+			environmentScript.instance = chosenEnvironmentInstance;
+			
+			//Find gamemode associated with chosen gamemode instance. Then, add the gamemode script onto the observer object too.
+			var gamemodePrimitive = gamemodePrimitives.Where (x => chosenGamemodeInstance.primitiveName == x.name).FirstOrDefault();
+			var gamemodeScript = (GamemodeScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
+			
+			//Pass instance settings so it can do its stuff.
+			gamemodeScript.instance = chosenGamemodeInstance;
+			
+			//Pass in character and environment instance so the gamemode knows what to work with.
+			gamemodeScript.characterInstance = chosenCharacterInstance;
+			gamemodeScript.environmentInstance = chosenEnvironmentInstance;
+			
+			menu.SetActive(false);
+		}
+		else
+		{
+			//Hide menu, show mp menu
+			menu.SetActive (false);
+			multiplayerMenu.SetActive(true);
+			
+			//Update GUI a bit
+			lobbyMenu.updateLobbyGUI();
+			
+			//Start server
+			NetworkServer.start (28000, "hello");
+			
+			//
+		}
+	}
+	
+	void OnPlayerConnected(NetworkPlayer player) 
+	{
+		if(!isMultiplayer)
+			return;
 		
-		//Pass instance settings into the environment primitive so it can do its stuff.
-		environmentScript.instance = chosenEnvironmentInstance;
+		lobbyMenu.addConnection(player);
+	}
+	
+	void OnPlayerDisconnected(NetworkPlayer player) 
+	{
+		if(!isMultiplayer)
+			return;
 		
-		//Find gamemode associated with chosen gamemode instance. Then, add the gamemode script onto the observer object too.
-		var gamemodePrimitive = gamemodePrimitives.Where (x => chosenGamemodeInstance.primitiveName == x.name).FirstOrDefault();
-		var gamemodeScript = (GamemodeScript)gameObject.AddComponent(Type.GetType(gamemodePrimitive.scriptPath));
-		
-		//Pass instance settings so it can do its stuff.
-		gamemodeScript.instance = chosenGamemodeInstance;
-		
-		//Pass in character and environment instance so the gamemode knows what to work with.
-		gamemodeScript.characterInstance = chosenCharacterInstance;
-		gamemodeScript.environmentInstance = chosenEnvironmentInstance;
-		
-		menu.SetActive(false);
+		lobbyMenu.removeConnection(player);
 	}
 	
 	/// <summary>

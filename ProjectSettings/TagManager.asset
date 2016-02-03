@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Origin
   - Prop
+  - Boundaries
   layers:
   - Default
   - TransparentFX

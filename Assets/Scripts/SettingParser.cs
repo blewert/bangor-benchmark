@@ -61,6 +61,17 @@ class SettingParser
 		return null;
 	}
 	
+	public static Bounds getTerrainBoundaries(Terrain terrain)
+	{
+		foreach(Transform ter in terrain.transform)
+		{
+			if(ter.tag.Equals("Boundaries"))
+				return ter.GetComponent<Collider>().bounds;
+		}
+		
+		return default(Bounds);
+	}
+	
 	public static Vector3 getTerrainOriginPoint(Terrain terrain)
 	{
 		foreach(Transform ter in terrain.transform)

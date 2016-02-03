@@ -26,8 +26,8 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		var randomOffset = randomXZAroundPoint(originPoint, 3f);
 		
 		//Spawn red and blue team	
-		blueTeam = spawnTeam (() => randomXZAroundPoint(originPoint, 5f), playerCount / 2, characterInstance.controllerScript, "Blue");
-		redTeam  = spawnTeam (() => randomXZAroundPoint(originPoint, 5f), playerCount / 2, characterInstance.controllerScript, "Red");
+		blueTeam = spawnTeam (() => randomXZAroundPoint(originPoint, 30f), playerCount / 2, characterInstance.controllerScript, "Blue");
+		redTeam  = spawnTeam (() => randomXZAroundPoint(originPoint, 30f), playerCount / 2, characterInstance.controllerScript, "Red");
 		
 		var script = gameObject.AddComponent<CameraFollowCharacter>();
 		
@@ -74,8 +74,8 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 		secondPosition.z += Mathf.Sin(secondRandomAngle * Mathf.Deg2Rad) * radius;
 		secondPosition.y  = Terrain.activeTerrain.SampleHeight(secondPosition);
 		
-		var obj1 = Instantiate (flagPrefab, firstPosition, randomYRotation()) as GameObject;
-		var obj2 = Instantiate (flagPrefab, secondPosition, randomYRotation()) as GameObject;
+		var obj1 = NetworkServer.createObject(flagPrefab, firstPosition, randomYRotation());
+		var obj2 = NetworkServer.createObject(flagPrefab, secondPosition, randomYRotation());
 		
 		obj1.setTeam ("Red");
 		obj2.setTeam ("Blue");

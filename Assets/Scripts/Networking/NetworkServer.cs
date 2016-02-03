@@ -18,6 +18,7 @@ public class NetworkServer : MonoBehaviour
 	//List of objects
 	public static List<GameObject> objects = new List<GameObject>();
 	public static List<NetworkPlayer> players = new List<NetworkPlayer>();
+	public static List<GameObject> characters = new List<GameObject>();
 	
 	public static void connect(string ip, int port, string password)
 	{
@@ -68,8 +69,26 @@ public class NetworkServer : MonoBehaviour
 		
 		//Get network view for script
 		networkView = new NetworkView();
+		
+		Debug.Log ("Initialized the server... " + Network.isServer);
 	} 
 	
+	public static GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
+	{
+		//Creates an object locally or on the network.
+		//..
+		
+		GameObject addedObject = null;
+		
+		if(isMultiplayer)
+			addedObject = Network.Instantiate(prefab, position, rotation, 0) as GameObject;
+		else
+			addedObject = (GameObject)Instantiate(prefab, position, rotation);
+		
+		characters.Add (addedObject);
+		
+		return addedObject;
+	}
 	
 	public static GameObject createObject(Object prefab, Vector3 position, Quaternion rotation)
 	{

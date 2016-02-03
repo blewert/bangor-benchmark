@@ -43,16 +43,36 @@ public abstract class GamemodeScript : PrimitiveScript
 	public GameObject instantiateCharacter(Vector3 position, Quaternion rotation, string controllerScript)
 	{
 		//Instantiate the character at the position and rotation
-		var character = (GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
+		var character = NetworkServer.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
+		//(GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
 		
-		//Attach the locomotion script to the character.
-		var script = (ILocomotionScript)character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
-		
-		//Pass in instance settings for locomotion (to get values)
-		script.instance = characterInstance;
-		
-		//Finally, add the controller script
-		character.AddComponent(Type.GetType (controllerScript));
+		if(!NetworkServer.isMultiplayer)
+		{
+			//Attach the locomotion script to the character.
+			var script = (ILocomotionScript)character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
+			
+			//Pass in instance settings for locomotion (to get values)
+			script.instance = characterInstance;
+			
+			//Finally, add the controller script
+			character.AddComponent(Type.GetType (controllerScript));
+		}
+		else
+		{
+			if(Network.isClient)
+			{
+				//Attach the locomotion script to the character.
+				var script = (ILocomotionScript)character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
+				
+				//Pass in instance settings for locomotion (to get values)
+				script.instance = characterInstance;
+				
+				//Finally, add the controller script
+				character.AddComponent(Type.GetType (controllerScript));
+				
+				//Hook callback for movement so we can send an RPC to everyone else.
+			}	
+		}
 				
 		//Set up team and assign an id
 		character.setTeam("Default");

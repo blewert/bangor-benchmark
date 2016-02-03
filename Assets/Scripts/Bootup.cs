@@ -228,7 +228,7 @@ public class Bootup : MonoBehaviour
 			lobbyMenu.updateLobbyGUI();
 			
 			//Start server
-			NetworkServer.start (28000, "hello");
+			NetworkServer.start (7777, "hello");
 			
 			//
 		}

@@ -87,13 +87,20 @@ public class NetworkServer : MonoBehaviour
 		var foundCharacter = characters[characterId];
 		
 		//Attach scripts
-		var script = (ILocomotionScript)character.AddComponent(System.Type.GetType(instance.primitive.locomotionScriptPath));
+		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(instance.primitive.locomotionScriptPath));
 		
 		//Pass in instance settings for locomotion (to get values)
 		script.instance = instance;
 		
 		//Finally, add the controller script
 		character.AddComponent(System.Type.GetType (controllerScript));
+	}
+	
+	[RPC]
+	public void addCharacter(uint id, GameObject value)
+	{
+		characters[id] = value;
+		Debug.Log ("Character " + id + " was added for " + value.name);
 	}
 	
 	public GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
@@ -108,7 +115,7 @@ public class NetworkServer : MonoBehaviour
 		else
 			addedObject = (GameObject)Instantiate(prefab, position, rotation);
 		
-		characters.Add (addedObject.getID (), addedObject);
+		//characters.Add (addedObject.getID (), addedObject);
 		
 		return addedObject;
 	}

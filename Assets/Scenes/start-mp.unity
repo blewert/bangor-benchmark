@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu: {fileID: 2092743511}
-  isMultiplayer: 0
+  isMultiplayer: 1
   multiplayerMenu: {fileID: 407471460}
   lobbyMenu: {fileID: 0}
 --- !u!4 &162479048

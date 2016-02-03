@@ -50,15 +50,8 @@ public abstract class GamemodeScript : PrimitiveScript
 	{
 		//Instantiate the character at the position and rotation
 		var character = network.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
-		network.networkView.RPC ("addCharacter", RPCMode.All, character.getID(), character);
 		 
 		//(GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
-		
-		//Set up team and assign an id
-		character.setTeam("Default");
-		character.assignID();
-		
-		character.setData ("NPC");
 		
 		if(!network.isMultiplayer)
 		{
@@ -73,8 +66,10 @@ public abstract class GamemodeScript : PrimitiveScript
 		}
 		else
 		{
+			
 			//The server will run this only.
-			//network.networkView.RPC ("addAIScriptsToCharacter", RPCMode.Others, characterInstance, controllerScript);
+			network.networkView.RPC ("addAIScriptsToCharacter", RPCMode.Others, 
+				(int)character.getID (), characterInstance, characterInstance.primitive.locomotionScriptPath,  controllerScript);
 			
 			//Debug.Log ("network = " + network);
 			//Debug.Log ("networkView = " + network.networkView);

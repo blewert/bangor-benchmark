@@ -18,7 +18,7 @@ public class NetworkServer : MonoBehaviour
 	//List of objects
 	public List<GameObject> objects = new List<GameObject>();
 	public List<NetworkPlayer> players = new List<NetworkPlayer>();
-	public Dictionary<uint, GameObject> characters = new Dictionary<uint, GameObject>();
+	public Dictionary<int, GameObject> characters = new Dictionary<int, GameObject>();
 	
 	public void Start()
 	{
@@ -80,27 +80,18 @@ public class NetworkServer : MonoBehaviour
 	}
 	
 	[RPC]
-	public void addAIScriptsToCharacter(GameObject character, CharacterInstance instance, string controllerScript)
+	public void addAIScriptsToCharacter(int characterId, CharacterInstance instance, string scriptPath, string controllerScript)
 	{
-		var characterId = character.getID ();
-		
 		var foundCharacter = characters[characterId];
 		
 		//Attach scripts
-		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(instance.primitive.locomotionScriptPath));
+		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(scriptPath));
 		
 		//Pass in instance settings for locomotion (to get values)
 		script.instance = instance;
 		
 		//Finally, add the controller script
-		character.AddComponent(System.Type.GetType (controllerScript));
-	}
-	
-	[RPC]
-	public void addCharacter(uint id, GameObject value)
-	{
-		characters[id] = value;
-		Debug.Log ("Character " + id + " was added for " + value.name);
+		foundCharacter.AddComponent(System.Type.GetType (controllerScript));
 	}
 	
 	public GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
@@ -114,12 +105,14 @@ public class NetworkServer : MonoBehaviour
 			addedObject = Network.Instantiate(prefab, position, rotation, 0) as GameObject;
 		else
 			addedObject = (GameObject)Instantiate(prefab, position, rotation);
-		
-		//characters.Add (addedObject.getID (), addedObject);
-		
+
+		addedObject.setTeam("Default");
+		addedObject.assignID();
+		addedObject.setData ("NPC");	
+
 		return addedObject;
 	}
-	
+
 	public GameObject createObject(Object prefab, Vector3 position, Quaternion rotation)
 	{
 		//Creates an object locally or on the network.

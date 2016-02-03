@@ -44,6 +44,7 @@ public class CharacterInstancesParser
 	}
 }
 
+[System.Serializable]
 public class CharacterInstance : Instance
 {
 	public string controllerScript;

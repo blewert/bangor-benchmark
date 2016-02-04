@@ -24,7 +24,7 @@ public class NetworkServer : MonoBehaviour
 	private float nextNetworkUpdateTime = 0.0f;
 	public float networkUpdateIntervalMax = 0.1f;
 		
-	public static CharacterInstance passedInstance;
+	public GameObject lastCharacter;
 	
 	public void Start()
 	{
@@ -106,36 +106,39 @@ public class NetworkServer : MonoBehaviour
 	}
 	
 	[RPC]
-	public void addAIScriptsToCharacter(int characterId, string locomotionPath, string controllerScript)
+	public void createSyncedCharacter(Object prefab, Vector3 position, Quaternion rotation)
 	{
-		var foundCharacter = characters[characterId];
+		GameObject addedObject = null;
 		
-		//Attach scripts
-		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(locomotionPath));
-			
-		script.instance = passedInstance;
+		addedObject = (GameObject)Instantiate(prefab, position, rotation);
 		
-		//Finally, add the controller script
-		foundCharacter.AddComponent(System.Type.GetType (controllerScript));
+		addedObject.setTeam("Default");
+		addedObject.assignID();
+		addedObject.setData ("NPC");	
+		
+		lastCharacter = addedObject;
 	}
 	
-	public GameObject createCharacter(Object prefab, Vector3 position, Quaternion rotation)
+	public void createCharacter(Object prefab, Vector3 position, Quaternion rotation)
 	{
-		//Creates an object locally or on the network.
+		 //Creates an object locally or on the network.
 		//..
+	
+		if(isMultiplayer)	
+		{
+			networkView.RPC ("createdSyncedCharacter", RPCMode.All, prefab, position, rotation);
+			return;
+		}
 		
 		GameObject addedObject = null;
 		
-		if(isMultiplayer)
-			addedObject = Network.Instantiate(prefab, position, rotation, 0) as GameObject;
-		else
-			addedObject = (GameObject)Instantiate(prefab, position, rotation);
+		addedObject = (GameObject)Instantiate(prefab, position, rotation);
 
 		addedObject.setTeam("Default");
 		addedObject.assignID();
 		addedObject.setData ("NPC");	
 
-		return addedObject;
+		lastCharacter = addedObject;
 	}
 
 	public GameObject createObject(Object prefab, Vector3 position, Quaternion rotation)

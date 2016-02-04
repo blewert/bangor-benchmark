@@ -49,8 +49,12 @@ public abstract class GamemodeScript : PrimitiveScript
 	public GameObject instantiateCharacter(Vector3 position, Quaternion rotation, string controllerScript)
 	{
 		//Instantiate the character at the position and rotation
-		var character = network.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
+		network.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
+		var character = network.lastCharacter;
+		
+		//network.networkView.RPC ("createCharacter", RPCMode.All, Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
 		 
+		//Ran by the server only
 		//(GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
 		
 		if(!network.isMultiplayer)

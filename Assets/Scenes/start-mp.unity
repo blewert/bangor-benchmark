@@ -494,6 +494,7 @@ MonoBehaviour:
   networkView: {fileID: 0}
   objects: []
   networkUpdateIntervalMax: .100000001
+  lastCharacter: {fileID: 0}
 --- !u!4 &185310630
 Transform:
   m_ObjectHideFlags: 0

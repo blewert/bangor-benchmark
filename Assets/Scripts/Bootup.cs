@@ -113,7 +113,8 @@ public class Bootup : MonoBehaviour
 		gamemodeScript.characterInstance = chosenCharacterInstance;
 		gamemodeScript.environmentInstance = chosenEnvironmentInstance;
 		
-		menu.SetActive(false);
+		//Hide menu
+		multiplayerMenu.SetActive(false);
 	}
 	
 	/// <summary>

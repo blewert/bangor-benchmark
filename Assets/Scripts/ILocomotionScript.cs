@@ -15,7 +15,8 @@ public abstract class ILocomotionScript : MonoBehaviour
 	
 	public void updatePosition()
 	{
-		onUpdate.Invoke ((int)gameObject.getID(), transform.position, transform.rotation);
+		if(onUpdate != null)
+			onUpdate.Invoke ((int)gameObject.getID(), transform.position, transform.rotation);
 	}
 	
 	public float health = 100.0f;

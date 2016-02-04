@@ -77,7 +77,18 @@ public class NetworkServer : MonoBehaviour
 	
 	public void onNPCUpdate(int id, Vector3 newPosition, Quaternion newRotation)
 	{
-		Debug.Log ("update: " + id + ", " + newPosition + ", " + newRotation);
+		networkView.RPC ("onClientNPCUpdate", RPCMode.Others, id, newPosition, newRotation);
+	}
+	
+	[RPC]
+	public void onClientNPCUpdate(int id, Vector3 newPosition, Quaternion newRotation)
+	{
+		var foundCharacter = characters[id];
+		
+		Debug.Log ("char null: " + characters == null);
+		
+		foundCharacter.transform.position = newPosition;
+		foundCharacter.transform.rotation = newRotation;
 	}
 	
 	[RPC]

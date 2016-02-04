@@ -25,6 +25,7 @@ public class MenuHandler : MonoBehaviour
 	[Header("Navigation buttons")]
 	public Button leftButton;
 	public Button rightButton;
+	public Toggle multiplayerToggle;
 	
 	[Header("Button options")]
 	public Button buttonPrefab;
@@ -156,6 +157,12 @@ public class MenuHandler : MonoBehaviour
 		startButton.onClick.AddListener(delegate 
 		{
 			referrer.onStartButtonClick();
+		});
+		
+		//Toggle button
+		multiplayerToggle.onValueChanged.AddListener(delegate(bool value)
+		{
+			GameObject.Find("NetworkManager").GetComponent<NetworkServer>().isMultiplayer = value;
 		});
 	}
 	

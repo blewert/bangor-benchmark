@@ -200,7 +200,7 @@ public class Bootup : MonoBehaviour
 			return;
 		}
 		
-		if(!isMultiplayer)
+		if(!network.isMultiplayer)
 		{
 			//Find primitive associated with chosen environment instance. Then, add the environment script onto the observer object.
 			var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();

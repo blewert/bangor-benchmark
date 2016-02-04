@@ -80,12 +80,13 @@ public class NetworkServer : MonoBehaviour
 	}
 	
 	[RPC]
-	public void addAIScriptsToCharacter(int characterId, CharacterInstance instance, string scriptPath, string controllerScript)
+	public void addAIScriptsToCharacter(int characterId, string serializedInstance, string controllerScript)
 	{
+		CharacterInstance instance = ExtensionMethods.DeserializeObject<CharacterInstance>(serializedInstance) as CharacterInstance;
 		var foundCharacter = characters[characterId];
 		
 		//Attach scripts
-		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(scriptPath));
+		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(instance.primitive.locomotionScriptPath));
 		
 		//Pass in instance settings for locomotion (to get values)
 		script.instance = instance;

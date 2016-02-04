@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
 
 /// <summary>
 /// Extension methods provided for usage with the bangor-benchmark project.
@@ -71,6 +74,24 @@ public static class ExtensionMethods
 	public static T randomElement<T>(this List<T> list)
 	{
 		return list[UnityEngine.Random.Range (0, list.Count)];
+	}
+	
+	public static string SerializeObject<T>(this T toSerialize)
+	{
+		XmlSerializer xmlSerializer = new XmlSerializer(toSerialize.GetType());
+		
+		using(StringWriter textWriter = new StringWriter())
+		{
+			xmlSerializer.Serialize(textWriter, toSerialize);
+			return textWriter.ToString();
+		}
+	}
+	
+	public static object DeserializeObject<T>(this string toDeserialize)
+	{
+		XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+		StringReader textReader = new StringReader(toDeserialize);
+		return xmlSerializer.Deserialize(textReader);
 	}
 }
 

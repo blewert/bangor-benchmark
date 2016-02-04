@@ -66,10 +66,11 @@ public abstract class GamemodeScript : PrimitiveScript
 		}
 		else
 		{
+			Debug.Log (ExtensionMethods.SerializeObject<CharacterInstance>(characterInstance));
 			
 			//The server will run this only.
 			network.networkView.RPC ("addAIScriptsToCharacter", RPCMode.Others, 
-				(int)character.getID (), characterInstance, characterInstance.primitive.locomotionScriptPath,  controllerScript);
+				(int)character.getID (), ExtensionMethods.SerializeObject<CharacterInstance>(characterInstance), controllerScript);
 			
 			//Debug.Log ("network = " + network);
 			//Debug.Log ("networkView = " + network.networkView);

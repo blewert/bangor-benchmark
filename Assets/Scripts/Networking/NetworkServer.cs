@@ -106,37 +106,41 @@ public class NetworkServer : MonoBehaviour
 	}
 	
 	[RPC]
-	public void createSyncedCharacter(Object prefab, Vector3 position, Quaternion rotation)
+	public void createSyncedCharacter(string prefabPath, Vector3 position, Quaternion rotation)
 	{
 		GameObject addedObject = null;
 		
-		addedObject = (GameObject)Instantiate(prefab, position, rotation);
+		addedObject = (GameObject)Instantiate(Resources.Load (prefabPath), position, rotation);
 		
 		addedObject.setTeam("Default");
 		addedObject.assignID();
 		addedObject.setData ("NPC");	
 		
+		characters.Add((int)addedObject.getID(), addedObject);
+		
 		lastCharacter = addedObject;
 	}
 	
-	public void createCharacter(Object prefab, Vector3 position, Quaternion rotation)
+	public void createCharacter(string prefabPath, Vector3 position, Quaternion rotation)
 	{
 		 //Creates an object locally or on the network.
 		//..
 	
 		if(isMultiplayer)	
 		{
-			networkView.RPC ("createdSyncedCharacter", RPCMode.All, prefab, position, rotation);
+			networkView.RPC ("createSyncedCharacter", RPCMode.All, prefabPath, position, rotation);
 			return;
 		}
 		
 		GameObject addedObject = null;
 		
-		addedObject = (GameObject)Instantiate(prefab, position, rotation);
+		addedObject = (GameObject)Instantiate(Resources.Load (prefabPath), position, rotation);
 
 		addedObject.setTeam("Default");
 		addedObject.assignID();
 		addedObject.setData ("NPC");	
+		
+		characters.Add((int)addedObject.getID(), addedObject);
 
 		lastCharacter = addedObject;
 	}

@@ -49,7 +49,7 @@ public abstract class GamemodeScript : PrimitiveScript
 	public GameObject instantiateCharacter(Vector3 position, Quaternion rotation, string controllerScript)
 	{
 		//Instantiate the character at the position and rotation
-		network.createCharacter(Resources.Load (characterInstance.primitive.prefabPath), position, rotation); 
+		network.createCharacter(characterInstance.primitive.prefabPath, position, rotation); 
 		var character = network.lastCharacter;
 		
 		//network.networkView.RPC ("createCharacter", RPCMode.All, Resources.Load (characterInstance.primitive.prefabPath), position, rotation);

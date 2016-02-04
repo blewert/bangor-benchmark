@@ -93,8 +93,6 @@ public class NetworkServer : MonoBehaviour
 	{
 		var foundCharacter = characters[id];
 		
-		Debug.Log ("char null: " + characters == null);
-		
 		foundCharacter.transform.position = newPosition;
 		foundCharacter.transform.rotation = newRotation;
 	}

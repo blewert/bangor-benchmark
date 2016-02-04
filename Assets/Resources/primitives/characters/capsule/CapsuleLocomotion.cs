@@ -30,24 +30,32 @@ public class CapsuleLocomotion : ILocomotionScript
 	
 	public override void turnLeft ()
 	{
+		updatePosition ();
+		
 		//Turn left
 		applyTurningSpeed(-turnSpeed);
 	}
 
 	public override void turnRight ()
 	{
+		updatePosition ();
+		
 		//Turn right
 		applyTurningSpeed(turnSpeed);
 	}
 
 	public override void moveForward ()
 	{
+		updatePosition ();
+		
 		//Move forward
 		characterController.SimpleMove(transform.forward * speed);
 	}
 
 	public override void moveBackward ()
 	{
+		updatePosition ();
+		
 		//Move backward
 		characterController.SimpleMove(-transform.forward * speed); 
 	}

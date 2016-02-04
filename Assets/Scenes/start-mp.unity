@@ -517,7 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionAddress: localhost
-  connectionPort: 7777
+  connectionPort: 25000
   connectionPassword: hello
 --- !u!148 &185310632
 NetworkView:

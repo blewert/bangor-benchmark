@@ -50,6 +50,12 @@ public class CharacterInstance : Instance
 	public string controllerScript;
 	public CharacterPrimitive primitive;
 	
+	public CharacterInstance()
+	{
+		controllerScript = "";
+		primitive = null;
+	}
+	
 	public CharacterInstance(string name, string primitiveName, string controllerScript, Dictionary<string, string> settings) : base(name, primitiveName, settings)
 	{
 		this.controllerScript = controllerScript;

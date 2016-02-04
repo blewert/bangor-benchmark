@@ -232,7 +232,7 @@ public class Bootup : MonoBehaviour
 			lobbyMenu.updateLobbyGUI();
 			
 			//Start server
-			network.start (7777, "hello");
+			network.start (28000, "hello");
 			
 			//
 		}

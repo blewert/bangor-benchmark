@@ -8,6 +8,10 @@ public class Instance
 	public string primitiveName;
 	public Dictionary<string, string> settings;
 	
+	public Instance()
+	{
+	}
+	
 	public Instance(string name, string primitiveName, Dictionary<string, string> settings)
 	{
 		this.name = name;

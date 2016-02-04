@@ -66,18 +66,6 @@ public abstract class GamemodeScript : PrimitiveScript
 		}
 		else
 		{
-			Debug.Log (ExtensionMethods.SerializeObject<CharacterInstance>(characterInstance));
-			
-			//The server will run this only.
-			network.networkView.RPC ("addAIScriptsToCharacter", RPCMode.Others, 
-				(int)character.getID (), ExtensionMethods.SerializeObject<CharacterInstance>(characterInstance), controllerScript);
-			
-			//Debug.Log ("network = " + network);
-			//Debug.Log ("networkView = " + network.networkView);
-			
-			//network.networkView.RPC("testRPC", RPCMode.All, "hello my name is ben and i like RPCs");
-			
-			/*
 			//Attach the locomotion script to the character.
 			var script = (ILocomotionScript)character.AddComponent(Type.GetType(characterInstance.primitive.locomotionScriptPath));
 			
@@ -87,10 +75,8 @@ public abstract class GamemodeScript : PrimitiveScript
 			//Finally, add the controller script
 			character.AddComponent(Type.GetType (controllerScript));
 			
-			//Hook callback for movement so we can send an RPC to everyone else.
-			*/
-			
-			//}	
+			//Hook callback
+			script.onUpdate += network.onNPCUpdate;
 		}
 		
 		//Return the character

@@ -5,10 +5,18 @@ public abstract class ILocomotionScript : MonoBehaviour
 {
 	public CharacterInstance instance;
 	
+	public delegate void onUpdateHandler(int id, Vector3 newPosition, Quaternion newRotation);
+	public event onUpdateHandler onUpdate;
+	
 	public abstract void turnLeft();
 	public abstract void turnRight();
 	public abstract void moveForward();
 	public abstract void moveBackward();
+	
+	public void updatePosition()
+	{
+		onUpdate.Invoke ((int)gameObject.getID(), transform.position, transform.rotation);
+	}
 	
 	public float health = 100.0f;
 	public bool dead = false;

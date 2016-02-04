@@ -20,6 +20,8 @@ public class NetworkServer : MonoBehaviour
 	public List<NetworkPlayer> players = new List<NetworkPlayer>();
 	public Dictionary<int, GameObject> characters = new Dictionary<int, GameObject>();
 	
+	public static CharacterInstance passedInstance;
+	
 	public void Start()
 	{
 		networkView = GetComponent<NetworkView>();
@@ -73,6 +75,11 @@ public class NetworkServer : MonoBehaviour
 		Debug.Log ("Initialized the server... " + Network.isServer);
 	} 
 	
+	public void onNPCUpdate(int id, Vector3 newPosition, Quaternion newRotation)
+	{
+		Debug.Log ("update: " + id + ", " + newPosition + ", " + newRotation);
+	}
+	
 	[RPC]
 	public void testRPC(string message)
 	{
@@ -80,16 +87,14 @@ public class NetworkServer : MonoBehaviour
 	}
 	
 	[RPC]
-	public void addAIScriptsToCharacter(int characterId, string serializedInstance, string controllerScript)
+	public void addAIScriptsToCharacter(int characterId, string locomotionPath, string controllerScript)
 	{
-		CharacterInstance instance = ExtensionMethods.DeserializeObject<CharacterInstance>(serializedInstance) as CharacterInstance;
 		var foundCharacter = characters[characterId];
 		
 		//Attach scripts
-		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(instance.primitive.locomotionScriptPath));
-		
-		//Pass in instance settings for locomotion (to get values)
-		script.instance = instance;
+		var script = (ILocomotionScript)foundCharacter.AddComponent(System.Type.GetType(locomotionPath));
+			
+		script.instance = passedInstance;
 		
 		//Finally, add the controller script
 		foundCharacter.AddComponent(System.Type.GetType (controllerScript));

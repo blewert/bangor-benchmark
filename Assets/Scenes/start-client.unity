@@ -37,6 +37,9 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+--- !u!127 &3
+LevelGameManager:
+  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -65,7 +68,6 @@ LightmapSettings:
     m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
-    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
@@ -213,12 +215,10 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: .0219999999
-  m_StereoMirrorMode: 0
 --- !u!4 &1304675797
 Transform:
   m_ObjectHideFlags: 0
@@ -255,9 +255,9 @@ NetworkView:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2038605431}
-  m_Enabled: 0
-  m_StateSynchronization: 1
-  m_Observed: {fileID: 2038605433}
+  m_Enabled: 1
+  m_StateSynchronization: 0
+  m_Observed: {fileID: 0}
   m_ViewID:
     m_ID: 1
     m_Type: 1
@@ -284,6 +284,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee38476785a80c4bb514acf9a1b2c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMultiplayer: 0
+  startTypeClient: 0
+  networkView: {fileID: 0}
+  objects: []
+  networkUpdateIntervalMax: .100000001
+  lastCharacter: {fileID: 0}
 --- !u!114 &2038605435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,6 +301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d1324e416852f4782f064ebdcfee81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 147.143.192.115
-  port: 7777
+  ip: 192.168.1.143
+  port: 28000
   password: hello

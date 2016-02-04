@@ -20,6 +20,10 @@ public class NetworkServer : MonoBehaviour
 	public List<NetworkPlayer> players = new List<NetworkPlayer>();
 	public Dictionary<int, GameObject> characters = new Dictionary<int, GameObject>();
 	
+	//Timing
+	private float nextNetworkUpdateTime = 0.0f;
+	public float networkUpdateIntervalMax = 0.1f;
+		
 	public static CharacterInstance passedInstance;
 	
 	public void Start()
@@ -77,7 +81,11 @@ public class NetworkServer : MonoBehaviour
 	
 	public void onNPCUpdate(int id, Vector3 newPosition, Quaternion newRotation)
 	{
-		networkView.RPC ("onClientNPCUpdate", RPCMode.Others, id, newPosition, newRotation);
+		if(Time.realtimeSinceStartup > nextNetworkUpdateTime)
+		{
+			nextNetworkUpdateTime = Time.realtimeSinceStartup + networkUpdateIntervalMax;
+			networkView.RPC ("onClientNPCUpdate", RPCMode.Others, id, newPosition, newRotation);
+		}
 	}
 	
 	[RPC]

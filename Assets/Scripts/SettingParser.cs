@@ -66,7 +66,7 @@ class SettingParser
 		foreach(Transform ter in terrain.transform)
 		{
 			if(ter.tag.Equals("Boundaries"))
-				return ter.GetComponent<Collider>().bounds;
+				return ter.GetComponent<Renderer>().bounds;
 		}
 		
 		return default(Bounds);

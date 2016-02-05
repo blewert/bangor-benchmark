@@ -22,7 +22,7 @@ public class NetworkServer : MonoBehaviour
 	
 	//Timing
 	private float nextNetworkUpdateTime = 0.0f;
-	public float networkUpdateIntervalMax = 0.1f;
+	public float networkUpdateIntervalMax = 0.05f;
 		
 	public GameObject lastCharacter;
 	
@@ -93,8 +93,6 @@ public class NetworkServer : MonoBehaviour
 	{
 		var foundCharacter = characters[id];
 		
-		Debug.Log ("char null: " + characters == null);
-		
 		foundCharacter.transform.position = newPosition;
 		foundCharacter.transform.rotation = newRotation;
 	}
@@ -117,7 +115,7 @@ public class NetworkServer : MonoBehaviour
 		addedObject.setData ("NPC");	
 		
 		characters.Add((int)addedObject.getID(), addedObject);
-		
+				
 		lastCharacter = addedObject;
 	}
 	

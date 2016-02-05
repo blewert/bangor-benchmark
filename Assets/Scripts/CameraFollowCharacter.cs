@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CameraFollowCharacter : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class CameraFollowCharacter : MonoBehaviour
 	{		
 		if(targets != null)
 		{
+			targets.RemoveAll(x => x == null);
+			
 			if(Input.GetKeyDown(KeyCode.LeftArrow))
 			{
 				targetIdx = (targetIdx - 1) % (targets.Count);

@@ -59,10 +59,7 @@ public class CaptureTheFlagAIController : MonoBehaviour
 			float newHeading = oldHeading + UnityEngine.Random.Range (-80f, 80f); 
 			
 			targetRotation = newHeading;
-			
-			if(gameObject.getID () == 2)
-				DebugLogger.Log (oldHeading + " ...  " + newHeading + " : " + gameObject.getID());
-			
+						
 			yield return new WaitForSeconds(3f);
 		}
 	}
@@ -90,7 +87,7 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		//Check for obstacles:
 		if(castdar.GetSeen() > 0)
 		{
-			var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.tag.Equals ("Prop"));
+			var objs = castdar.GetSeenObject().Where (x => x.seenOBJ != null && x.seenOBJ.tag.Equals ("Prop"));
 			
 			if(objs.Count() > 0)
 				avoidObstacles();
@@ -188,6 +185,9 @@ public class CaptureTheFlagAIController : MonoBehaviour
 		
 		var closestObj = objs.OrderBy(x => Vector3.Distance (x.seenOBJ.transform.position, transform.position)).FirstOrDefault();
 		
+		if(closestObj == null)
+			return;
+			
 		if(getSteerDirection(closestObj.seenOBJ.transform.position) > 0)
 			npc.turnRight ();
 		else

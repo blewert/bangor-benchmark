@@ -9,6 +9,8 @@ public class LobbyMenuHandler : MonoBehaviour
 	[Header("Menu components")]
 	public GameObject lobbyText;
 	public Button startButton;
+	public GameObject lobbyTitle;
+	public GameObject lobbyError;
 	
 	public List<NetworkPlayer> connections = new List<NetworkPlayer>(); 
 	
@@ -22,21 +24,26 @@ public class LobbyMenuHandler : MonoBehaviour
 	
 	public void updateLobbyGUI()
 	{
-		lobbyText.GetComponentInChildren<Text>().text = "Server status (waiting for connections...)\n\n";
+		//lobbyText.GetComponentInChildren<Text>().text = "Server status (waiting for connections...)\n\n";
 		
 		if(connections.Count > 0)
 		{
-			var tempConnections = connections.Select (x => x.ipAddress + ":" + x.port).ToArray ();
+			lobbyTitle.GetComponent<Text>().text = "Lobby (" + connections.Count + "/" + NetworkServer.NUMBER_OF_CONNECTIONS + " players)";
 			
-			lobbyText.GetComponentInChildren<Text>().text += "Connections (" + tempConnections.Count() + "/" + NetworkServer.NUMBER_OF_CONNECTIONS + "): \n";
+			var tempConnections = connections.Select (x => "Player " + (connections.IndexOf(x)+1) + ": " + x.ipAddress + ":" + x.port).ToArray ();
 			
 			lobbyText.GetComponentInChildren<Text>().text += tempConnections.Aggregate((prev, next) => prev + "\n" + next);
 		}
 		else
 		{
-			lobbyText.GetComponentInChildren<Text>().text += "Connections (0/" + NetworkServer.NUMBER_OF_CONNECTIONS + "): \n";
-			lobbyText.GetComponentInChildren<Text>().text += "None!";
+			lobbyTitle.GetComponent<Text>().text = "Lobby (Waiting for players...)";
+			lobbyText.GetComponentInChildren<Text>().text = "";
 		}
+	}
+	
+	public void setErrorText(string text)
+	{
+		lobbyError.GetComponent<Text>().text = text;
 	}
 	
 	public void addConnection(NetworkPlayer player)

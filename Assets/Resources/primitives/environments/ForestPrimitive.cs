@@ -34,8 +34,6 @@ public class ForestPrimitive : PrimitiveScript
 		var treeToLoad       = (string)SettingParser.getSetting(instance, "treePrefab");
 		radius               = (float )SettingParser.getSetting(instance, "treeSpawnRadius");
 		
-		DebugLogger.Log (instance.name + ": Algorithm is " +  algorithmSetting + ", density is " + densitySetting + ". The terrain that needs to be loaded is " + terrainToLoad);
-		
 		//Instantiate terrain at (0, 0, 0)
 		var gameObjectTerrain = network.createObject(Resources.Load (terrainToLoad), Vector3.zero, Quaternion.identity); 
 		//Instantiate(Resources.Load (terrainToLoad), Vector3.zero, Quaternion.identity) as GameObject;
@@ -87,8 +85,6 @@ public class ForestPrimitive : PrimitiveScript
 		
 		randomPos.y = terrain.SampleHeight(randomPos);
 		randomPos.y += treePrefab.GetComponent<MeshFilter>().sharedMesh.bounds.extents.y * treePrefab.transform.localScale.y;
-		
-		DebugLogger.Log (treePrefab.GetComponent<MeshFilter>().sharedMesh.bounds.extents.y);
 		
 		return randomPos;
 	}

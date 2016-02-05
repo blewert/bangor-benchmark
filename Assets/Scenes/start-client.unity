@@ -256,7 +256,7 @@ NetworkView:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2038605431}
   m_Enabled: 1
-  m_StateSynchronization: 0
+  m_StateSynchronization: 1
   m_Observed: {fileID: 0}
   m_ViewID:
     m_ID: 1
@@ -301,6 +301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d1324e416852f4782f064ebdcfee81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.1.143
+  ip: 192.168.1.149
   port: 28000
   password: hello

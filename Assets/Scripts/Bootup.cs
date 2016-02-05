@@ -95,6 +95,12 @@ public class Bootup : MonoBehaviour
 	
 	public void onMultiplayerStartButtonClick()
 	{
+		if(network.players.Count <= 0)
+		{
+			lobbyMenu.setErrorText("ERROR: there are no players so you can't start!");
+			return;
+		}
+		
 		//Find primitive associated with chosen environment instance. Then, add the environment script onto the observer object.
 		var environmentPrimitive = environmentPrimitives.Where (x => chosenEnvironmentInstance.primitiveName == x.name).FirstOrDefault();
 		var environmentScript = (PrimitiveScript)gameObject.AddComponent(Type.GetType(environmentPrimitive.scriptPath));

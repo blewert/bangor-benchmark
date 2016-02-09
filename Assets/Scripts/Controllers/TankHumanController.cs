@@ -4,7 +4,17 @@ using System.Collections;
 public class TankHumanController : MonoBehaviour {
 
 	public ITankNPC npc;
+
+	int tankScore = 0;
 	int i = 0;
+
+	public void setScore(int sc){
+		tankScore = sc;
+	}
+
+	public int getScore(){
+		return tankScore;
+	}
 	
 	// Use this for initialization
 	void Start () 
@@ -25,11 +35,6 @@ public class TankHumanController : MonoBehaviour {
 		} else if (Input.GetKey (KeyCode.DownArrow)) {
 			npc.moveBackward();
 		}
-		if (Input.GetKey (KeyCode.A)) {
-			npc.TurnTurretLeft ();
-		} else if (Input.GetKey (KeyCode.D)) {
-			npc.TurnTurretRight ();
-		}
 //		if (Input.GetKey (KeyCode.X)){
 //			Debug.Log ("pressed " + i);
 //			var rigidBody = npc.gameObject.AddComponent<Rigidbody>();
@@ -37,4 +42,6 @@ public class TankHumanController : MonoBehaviour {
 //			i++;
 //		}
 	}
+
+
 }

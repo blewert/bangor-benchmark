@@ -15,8 +15,8 @@ public abstract class INPC : MonoBehaviour
 	public void takeHealth(float amount)
 	{
 		health -= Mathf.Clamp (amount, 0, MAX_HEALTH);
-		
-		alive = (health > 0f) ? (true) : (false);
+
+		alive = health > 0f;
 		
 		if(!alive)
 			onDeath();

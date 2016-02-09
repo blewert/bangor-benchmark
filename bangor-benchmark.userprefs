@@ -1,13 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Controllers/TankHumanController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/canvas.cs">
     <Files>
-      <File FileName="Assets/Scripts/Controllers/TankHumanController.cs" Line="38" Column="6" />
-      <File FileName="Assets/Scripts/Interfaces/NPC/ITankNPC.cs" Line="7" Column="18" />
-      <File FileName="Assets/Scripts/Controllers/TankController.cs" Line="95" Column="43" />
-      <File FileName="Assets/Scripts/Interfaces/NPC/INPC.cs" Line="29" Column="2" />
-      <File FileName="Assets/Scripts/CaptureTheFlag/TankSpawner.cs" Line="113" Column="42" />
-      <File FileName="Assets/Config/treePoint.xml" Line="1" Column="1" />
+      <File FileName="Assets/canvas.cs" Line="8" Column="18" />
+      <File FileName="Assets/Scripts/CaptureTheFlag/TankSpawner.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Controllers/TankCompanionController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Misc/SaveData.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Controllers/TankEnemyController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Controllers/TankTurretAI.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Controllers/TankTurretHumanController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Misc/CompanionIdentity.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Misc/MiniMap/GUIManager.cs" Line="16" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

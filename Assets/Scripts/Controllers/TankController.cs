@@ -10,8 +10,8 @@ public class TankController : ITankNPC
 	private CharacterController controller;
 	
 	//Rotation and movement speed
-	public float angleStep = 1f;
-	public float movementSpeed = 3f;
+	public float angleStep = 3f;
+	public float movementSpeed = 8f;
 	public GameObject turret;
 	
 	//The target speed to lerp to, and the current velocity
@@ -90,8 +90,40 @@ public class TankController : ITankNPC
 		turret.transform.Rotate(new Vector3(0,5,0));
 	}
 
+
+	public void TurnTurretLeft(float change)
+	{
+		turret.transform.Rotate(new Vector3(0,change,0));
+	}
+
 	public override void TurnTurretRight()
 	{
 		turret.transform.Rotate(new Vector3(0,-5,0));
+	}
+
+	public void TurnTurretRight(float change)
+	{
+		turret.transform.Rotate(new Vector3(0,change,0));
+	}
+	public float GetTurretAngle(){
+		return 0.0f;
+	}
+	public float GetTurretAngle(Vector3 other){
+		Vector3 turretForward = turret.transform.forward;
+		turretForward.y = 0;
+		float turretAngle = Vector3.Angle (turretForward, transform.position - other);
+		return turretAngle;
+	}
+	public float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up) {
+		Vector3 perp = Vector3.Cross(fwd, targetDir);
+		float dir = Vector3.Dot(perp, up);
+		
+		if (dir > 0f) {
+			return 1f;
+		} else if (dir < 0f) {
+			return -1f;
+		} else {
+			return 0f;
+		}
 	}
 }

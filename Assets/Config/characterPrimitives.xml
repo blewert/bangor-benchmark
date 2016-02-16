@@ -21,4 +21,16 @@
 			</possibleSetting>
 		</possibleSettings>	
 	</character>
+	
+	<character>
+		<name>Human</name>
+		<prefab>primitives/characters/Human/Human</prefab>
+		<locomotionScript>HumansController</locomotionScript>	
+		<possibleSettings>
+			<possibleSetting>
+				<name>speed</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+		</possibleSettings>	
+	</character>
 </characters>

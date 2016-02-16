@@ -45,4 +45,16 @@
 		</settings>
 	</instance>
 	
+	<instance>
+		<name>Human Player</name>
+		<primitive>Human</primitive>
+		<controllerScript>PlayerController</controllerScript>
+		<settings>
+			<setting>
+				<name>speed</name>
+				<value>1.5</value>
+			</setting>
+		</settings>
+	</instance>
+	
 </characterInstances>

@@ -1,7 +1,4 @@
-﻿
-#define DEBUG
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -39,7 +36,7 @@ public class Gun : MonoBehaviour
 	{
 		CONTINOUS_FIRE, SINGLE_SHOT
 	};
-		
+	
 	/// <summary>
 	/// Called on script start.
 	/// </summary>
@@ -53,11 +50,11 @@ public class Gun : MonoBehaviour
 	/// </summary>
 	public RaycastHit[] Fire()
 	{
-		if(gunType != GunType.SINGLE_SHOT)
-			return null;
-			
+		//if(gunType != GunType.SINGLE_SHOT)
+		//return null;
+		
 		callMuzzleFlash();
-			
+		
 		return Physics.RaycastAll(transform.position, -transform.up, shotDistance);
 	}
 	
@@ -66,9 +63,9 @@ public class Gun : MonoBehaviour
 	/// </summary>
 	public void StartFiring()
 	{								
-		if(gunType != GunType.CONTINOUS_FIRE)
-			return;
-			
+		//if(gunType != GunType.CONTINOUS_FIRE)
+		//return;
+		
 		StartCoroutine(fireUpdate ());
 	}
 	
@@ -101,10 +98,6 @@ public class Gun : MonoBehaviour
 				//Apply random inaccuracies on local x + y (z would make no difference)
 				bulletDirection.x += Random.Range(-mag, mag);
 				bulletDirection.y += Random.Range(-mag, mag);
-				
-				#if DEBUG
-				Debug.DrawLine (transform.position, transform.position + bulletDirection, Color.yellow, 3f);
-				#endif
 			}
 			
 			//Cast data, call invokation for callback
@@ -124,7 +117,7 @@ public class Gun : MonoBehaviour
 		//Do we want to show it?
 		if(!showMuzzleFlare)
 			return;
-			
+		
 		//Can we show it?
 		if(pSystem == null)
 			return;
@@ -141,7 +134,7 @@ public class Gun : MonoBehaviour
 		//Only for edit mode!
 		if(!Application.isEditor)
 			return;
-			
+		
 		//Distance indicator is white
 		Gizmos.color = Color.white;
 		
@@ -159,7 +152,7 @@ public class Gun : MonoBehaviour
 			
 			//Number of points to render in cone
 			int numPoints = 16;
-		
+			
 			for(float t = 0; t < 360f; t += (360f/numPoints))
 			{
 				//Copy position for modification locally

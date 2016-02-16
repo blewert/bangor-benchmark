@@ -6,10 +6,19 @@ public abstract class INPC : MonoBehaviour
 	public const float MAX_HEALTH = 1f;
 	public bool alive = true;
 	public float health = MAX_HEALTH;
-
+	
 	public float getHealth()
 	{
 		return health;
+	}
+	
+	public void setHealth(float val){
+		health = val;
+	}
+	
+	public float getMaxHealth(){
+		
+		return MAX_HEALTH;
 	}
 	
 	public void takeHealth(float amount)
@@ -25,7 +34,7 @@ public abstract class INPC : MonoBehaviour
 	public void onDeath()
 	{
 	}
-		
+	
 	abstract public void turnLeft();
 	abstract public void turnRight();
 	abstract public void moveForward();

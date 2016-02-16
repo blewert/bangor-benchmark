@@ -18,13 +18,24 @@ public abstract class ILocomotionScript : MonoBehaviour
 		if(onUpdate != null)
 			onUpdate.Invoke ((int)gameObject.getID(), transform.position, transform.rotation);
 	}
-	
+
+	public const float MAX_HEALTH = 100.0f;
 	public float health = 100.0f;
 	public bool dead = false;
 	
 	public float getHealth()
 	{
 		return health;
+	}
+
+	public void setHealth(float val)
+	{
+		health = val;
+	}
+	
+	public float getMaxHealth()
+	{
+		return MAX_HEALTH;
 	}
 	
 	public void takeHealth(float value)

@@ -128,15 +128,21 @@ public class NetworkServer : MonoBehaviour
 		//Find the player with the given npc id
 		var thePlayer = characters [npcID];
 
+		thePlayer.AddComponent<HumansController>();
+		
+		thePlayer.GetComponent<HumansController>().onUpdate += onNPCUpdate;
+		
 		// apply playerContoller script to that character.
 		thePlayer.AddComponent<PlayerController>();
 
 		// uncheck or remove humanAIcontroller
-		thePlayer.GetComponent<HumanEnemyAI> ().enabled = false;
+		//thePlayer.GetComponent<HumanEnemyAI> ().enabled = false;
 
 		//Get rid of the main camera for now
 		Camera.main.enabled = false;
 		thePlayer.transform.Find("Main Camera").gameObject.SetActive(true);
+	
+		
 	}
 	
 	public void createCharacter(string prefabPath, Vector3 position, Quaternion rotation)

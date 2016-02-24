@@ -87,9 +87,13 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 			{
 				//Pick a random NPC
 				Debug.Log ("player " + i + " needs to attach a human controller to npc " + shuffleCharacters.ElementAt(i).Key);
-				
+			
+
 				//Call to this player to attach the controller thingymabob
-				network.networkView.RPC("setHumanControllerCharacter", network.players[i], shuffleCharacters.ElementAt(i).Key);
+				network.networkView.RPC("setHumanControlledCharacter", network.players[i], shuffleCharacters.ElementAt(i).Key);
+
+				// unchecking AI controls so it cannot be controlled by AI script
+				shuffleCharacters.ElementAt(i).Value.GetComponent<HumanEnemyAI>().enabled = false;
 
 				//Remove the character so we dont pick it again and therefore we dont attach two controllers
 				//to the same npc!

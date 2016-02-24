@@ -20,6 +20,8 @@ public class HumanEnemyAI : MonoBehaviour {
 	private bool dead = false;
 	private bool highCOT;
 
+	private CharacterInstance characterInstance;
+
 	// wander variables -----
 	// number of seconds between each wander direction recalculation
 	public float directionChangeInterval = 1;
@@ -41,7 +43,20 @@ public class HumanEnemyAI : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		npcRigidbody = GetComponent<Rigidbody>();
 		controller = transform.GetComponent<HumansController>();
+
+		characterInstance = controller.instance;
+		aggressiveness = (float)SettingParser.getSetting(characterInstance, "Aggressiveness");
+		COT = (float)SettingParser.getSetting(characterInstance, "COT");
+		IPD = (float)SettingParser.getSetting(characterInstance, "IPD");
+		reactionTime = (float)SettingParser.getSetting(characterInstance, "Reaction Time");
+		ammoPerClip = (int)SettingParser.getSetting(characterInstance, "Ammo Per Clip");
+
+		// get castDar for sight and set the variables.
 		cast = GetComponentInChildren<Castdar> ();
+		cast.visionAngle = (int)SettingParser.getSetting(characterInstance, "Vision Angle");
+		cast.radarRange = (float)SettingParser.getSetting (characterInstance, "Radar Range");
+		cast.refreshObjectScan = (float)SettingParser.getSetting (characterInstance, "Refresh Object Scan");
+		cast.refreshWallScan = (float)SettingParser.getSetting (characterInstance, "Refresh Wall Scan");
 
 		gun = GetComponentInChildren<Gun>();
 		gun.OnBulletHit += OnBulletHit;
@@ -53,14 +68,10 @@ public class HumanEnemyAI : MonoBehaviour {
 		highCOT = (cotChecker < COT);
 	}
 
-	// innitialise wander functionality.
+
 	void Awake ()
 	{
-		
-		// Set random initial rotation
-		heading = Random.Range(0, 360);
-		transform.eulerAngles = new Vector3(0, heading, 0);
-		
+		// initialise wander functionality.
 		StartCoroutine(NewHeading());
 	}
 	
@@ -339,8 +350,9 @@ public class HumanEnemyAI : MonoBehaviour {
 		// Damage the player or npc that has been hit.
 		if (hit.transform.tag.Equals ("Player") || hit.transform.tag.Equals ("NPC")) {
 			//Debug.Log(hit.transform.tag);
+			// Take health from the opponent
 			hit.transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
-			Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
+			//Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
 		}
 	}
 	
@@ -353,7 +365,7 @@ public class HumanEnemyAI : MonoBehaviour {
 		GetComponent<Renderer>().gameObject.SetActive (false);
 		anim.SetBool ("Dead", false);
 		dead = false;
-		transform.position = new Vector3(Random.Range(-22,22), 0.029f , Random.Range(-22,22));
+		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
 		GetComponent<Renderer>().gameObject.SetActive(true);
 	}
 	

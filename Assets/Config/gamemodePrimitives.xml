@@ -31,6 +31,10 @@
 				<name>flagPrefab</name>
 				<type>string/path</type>
 			</possibleSetting>
+			<possibleSetting>
+				<name>humanVsHuman</name>
+				<type>boolean</type>
+			</possibleSetting>
 		</possibleSettings>
 		
 	</mode>

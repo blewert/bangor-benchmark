@@ -51,10 +51,10 @@ public class NetworkServer : MonoBehaviour
 	{
 		if(!isMultiplayer)
 			return;
-		
+
 		players.Add(player);
 	}
-	
+
 	void OnPlayerDisconnected(NetworkPlayer player) 
 	{
 		if(!isMultiplayer)
@@ -96,7 +96,7 @@ public class NetworkServer : MonoBehaviour
 		foundCharacter.transform.position = newPosition;
 		foundCharacter.transform.rotation = newRotation;
 	}
-	
+
 	[RPC]
 	public void testRPC(string message)
 	{
@@ -113,10 +113,30 @@ public class NetworkServer : MonoBehaviour
 		addedObject.setTeam("Default");
 		addedObject.assignID();
 		addedObject.setData ("NPC");	
-		
+
 		characters.Add((int)addedObject.getID(), addedObject);
-				
+
 		lastCharacter = addedObject;
+	}
+
+	// Make the client execute this method.
+	[RPC]
+	private void setHumanControlledCharacter(int npcID)
+	{
+		Debug.Log ("I need to attach a human controller to " + npcID);
+
+		//Find the player with the given npc id
+		var thePlayer = characters [npcID];
+
+		// apply playerContoller script to that character.
+		thePlayer.AddComponent<PlayerController>();
+
+		// uncheck or remove humanAIcontroller
+		thePlayer.GetComponent<HumanEnemyAI> ().enabled = false;
+
+		//Get rid of the main camera for now
+		Camera.main.enabled = false;
+		thePlayer.transform.Find("Main Camera").gameObject.SetActive(true);
 	}
 	
 	public void createCharacter(string prefabPath, Vector3 position, Quaternion rotation)
@@ -165,4 +185,6 @@ public class NetworkServer : MonoBehaviour
 		Network.Disconnect();
 		MasterServer.UnregisterHost();
 	}
+
+
 }

@@ -46,7 +46,7 @@ public class CameraFollowCharacter : MonoBehaviour
 	{
 		Vector3 targetPos = target.transform.position;
 
-		var zExtent = target.GetComponent<MeshFilter>().mesh.bounds.extents.z;
+		var zExtent = target.GetComponent<Collider>().bounds.extents.z;
 
 		targetPos = target.transform.TransformPoint(Vector3.forward * -Mathf.Abs (dist) * zExtent);
 		targetPos.y += height;

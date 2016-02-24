@@ -491,7 +491,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 185310630}
   - 114: {fileID: 185310629}
-  - 114: {fileID: 185310631}
   - 148: {fileID: 185310632}
   m_Layer: 0
   m_Name: NetworkManager
@@ -529,20 +528,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
---- !u!114 &185310631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 185310628}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e7076fe0e899cb4ab4e7a26ac87d6a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  connectionAddress: localhost
-  connectionPort: 25000
-  connectionPassword: hello
 --- !u!148 &185310632
 NetworkView:
   m_ObjectHideFlags: 0

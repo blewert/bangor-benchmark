@@ -22,6 +22,10 @@
 				<name>flagPrefab</name>
 				<value>prefabs/flag</value>
 			</setting>
+			<setting>
+				<name>humanVsHuman</name>
+				<value>false</value>
+			</setting>
 		</settings>
 	</instance>
 	
@@ -46,6 +50,10 @@
 				<name>flagPrefab</name>
 				<value>prefabs/flag</value>
 			</setting>
+			<setting>
+				<name>humanVsHuman</name>
+				<value>false</value>
+			</setting>		
 		</settings>
 	</instance>
 	
@@ -69,6 +77,38 @@
 			<setting>
 				<name>flagPrefab</name>
 				<value>prefabs/flag</value>
+			</setting>
+			<setting>
+				<name>humanVsHuman</name>
+				<value>false</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>CTF (8 player multiplayer)</name>
+		<primitive>Capture the Flag</primitive>
+		
+		<settings>
+			<setting>
+				<name>spawnHuman</name>
+				<value>true</value>
+			</setting>
+			<setting>
+				<name>playerCount</name>
+				<value>8</value>
+			</setting>
+			<setting>
+				<name>flagSpawnRadius</name>
+				<value>15</value>
+			</setting>
+			<setting>
+				<name>flagPrefab</name>
+				<value>prefabs/flag</value>
+			</setting>
+			<setting>
+				<name>humanVsHuman</name>
+				<value>true</value>
 			</setting>
 		</settings>
 	</instance>

@@ -31,6 +31,42 @@
 				<name>speed</name>
 				<type>float/scalar</type>
 			</possibleSetting>
+			<possibleSetting>
+				<name>Aggressiveness</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>COT</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>IPD</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>Reaction Time</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>Ammo Per Clip</name>
+				<type>int/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>Vision Angle</name>
+				<type>int/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>Radar Range</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>Refresh Object Scan</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>Refresh Wall Scan</name>
+				<type>float/scalar</type>
+			</possibleSetting>
 		</possibleSettings>	
 	</character>
 </characters>

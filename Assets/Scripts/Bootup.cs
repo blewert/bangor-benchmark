@@ -121,6 +121,12 @@ public class Bootup : MonoBehaviour
 		
 		//Hide menu
 		multiplayerMenu.SetActive(false);
+
+		// for all of the players that have connected to the server
+		foreach(var player in network.players){
+			// Put the human controlled script onto the primitive and remove the NPC script
+			network.networkView.RPC ("setHumanControlledCharacter", player, null);
+		}
 	}
 	
 	/// <summary>

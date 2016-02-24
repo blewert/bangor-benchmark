@@ -11,6 +11,7 @@ public abstract class PrimitiveScript : MonoBehaviour
 	
 	public void findNetworkServer()
 	{
+		//find network server
 		network = GameObject.Find ("NetworkManager").GetComponent<NetworkServer>();
 	}
 }
@@ -52,11 +53,6 @@ public abstract class GamemodeScript : PrimitiveScript
 		network.createCharacter(characterInstance.primitive.prefabPath, position, rotation); 
 		var character = network.lastCharacter;
 		
-		//network.networkView.RPC ("createCharacter", RPCMode.All, Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
-		 
-		//Ran by the server only
-		//(GameObject)Instantiate (Resources.Load (characterInstance.primitive.prefabPath), position, rotation);
-		
 		if(!network.isMultiplayer)
 		{
 			//Attach the locomotion script to the character.
@@ -81,7 +77,23 @@ public abstract class GamemodeScript : PrimitiveScript
 			
 			//Hook callback
 			script.onUpdate += network.onNPCUpdate;
+			
+			//find the amount of already attached human controllers
+			//if that number of human controllers is less than no. players
+			//then add the human controller via RPC
+			
+			/*var numberOfHumanControllers = network.characters.Count (x => x.Value.GetComponent<PlayerController> () != null);
+			
+			DebugLogger.Log ("the number of human controllers is " + numberOfHumanControllers);
+			
+			if (network.players.Count <= numberOfHumanControllers)
+			{
+				//we need to attach the controller for this player.
+				network.networkView.RPC("setHumanControlledCharacter", network.players[numberOfHumanControllers-1], null);
+			}*/
 		}
+		
+		Debug.Log ("character added");
 		
 		//Return the character
 		return character;
@@ -98,7 +110,8 @@ public abstract class GamemodeScript : PrimitiveScript
 		
 		Vector3 temp = position;
 		temp.y = Terrain.activeTerrain.SampleHeight(temp);
-		temp.y += character.GetComponent<MeshFilter>().mesh.bounds.extents.y * character.transform.localScale.y;
+		//temp.y += character.GetComponent<MeshFilter>().mesh.bounds.extents.y * character.transform.localScale.y;
+		temp.y += character.GetComponent<Collider> ().bounds.extents.y * character.transform.localScale.y;
 		
 		character.transform.position = temp;
 		
@@ -123,4 +136,3 @@ public abstract class GamemodeScript : PrimitiveScript
 		return returnObjects;
 	}
 }
-

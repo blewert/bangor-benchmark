@@ -46,13 +46,49 @@
 	</instance>
 	
 	<instance>
-		<name>Human Player</name>
+		<name>PEA NPC</name>
 		<primitive>Human</primitive>
-		<controllerScript>PlayerController</controllerScript>
+		<controllerScript>HumanEnemyAI</controllerScript>
 		<settings>
 			<setting>
 				<name>speed</name>
 				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>Aggressiveness</name>
+				<value>80.0</value>
+			</setting>
+			<setting>
+				<name>COT</name>
+				<value>25.0</value>
+			</setting>
+			<setting>
+				<name>IPD</name>
+				<value>2.5</value>
+			</setting>
+			<setting>
+				<name>Reaction Time</name>
+				<value>150.0</value>
+			</setting>
+			<setting>
+				<name>Ammo Per Clip</name>
+				<value>30</value>
+			</setting>
+			<setting>
+				<name>Vision Angle</name>
+				<value>120</value>
+			</setting>
+			<setting>
+				<name>Radar Range</name>
+				<value>15.0</value>
+			</setting>
+			<setting>
+				<name>Refresh Object Scan</name>
+				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>Refresh Wall Scan</name>
+				<value>0.5</value>
 			</setting>
 		</settings>
 	</instance>

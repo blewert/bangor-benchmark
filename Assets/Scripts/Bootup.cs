@@ -91,6 +91,14 @@ public class Bootup : MonoBehaviour
 		//Add the initial primitive buttons (initially the environment buttons)
 		menuComponent.addPrimitivesButtons(environmentPrimitives.Select(x => x.name), this);
 		
+		EvolutionResultsParser.setResultsDirectory(@"T:\git\hl-multiagent\evolution\results");
+		var generationData = EvolutionResultsParser.getEvolutionData(28, 32);
+		
+		foreach(var agent in generationData)
+		{
+			var str = string.Join (", ", agent.Value.genes.Select (x => x.ToString()).ToArray());
+			Debug.Log (agent.Key + " has a fitness of " + agent.Value.fitness + " with genes " + str);
+		}		
 	} 
 	
 	public void onMultiplayerStartButtonClick()

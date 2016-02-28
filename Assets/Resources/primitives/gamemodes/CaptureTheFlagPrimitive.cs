@@ -43,7 +43,7 @@ public class CaptureTheFlagPrimitive : GamemodeScript
 			
 			//Remove controller
 			Destroy(pickedElem.GetComponent(Type.GetType (characterInstance.controllerScript)));
-						
+
 			//Add human controller
 			pickedElem.AddComponent (Type.GetType ("HumanKeyboardController"));
 			

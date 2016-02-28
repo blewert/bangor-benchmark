@@ -72,4 +72,32 @@
 			</setting>
 		</settings>
 	</instance>
+	
+	<instance>
+		<name>Evolution (8 player)</name>
+		<primitive>Evolution Experiment</primitive>
+		
+		<settings>
+			<setting>
+				<name>playerCount</name>
+				<value>8</value>
+			</setting>
+			<setting>
+				<name>flagSpawnRadius</name>
+				<value>15</value>
+			</setting>
+			<setting>
+				<name>flagPrefab</name>
+				<value>prefabs/flag</value>
+			</setting>
+			<setting>
+				<name>resultsDirectory</name>
+				<value>T:\git\hl-multiagent\evolution\results</value>
+			</setting>
+			<setting>
+				<name>runNumber</name>
+				<value>28</value>
+			</setting>
+		</settings>
+	</instance>
 </gamemodeInstances>

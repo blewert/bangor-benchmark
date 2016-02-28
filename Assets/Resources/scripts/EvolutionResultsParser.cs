@@ -164,7 +164,7 @@ public static class EvolutionResultsParser
 	/// </summary>
 	/// <returns>The available generations for this run.</returns>
 	/// <param name="runNumber">The run number to specify.</param>
-	private static List<Pair<int, int>> getAvailableGenerations(int runNumber, string file)
+	public static List<Pair<int, int>> getAvailableGenerations(int runNumber, string file)
 	{		
 		//Return values for the number of available generations.
 		var returnValues = new List<Pair<int, int>>();

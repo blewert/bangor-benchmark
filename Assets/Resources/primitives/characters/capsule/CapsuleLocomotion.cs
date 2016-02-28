@@ -28,6 +28,16 @@ public class CapsuleLocomotion : ILocomotionScript
 		transform.rotation = Quaternion.Lerp (transform.rotation, newRotation, Time.time * Mathf.Abs (speed));
 	}
 	
+	public override void modifyTurnRate (float rate)
+	{
+		turnSpeed *= rate;
+	}
+	
+	public override void modifySpeed (float rate)
+	{
+		speed *= rate;
+	}
+	
 	public override void turnLeft ()
 	{
 		updatePosition ();

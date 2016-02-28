@@ -14,11 +14,11 @@
 		<settings>
 			<setting>
 				<name>terrainToLoad</name>
-				<value>terrains/flat</value>
+				<value>terrains/flatGrassy</value>
 			</setting>
 			<setting>
 				<name>treePrefab</name>
-				<value>terrains/trees/cube</value>
+				<value>terrains/trees/conifer</value>
 			</setting>
 			<setting>
 				<name>treeSpawnRadius</name>
@@ -49,11 +49,11 @@
 		<settings>
 			<setting>
 				<name>terrainToLoad</name>
-				<value>terrains/flat</value>
+				<value>terrains/flatGrassy</value>
 			</setting>
 			<setting>
 				<name>treePrefab</name>
-				<value>terrains/trees/cube</value>
+				<value>terrains/trees/conifer</value>
 			</setting>
 			<setting>
 				<name>treeSpawnRadius</name>

@@ -13,6 +13,14 @@ public abstract class ILocomotionScript : MonoBehaviour
 	public abstract void moveForward();
 	public abstract void moveBackward();
 	
+	public virtual void modifySpeed(float rate)
+	{
+	}
+	
+	public virtual void modifyTurnRate(float rate)
+	{
+	}
+	
 	public void updatePosition()
 	{
 		if(onUpdate != null)

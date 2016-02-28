@@ -84,7 +84,7 @@ public class ForestPrimitive : PrimitiveScript
 		randomPos.z += UnityEngine.Random.Range (-magnitude, magnitude);
 		
 		randomPos.y = terrain.SampleHeight(randomPos);
-		randomPos.y += treePrefab.GetComponent<MeshFilter>().sharedMesh.bounds.extents.y * treePrefab.transform.localScale.y;
+		randomPos.y += treePrefab.GetComponent<Collider>().bounds.extents.y * treePrefab.transform.localScale.y;
 		
 		return randomPos;
 	}

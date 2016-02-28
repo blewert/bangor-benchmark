@@ -34,4 +34,42 @@
 		</possibleSettings>
 		
 	</mode>
+	
+	<mode>
+		<name>Evolution Experiment</name>
+		<scriptPath>EvolutionExperimentPrimitive</scriptPath>
+		
+		<characterExclusions>
+			<exclusion>Tank</exclusion>
+			<exclusion>wheeledDrone</exclusion>
+		</characterExclusions>
+		
+		<environmentExclusions>
+			<exclusion>Room</exclusion>
+		</environmentExclusions>
+		
+		<possibleSettings>
+			<possibleSetting>
+				<name>playerCount</name>
+				<type>int/range{2, 8}</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>flagSpawnRadius</name>
+				<type>float/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>flagPrefab</name>
+				<type>string/path</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>resultsDirectory</name>
+				<type>string/path</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>runNumber</name>
+				<type>int/scalar</type>
+			</possibleSetting>
+		</possibleSettings>
+		
+	</mode>
 </modes>

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
-public class HumanEnemyAI : MonoBehaviour {
+public class HumanEnemyAI : PrimitiveScript {
 
 	private Rigidbody npcRigidbody;
 	private HumansController controller;
@@ -40,6 +40,9 @@ public class HumanEnemyAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// Find the server the game is running on
+		findNetworkServer ();
+
 		anim = GetComponent<Animator> ();
 		npcRigidbody = GetComponent<Rigidbody>();
 		controller = transform.GetComponent<HumansController>();
@@ -350,12 +353,36 @@ public class HumanEnemyAI : MonoBehaviour {
 		// Damage the player or npc that has been hit.
 		if (hit.transform.tag.Equals ("Player") || hit.transform.tag.Equals ("NPC")) {
 			//Debug.Log(hit.transform.tag);
-			// Take health from the opponent
+			// Take health from the opponent LOCALLY
 			hit.transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
-			//Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
+			Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
+
+			// Update person you hit's health server-wide
+			// Here is where the agent that was hit will be stored from the network.
+			GameObject agentWhoWasHit;
+			// Before you can send who has been hit for their health to be reduced and updated over the network
+			// You first must identify where the character is within the character array.
+			foreach (GameObject value in network.characters.Values)
+			{
+				if(value == hit.transform){
+					agentWhoWasHit = value;
+					break;
+				}
+			}
+			
+			// On identifying the character in the dictionary, you can then get the ID of the character.
+			uint agentWhoHasBeenHitId = agentWhoWasHit.getID();
+			Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitId);
+			// Send who was hit to the server and have the server take the health from the agent being hit on all other sessions.
+			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitId);
 		}
 	}
 	
+	[RPC]
+	public void takeHealthAndUpdate(uint whoHasBeenHit){
+		network.characters[(int)whoHasBeenHit].transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
+	}
+
 	public void respawn(){
 		// set's the health of the human back to it's max health.
 		controller.setHealth (controller.getMaxHealth());

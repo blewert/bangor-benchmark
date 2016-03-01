@@ -87,7 +87,7 @@ public class NetworkServer : MonoBehaviour
 			networkView.RPC ("onClientNPCUpdate", RPCMode.Others, id, newPosition, newRotation);
 		}
 	}
-	
+
 	[RPC]
 	public void onClientNPCUpdate(int id, Vector3 newPosition, Quaternion newRotation)
 	{
@@ -185,7 +185,7 @@ public class NetworkServer : MonoBehaviour
 		
 		return addedObject;	
 	}
-	
+
 	public void OnApplicationQuit()
 	{
 		Network.Disconnect();

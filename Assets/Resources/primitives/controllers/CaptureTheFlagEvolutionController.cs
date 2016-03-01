@@ -30,11 +30,17 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 	
 	public List<Action> actions = new List<Action>();
 	public List<Action> genes = new List<Action>();
+	private int[] localGeneIndices;
+	
+	private bool startCalled = false;
 
 	// Use this for initialization
 	void Start () 
 	{	
 		setupActions();
+		
+		startCalled = true;
+		setGenes (localGeneIndices);
 		
 		npc = GetComponent<ILocomotionScript>();
 		castdar = GetComponentInChildren<Castdar>();
@@ -56,8 +62,30 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 		StartCoroutine("updateHeading");
 	}
 	
+	public void setGenes(int[] geneIndices)
+	{
+		if(!startCalled)
+		{
+			//Debug.Log ("gene idx: " + String.Join (", ", geneIndices.Select (x => x.ToString ()).ToArray()));
+			localGeneIndices = geneIndices;
+		}
+		else
+		{
+			//Debug.Log ("gene idx: " + String.Join (", ", geneIndices.Select (x => x.ToString ()).ToArray()));
+			genes = geneIndices.Select (x => actions[x]).ToList ();
+			//Debug.Log ("gene idx (new): " + String.Join (", ", newindices));
+		}
+		//genes.AddRange (geneIndices.Select (x => actions[x]).ToArray ());
+		
+		//var newindices = genes.Select (x => genes.IndexOf(x).ToString ()).ToArray();
+		
+		//Debug.Log ("gene idx (new): " + String.Join (", ", newindices));
+	}
+	
 	private void setupActions()
 	{
+		Debug.Log ("setup actions fired");
+		
 		//Set up global actions
 		Action[] localActions = 
 		{
@@ -80,12 +108,12 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 	
 	private void playAction(int number)
 	{
-		actions[number].Invoke();
+		genes[number].Invoke();
 	}
 	
 	private void playAttack(int number)
 	{
-		actions[number + 5].Invoke ();
+		genes[number + 5].Invoke ();
 	}
 	
 	IEnumerator updateHeading()

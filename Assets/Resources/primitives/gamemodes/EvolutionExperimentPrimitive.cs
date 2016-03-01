@@ -16,6 +16,11 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 	
 	private float highPercentile = 0.25f;
 	private float lowPercentile  = 0.25f;
+	
+	private int lowerLimit;
+	private int playerCount;
+	private int higherLimit;
+	private int availableGenerations;
 
 	private GameObject flagPrefab;
 		
@@ -32,12 +37,12 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		EvolutionResultsParser.setResultsDirectory(resultsPath);		
 		
 		//Get the amount of available generations.
-		var availableGenerations = EvolutionResultsParser.getAvailableGenerations(runNumber, "generations.txt").Count;
+		availableGenerations = EvolutionResultsParser.getAvailableGenerations(runNumber, "generations.txt").Count;
 		
 		Debug.Log ("There are " + availableGenerations + " generations available.");
 		
-		var lowerLimit  = (int)(availableGenerations * lowPercentile);
-		var higherLimit = (int)(availableGenerations - (availableGenerations * highPercentile));
+		lowerLimit  = (int)(availableGenerations * lowPercentile);
+		higherLimit = (int)(availableGenerations - (availableGenerations * highPercentile));
 		
 		Debug.Log ("low 0 to " + lowerLimit + ", high " + higherLimit + " to " + availableGenerations);
 		
@@ -48,7 +53,7 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 	private void captureTheFlagInit()
 	{
 		//Get player count
-		var playerCount = (int)SettingParser.getSetting(instance, "playerCount");
+		playerCount = (int)SettingParser.getSetting(instance, "playerCount");
 		var flagSpawnRadius = (float)SettingParser.getSetting (instance, "flagSpawnRadius");
 		
 		//Get flag prefab
@@ -65,14 +70,14 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		//Swap out controllers to evolution controllers
 		changeControllers();
 		
+		//Apply evolution stuff to each agent
+		changeGenes();	
+		
 		//Add in the human
 		addHuman();		
 		
 		//And finally spawn the flags	
 		spawnFlags(flagSpawnRadius);
-		
-		//Apply evolution stuff to each agent
-		changeGenes();		
 	}
 	
 	private void changeGenes()
@@ -82,9 +87,46 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		
 		//Get all agents which aren't a human character
 		agents = agents.Where (x => !x.getData ().Equals("Human"));
+
+		//Generations
+		var lowGenerations  = new List<EvolutionAgent>();
+		var highGenerations = new List<EvolutionAgent>();
 		
-		//At this point, pick random generation range(?) to pull fitnesses from
-		//Debug.Log ("... " + agents.Count());
+		for(int i = 0; i <= lowerLimit; i++)
+		{
+			//Run through every generation. Get all agents for this generation.
+			var generationData = EvolutionResultsParser.getEvolutionData(runNumber, i);
+			
+			//Get the highest fitness
+			var highestFitness = generationData.OrderByDescending(x => x.Value.fitness).ToList ();
+			
+			//Add this agent with the highest fitness to the list of agents
+			lowGenerations.Add (highestFitness[0].Value);
+		}
+		
+		for(int i = higherLimit; i < availableGenerations - 1; i++)
+		{
+			//Run through every generation. Get all agents for this generation.
+			var generationData = EvolutionResultsParser.getEvolutionData(runNumber, i);
+			
+			//Get the highest fitness
+			var highestFitness = generationData.OrderByDescending(x => x.Value.fitness).ToList ();
+			
+			//Add this agent with the highest fitness to the list of agents
+			highGenerations.Add (highestFitness[0].Value);
+		}
+		
+		//Sort the lists of highest fitnesses by highest fitness
+		lowGenerations = lowGenerations.OrderByDescending(x => x.fitness).ToList ();
+		highGenerations = highGenerations.OrderByDescending(x => x.fitness).ToList ();
+		
+		var team = blueTeam.Concat (redTeam).ToList ();
+		
+		for(int i = 0; i < team.Count(); i++)
+		{
+			team[i].GetComponent<CaptureTheFlagEvolutionController>().setGenes(highGenerations[i].genes);
+		}
+
 	}
 	
 	private void changeControllers()
@@ -97,6 +139,13 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 			//Add evolution controller
 			var controller = agent.AddComponent<CaptureTheFlagEvolutionController>();
 		}
+		
+		foreach(var agent in blueTeam)
+			agent.GetComponentInChildren<MeshRenderer>().material.color = new Color(52/255f, 152/255f, 219/255f);
+		
+		foreach(var agent in redTeam)
+			agent.GetComponentInChildren<MeshRenderer>().material.color = new Color(192/255f, 57/255f, 43/255f);
+		
 	}
 	
 	private void addHuman()

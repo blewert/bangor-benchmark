@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;//Needed for access to UI variable and class methods
+using System.Linq; // allows Where clause
 
 public class PlayerController : PrimitiveScript {
 	
@@ -36,6 +37,22 @@ public class PlayerController : PrimitiveScript {
 		gun.OnBulletHit += OnBulletHit;
 
 		currentAmmo = ammoPerClip;
+
+		attachLocomotionScripts ();
+
+	}
+
+	// In attachLocomotionScripts have:
+	public void attachLocomotionScripts()
+	{
+		// This will get all players inc npcs
+		var objs = GameObject.FindGameObjectsWithTag ("Player");
+		//Run through every local NPC and attach the locomotion script so we can
+		//do shit with them (this is on the player's machine)
+		foreach (var npc in objs) {
+			npc.AddComponent<HumansController> ();
+		}
+		
 	}
 	
 	void FixedUpdate(){	
@@ -167,26 +184,17 @@ public class PlayerController : PrimitiveScript {
 			// Here is where the agent that was hit will be stored from the network.
 			GameObject agentWhoWasHit;
 			// Before you can send who has been hit for their health to be reduced and updated over the network
-			// You first must identify where the character is within the character array.
-			foreach (GameObject value in network.characters.Values)
-			{
-				if(value == hit.transform.gameObject){
-					agentWhoWasHit = value;
-					break;
-				}
-			}
-
-			// On identifying the character in the dictionary, you can then get the ID of the character.
-			uint agentWhoHasBeenHitId = agentWhoWasHit.getID();
-			Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitId);
+			// You must get the ID of the character.
+			int agentWhoHasBeenHitIdx = network.characters.Where(x => x.Value.Equals(hit.transform.gameObject)).FirstOrDefault().Key;	
+			Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitIdx);
 			// Send who was hit to the server and have the server take the health from the agent being hit on all other sessions.
-			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitId);
+			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitIdx);
 		}
 	}
-
+	
 	[RPC]
-	public void takeHealthAndUpdate(uint whoHasBeenHit){
-		network.characters[(int)whoHasBeenHit].transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
+	public void takeHealthAndUpdate(int whoHasBeenHit){
+		network.characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (10.0f);
 	}
 
 	public void respawn(){
@@ -198,7 +206,10 @@ public class PlayerController : PrimitiveScript {
 		GetComponent<Renderer>().gameObject.SetActive (false);
 		anim.SetBool ("Dead", false);
 		dead = false;
-		transform.position = new Vector3(Random.Range(-22,22), -0.02000004f , Random.Range(-22,22));
+		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
+		// Move forward (or any movement with updatePosition() in it) to fire the network update.
+		controller.moveForward ();
+		// Make the agent visible again.
 		GetComponent<Renderer>().gameObject.SetActive(true);
 
 		// reset ammo to full

@@ -46,7 +46,7 @@
 	</instance>
 	
 	<instance>
-		<name>PEA NPC</name>
+		<name>P.E.A</name>
 		<primitive>Human</primitive>
 		<controllerScript>HumanEnemyAI</controllerScript>
 		<settings>
@@ -69,6 +69,246 @@
 			<setting>
 				<name>Reaction Time</name>
 				<value>150.0</value>
+			</setting>
+			<setting>
+				<name>Ammo Per Clip</name>
+				<value>30</value>
+			</setting>
+			<setting>
+				<name>Vision Angle</name>
+				<value>120</value>
+			</setting>
+			<setting>
+				<name>Radar Range</name>
+				<value>15.0</value>
+			</setting>
+			<setting>
+				<name>Refresh Object Scan</name>
+				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>Refresh Wall Scan</name>
+				<value>0.5</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>Q.T</name>
+		<primitive>Human</primitive>
+		<controllerScript>HumanEnemyAI</controllerScript>
+		<settings>
+			<setting>
+				<name>speed</name>
+				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>Aggressiveness</name>
+				<value>25.0</value>
+			</setting>
+			<setting>
+				<name>COT</name>
+				<value>80.0</value>
+			</setting>
+			<setting>
+				<name>IPD</name>
+				<value>7.0</value>
+			</setting>
+			<setting>
+				<name>Reaction Time</name>
+				<value>150.0</value>
+			</setting>
+			<setting>
+				<name>Ammo Per Clip</name>
+				<value>30</value>
+			</setting>
+			<setting>
+				<name>Vision Angle</name>
+				<value>120</value>
+			</setting>
+			<setting>
+				<name>Radar Range</name>
+				<value>15.0</value>
+			</setting>
+			<setting>
+				<name>Refresh Object Scan</name>
+				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>Refresh Wall Scan</name>
+				<value>0.5</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>S.D.A</name>
+		<primitive>Human</primitive>
+		<controllerScript>HumanEnemyAI</controllerScript>
+		<settings>
+			<setting>
+				<name>speed</name>
+				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>Aggressiveness</name>
+				<value>25.0</value>
+			</setting>
+			<setting>
+				<name>COT</name>
+				<value>80.0</value>
+			</setting>
+			<setting>
+				<name>IPD</name>
+				<value>7.0</value>
+			</setting>
+			<setting>
+				<name>Reaction Time</name>
+				<value>40.0</value>
+			</setting>
+			<setting>
+				<name>Ammo Per Clip</name>
+				<value>30</value>
+			</setting>
+			<setting>
+				<name>Vision Angle</name>
+				<value>120</value>
+			</setting>
+			<setting>
+				<name>Radar Range</name>
+				<value>15.0</value>
+			</setting>
+			<setting>
+				<name>Refresh Object Scan</name>
+				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>Refresh Wall Scan</name>
+				<value>0.5</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>H.I.V.E</name>
+		<primitive>Human</primitive>
+		<controllerScript>HumanEnemyAI</controllerScript>
+		<settings>
+			<setting>
+				<name>speed</name>
+				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>Aggressiveness</name>
+				<value>80.0</value>
+			</setting>
+			<setting>
+				<name>COT</name>
+				<value>80.0</value>
+			</setting>
+			<setting>
+				<name>IPD</name>
+				<value>10.0</value>
+			</setting>
+			<setting>
+				<name>Reaction Time</name>
+				<value>150.0</value>
+			</setting>
+			<setting>
+				<name>Ammo Per Clip</name>
+				<value>30</value>
+			</setting>
+			<setting>
+				<name>Vision Angle</name>
+				<value>120</value>
+			</setting>
+			<setting>
+				<name>Radar Range</name>
+				<value>15.0</value>
+			</setting>
+			<setting>
+				<name>Refresh Object Scan</name>
+				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>Refresh Wall Scan</name>
+				<value>0.5</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>E.I</name>
+		<primitive>Human</primitive>
+		<controllerScript>HumanEnemyAI</controllerScript>
+		<settings>
+			<setting>
+				<name>speed</name>
+				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>Aggressiveness</name>
+				<value>50.0</value>
+			</setting>
+			<setting>
+				<name>COT</name>
+				<value>25.0</value>
+			</setting>
+			<setting>
+				<name>IPD</name>
+				<value>10.0</value>
+			</setting>
+			<setting>
+				<name>Reaction Time</name>
+				<value>75.0</value>
+			</setting>
+			<setting>
+				<name>Ammo Per Clip</name>
+				<value>30</value>
+			</setting>
+			<setting>
+				<name>Vision Angle</name>
+				<value>120</value>
+			</setting>
+			<setting>
+				<name>Radar Range</name>
+				<value>15.0</value>
+			</setting>
+			<setting>
+				<name>Refresh Object Scan</name>
+				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>Refresh Wall Scan</name>
+				<value>0.5</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>L.O.V.E</name>
+		<primitive>Human</primitive>
+		<controllerScript>HumanEnemyAI</controllerScript>
+		<settings>
+			<setting>
+				<name>speed</name>
+				<value>1.5</value>
+			</setting>
+			<setting>
+				<name>Aggressiveness</name>
+				<value>25.0</value>
+			</setting>
+			<setting>
+				<name>COT</name>
+				<value>25.0</value>
+			</setting>
+			<setting>
+				<name>IPD</name>
+				<value>2.5</value>
+			</setting>
+			<setting>
+				<name>Reaction Time</name>
+				<value>40.0</value>
 			</setting>
 			<setting>
 				<name>Ammo Per Clip</name>

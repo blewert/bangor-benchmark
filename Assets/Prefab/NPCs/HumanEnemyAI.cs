@@ -355,32 +355,23 @@ public class HumanEnemyAI : PrimitiveScript {
 			//Debug.Log(hit.transform.tag);
 			// Take health from the opponent LOCALLY
 			hit.transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
-			Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
+			//Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
 
 			// Update person you hit's health server-wide
 			// Here is where the agent that was hit will be stored from the network.
 			GameObject agentWhoWasHit;
 			// Before you can send who has been hit for their health to be reduced and updated over the network
-			// You first must identify where the character is within the character array.
-			foreach (GameObject value in network.characters.Values)
-			{
-				if(value == hit.transform){
-					agentWhoWasHit = value;
-					break;
-				}
-			}
-			
-			// On identifying the character in the dictionary, you can then get the ID of the character.
-			uint agentWhoHasBeenHitId = agentWhoWasHit.getID();
-			Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitId);
+			// You must get the ID of the character.
+			int agentWhoHasBeenHitIdx = network.characters.Where(x => x.Value.Equals(hit.transform.gameObject)).FirstOrDefault().Key;	
+			Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitIdx);
 			// Send who was hit to the server and have the server take the health from the agent being hit on all other sessions.
-			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitId);
+			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitIdx);
 		}
 	}
 	
 	[RPC]
-	public void takeHealthAndUpdate(uint whoHasBeenHit){
-		network.characters[(int)whoHasBeenHit].transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
+	public void takeHealthAndUpdate(int whoHasBeenHit){
+		network.characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (10.0f);
 	}
 
 	public void respawn(){
@@ -393,6 +384,9 @@ public class HumanEnemyAI : PrimitiveScript {
 		anim.SetBool ("Dead", false);
 		dead = false;
 		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
+		// Move forward (or any movement with updatePosition() in it) to fire the network update.
+		controller.moveForward ();
+		// Make the agent visible again.
 		GetComponent<Renderer>().gameObject.SetActive(true);
 	}
 	

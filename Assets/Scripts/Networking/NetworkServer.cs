@@ -144,6 +144,11 @@ public class NetworkServer : MonoBehaviour
 	
 		
 	}
+
+	[RPC]
+	public void takeHealthAndUpdate(int whoHasBeenHit){
+		characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (10.0f);
+	}
 	
 	public void createCharacter(string prefabPath, Vector3 position, Quaternion rotation)
 	{

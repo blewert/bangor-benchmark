@@ -12,13 +12,13 @@ public class CameraFollowCharacter : MonoBehaviour
 	
 	private Camera camera = Camera.main;
 	
-	public float height = 3f;
-	public float dist = 9.92f;
-	public float lerpSpeed = 0.1f;
-	
+	public float height = 2.09f;
+	public float dist = 9.87f;
+	public float lerpSpeed = 0f;
+		
 	public void LateUpdate()
 	{		
-		if(targets != null)
+		if(targets != null && targets.Count > 0)
 		{
 			targets.RemoveAll(x => x == null);
 			
@@ -38,7 +38,10 @@ public class CameraFollowCharacter : MonoBehaviour
 		
 		var targetPos = getOffsetPosition();
 		
-		camera.transform.position = Vector3.Lerp (camera.transform.position, targetPos, lerpSpeed);
+		Vector3 velocity = Vector3.zero;
+		camera.transform.position = Vector3.SmoothDamp(camera.transform.position, targetPos, ref velocity, lerpSpeed);
+		
+		//Vector3.Lerp (camera.transform.position, targetPos, lerpSpeed);
 		camera.transform.LookAt(target.transform.position);
 	}
 	
@@ -50,6 +53,7 @@ public class CameraFollowCharacter : MonoBehaviour
 
 		targetPos = target.transform.TransformPoint(Vector3.forward * -Mathf.Abs (dist) * zExtent);
 		targetPos.y += height;
+		
 		//targetPos = target.transform.position - (target.transform.forward * zExtent * Mathf.Abs (dist));
 		//targetPos.y += height;
 		

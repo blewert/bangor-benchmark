@@ -288,13 +288,23 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 	
 	private void flee()
 	{
-		npc.modifySpeed(1.5f);
+		var capsuleScript = npc as CapsuleLocomotion;
+		
+		/*npc.modifySpeed(1.5f);
 		npc.modifyTurnRate(2f);
 
 		wander ();
 		
 		npc.modifySpeed(1f / 1.5f);
-		npc.modifyTurnRate(1f / 2f);
+		npc.modifyTurnRate(1f / 2f);*/
+		
+		capsuleScript.speed *= 1.5f;
+		capsuleScript.turnSpeed *= 2f;
+		
+		wander ();
+		
+		capsuleScript.speed /= 1.5f;		
+		capsuleScript.turnSpeed /= 2f;
 	}
 	
 	private void wander()
@@ -388,7 +398,15 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 				var controller = closestObj.seenOBJ.GetComponent<CaptureTheFlagEvolutionController>();
 				
 				//Set them to be under fire
-				controller.underFire = true;
+				if(controller != null)
+					controller.underFire = true;
+					
+				else
+				{
+					var humanController = closestObj.seenOBJ.GetComponent<HumanEvolutionKeyboardController>();
+					
+					humanController.onSelfHit(gameObject);
+				}
 			}
 		}
 

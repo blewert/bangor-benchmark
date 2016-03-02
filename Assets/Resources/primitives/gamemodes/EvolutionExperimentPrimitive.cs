@@ -164,10 +164,10 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		Destroy (pickedElem.GetComponent<CaptureTheFlagEvolutionController>());
 		
 		//Add human controller
-		pickedElem.AddComponent (Type.GetType ("HumanKeyboardController"));
+		pickedElem.AddComponent (Type.GetType ("HumanEvolutionKeyboardController"));
 		
 		//Make this person a human
-		pickedElem.setData ("Human");
+		pickedElem.setData ("NPC");
 		
 		//Replace the human
 		human = pickedElem;
@@ -196,6 +196,16 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		
 		obj1.setTeam ("Red");
 		obj2.setTeam ("Blue");
+		
+		var objs = obj1.GetComponentsInChildren<MeshRenderer>();
+		
+		foreach(var obj in objs)
+			obj.material.color = new Color(192/255f, 57/255f, 43/255f);
+			
+		objs = obj2.GetComponentsInChildren<MeshRenderer>();
+		
+		foreach(var obj in objs)
+			obj.material.color = new Color(52/255f, 152/255f, 219/255f);
 		
 		obj1.setData ("Flag");
 		obj2.setData ("Flag");

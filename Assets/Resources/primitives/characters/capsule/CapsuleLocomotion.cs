@@ -6,6 +6,7 @@ public class CapsuleLocomotion : ILocomotionScript
 	private CharacterController characterController;
 	public float speed;
 	public float turnSpeed;
+	private bool movingBackwards = false;
 	
 	public void Start()
 	{
@@ -28,12 +29,12 @@ public class CapsuleLocomotion : ILocomotionScript
 		transform.rotation = Quaternion.Lerp (transform.rotation, newRotation, Time.time * Mathf.Abs (speed));
 	}
 	
-	public override void modifyTurnRate (float rate)
+	public void modifyTurnRate (float rate)
 	{
 		turnSpeed *= rate;
 	}
 	
-	public override void modifySpeed (float rate)
+	public void modifySpeed (float rate)
 	{
 		speed *= rate;
 	}
@@ -42,22 +43,32 @@ public class CapsuleLocomotion : ILocomotionScript
 	{
 		updatePosition ();
 		
+		var speed = -turnSpeed;
+		speed = (movingBackwards) ? (-speed) : (speed);
+		
 		//Turn left
-		applyTurningSpeed(-turnSpeed);
+		applyTurningSpeed(speed);
 	}
 
 	public override void turnRight ()
 	{
 		updatePosition ();
 		
+		var speed = turnSpeed;
+		speed = (movingBackwards) ? (-speed) : (speed);
+		
 		//Turn right
-		applyTurningSpeed(turnSpeed);
+		applyTurningSpeed(speed);
 	}
 
 	public override void moveForward ()
 	{
 		updatePosition ();
 		
+		movingBackwards = false;
+		
+		//forwardVel = Mathf.Lerp (forwardVel, this.speed, forwardVel / speed); 	
+			
 		//Move forward
 		characterController.SimpleMove(transform.forward * speed);
 	}
@@ -66,8 +77,10 @@ public class CapsuleLocomotion : ILocomotionScript
 	{
 		updatePosition ();
 		
+		movingBackwards = true;
+		
 		//Move backward
-		characterController.SimpleMove(-transform.forward * speed); 
+		characterController.SimpleMove(transform.forward * -speed);
 	}
 
 }

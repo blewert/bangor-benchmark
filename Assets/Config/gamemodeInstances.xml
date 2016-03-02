@@ -92,7 +92,7 @@
 			</setting>
 			<setting>
 				<name>resultsDirectory</name>
-				<value>T:\git\hl-multiagent\evolution\results</value>
+				<value>C:\University\git\hl-multiagent\evolution\results</value>
 			</setting>
 			<setting>
 				<name>runNumber</name>

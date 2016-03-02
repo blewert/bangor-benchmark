@@ -144,14 +144,30 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 		if(isInsideBase())
 		{
 			if(npc.getHealth() < 100.0f)
+			{
 				npc.giveHealth(2f);
+				
+				if(GetComponentInChildren<ParticleSystem>().isStopped)
+					GetComponentInChildren<ParticleSystem>().Play ();
+			}
+			else
+			{
+				if(!GetComponentInChildren<ParticleSystem>().isStopped)
+					GetComponentInChildren<ParticleSystem>().Stop ();
+			}
+		}
+		else
+		{
+			if(!GetComponentInChildren<ParticleSystem>().isStopped)
+				GetComponentInChildren<ParticleSystem>().Stop ();
 		}
 		
 		//If they're outside of the terrain boundaries, move them back to the base
 		if(!inTerrainBounds(transform.position))
 		{
 			fleeToBase();
-			targetRotation = transform.eulerAngles.y - 180f;
+			//targetRotation = transform.eulerAngles.y - 180f;
+			return;
 		}
 		
 		

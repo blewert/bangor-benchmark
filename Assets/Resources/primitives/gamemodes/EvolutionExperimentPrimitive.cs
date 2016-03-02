@@ -47,7 +47,43 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		Debug.Log ("low 0 to " + lowerLimit + ", high " + higherLimit + " to " + availableGenerations);
 		
 		//Call capture the flag stuff
-		captureTheFlagInit();				
+		captureTheFlagInit();	
+		
+		//Attach particles
+		attachParticles();		
+		
+		//Add gui
+		addGUI();	
+	}
+	
+	private void addGUI()
+	{
+		var prefab = Resources.Load ("prefabs/evolutionGUI");
+		
+		Instantiate (prefab, Vector3.zero, Quaternion.identity);
+	}
+	
+	private void attachParticles()
+	{
+		//Get all npcs
+		var npcs = blueTeam.Concat (redTeam);
+		
+		//Get the prefab from resources
+		var prefab = Resources.Load ("prefabs/healthParticleSystem");
+		
+		
+		//Instantiate the object
+		foreach(var npc in npcs)
+		{
+			var obj = Instantiate (prefab, npc.transform.position, npc.transform.rotation) as GameObject;
+			
+			obj.transform.parent = npc.transform;
+			obj.transform.localPosition = Vector3.zero;
+			obj.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
+			
+			obj.GetComponentInChildren<ParticleSystem>().Stop();
+		}
+		
 	}
 	
 	private void captureTheFlagInit()

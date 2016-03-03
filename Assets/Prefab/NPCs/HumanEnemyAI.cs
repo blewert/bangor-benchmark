@@ -19,6 +19,8 @@ public class HumanEnemyAI : PrimitiveScript {
 	private bool attackingHuman = false;
 	private bool dead = false;
 	private bool highCOT;
+	private bool agentGoneBack;
+	private int originDir;
 
 	private CharacterInstance characterInstance;
 
@@ -159,6 +161,11 @@ public class HumanEnemyAI : PrimitiveScript {
 	
 	void resetSpeed(){
 		anim.SetFloat ("Speed", 0);
+
+		// send all clients the speed param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+		// Send which agent's speed to update and the speed to update it with.
+		network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
 	}
 	
 	void behaviourIPD(Vector3 playerCoords, float distBtwnPlayerAndNPC, System.Collections.Generic.IEnumerable<Castdar.HitObject> playersHit){
@@ -167,6 +174,11 @@ public class HumanEnemyAI : PrimitiveScript {
 				if(backoff == false){
 					if(anim.GetFloat("Speed") < 1)
 						anim.SetFloat ("Speed", anim.GetFloat("Speed") + 0.1f);
+
+					// send all clients the speed param for the animations for this agent
+					int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+					// Send which agent's speed to update and the speed to update it with.
+					network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
 					
 					persueStateActivate (playerCoords, distBtwnPlayerAndNPC);
 				}
@@ -180,6 +192,11 @@ public class HumanEnemyAI : PrimitiveScript {
 				}
 			}else{ // defensive
 				anim.SetFloat ("Speed", 0.0f);
+
+				// send all clients the speed param for the animations for this agent
+				int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+				// Send which agent's speed to update and the speed to update it with.
+				network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
 			}
 		}
 		else { // <-- distBtwnPlayerAndNPC <= IPD)
@@ -192,20 +209,99 @@ public class HumanEnemyAI : PrimitiveScript {
 				if(anim.GetFloat("Speed") > -1){
 					CancelInvoke("resetSpeed");
 					anim.SetFloat ("Speed", anim.GetFloat("Speed") - 0.1f);
+
+					// send all clients the speed param for the animations for this agent
+					int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+					// Send which agent's speed to update and the speed to update it with.
+					network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
 				}
 			}
 		}
 	}
 	// ------------------------------------------------------------------------
+	public int getSteerDirection(Vector3 position)
+	{
+		var localPosition = transform.InverseTransformPoint(position);
+		
+		return System.Math.Sign (localPosition.x);
+	}
+
+	void dodgeObstacles(){
 	
+		// list of all objects that are hit.
+		var objectHit = cast.GetSeenObject();
+		// list all objects with the tag Player or objects which parents have tag Player.
+		var obstaclesHit = objectHit.Where (x => x.seenOBJ.transform.gameObject.name != "Human(Clone)");
+
+		float[] distancesFromAgent = new float[obstaclesHit.Count()];
+		//Debug.Log ("obstacleCount : " + obstaclesHit.Count ());
+		if(obstaclesHit.Count() > 0){
+			for( int i = 0; i < obstaclesHit.Count()-1; i++){
+				//Debug.Log(obstaclesHit.ElementAt(i).seenOBJ.transform.position);
+				distancesFromAgent[i] = Vector3.Distance(transform.position, obstaclesHit.ElementAt(i).seenOBJ.transform.position);
+			}
+
+			float smallestDistance = distancesFromAgent.Min();
+			//Debug.Log(smallestDistance);
+			// if it is less than a distance of 5 away.
+			bool tooClose = smallestDistance <= 2;
+			if(tooClose){
+				// turn away from the obstacle.
+				//Debug.Log("turning right! because of object: " + obstaclesHit.FirstOrDefault().seenOBJ.gameObject.name);
+				controller.turnRight ();
+			}
+		}
+	}
+
 	void wander(){
+		dodgeObstacles ();
 
-		if(anim.GetFloat("Speed") < 1)
-			anim.SetFloat ("Speed", anim.GetFloat("Speed") + 0.1f);
+		// Check that the AI agent hasn't wandered out of the area.
+		bool AgentOutOfBoundary = ((transform.position.x >= 300) || (transform.position.x <= 200)
+			|| (transform.position.z >= 300) || (transform.position.z <= 200));
 
-		transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, targetRotation, Time.deltaTime * directionChangeInterval);
+		if (anim.GetFloat ("Speed") < 1)
+			anim.SetFloat ("Speed", anim.GetFloat ("Speed") + 0.1f);
+
+		// send all clients the speed param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+		// Send which agent's speed to update and the speed to update it with.
+		network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
+
+
+		Vector3 middlePosOfMap = new Vector3 (250.0f, -0.02072453f, 250.0f);
+		originDir = getSteerDirection (middlePosOfMap);
+		float distanceFromOrigin = Vector3.Distance (transform.position, middlePosOfMap);
+		agentGoneBack = distanceFromOrigin <= 50;
+		//Debug.Log ("distanceFromOrigin: " + distanceFromOrigin);
+		// if out of bounds 
+		if (AgentOutOfBoundary) {
+			//Debug.Log("I am out of the boundary!");
+			if (!agentGoneBack) { //then go into the boundary.
+				//Debug.Log("I am going back in the boundary!");
+				if (originDir < 0) {
+					controller.turnLeft ();
+				} else {
+					controller.turnRight ();
+				}
+			}
+		} else { // if in boundary 
+			if (!agentGoneBack) { //but not gone far enough into the boundary yet.
+				//Debug.Log("I am in but not far enough into the boundary!");
+				if (originDir < 0) {
+					controller.turnLeft ();
+				} else {
+					controller.turnRight ();
+				}
+			}
+			else{
+				// if enough in boundary then wander as normal.
+				transform.eulerAngles = Vector3.Slerp (transform.eulerAngles, targetRotation, Time.deltaTime * directionChangeInterval);
+			}
+		}
+
+		// move forward at any situation.
 		controller.moveForward ();
-
 	}
 
 	
@@ -305,6 +401,12 @@ public class HumanEnemyAI : PrimitiveScript {
 
 		else if(currentAmmo <= 0){ // out of ammo
 			anim.SetBool ("Firing", false);
+
+			// send all clients the animation param for the animations for this agent
+			int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+			// Send which agent's to update and the animation parameter to update.
+			network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Firing", anim.GetBool("Firing"));
+
 			StartCoroutine("reloadAmmo");
 		}
 	}
@@ -332,6 +434,12 @@ public class HumanEnemyAI : PrimitiveScript {
 		// left click down, not out of ammo and it has been long enough since last shot.
 		if (Time.time > nextFire && currentAmmo > 0) { 
 			anim.SetBool ("Firing", true);
+
+			// send all clients the speed param for the animations for this agent
+			int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+			// Send which agent's to update and the animation parameter to update.
+			network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Firing", anim.GetBool("Firing"));
+
 			nextFire = Time.time + delay; // recalculate next possible shot
 			OnBulletHit(gun.Fire()); // shoots a bullet
 			currentAmmo -= 1; // deduct one ammo from the player.
@@ -348,7 +456,7 @@ public class HumanEnemyAI : PrimitiveScript {
 		
 		RaycastHit hit = hitData[0];
 		
-		Debug.Log ("Name of hit object: " + hit.transform.name);
+		//Debug.Log ("Name of hit object: " + hit.transform.name);
 		
 		// Damage the player or npc that has been hit.
 		if (hit.transform.tag.Equals ("Player") || hit.transform.tag.Equals ("NPC")) {
@@ -363,7 +471,7 @@ public class HumanEnemyAI : PrimitiveScript {
 			// Before you can send who has been hit for their health to be reduced and updated over the network
 			// You must get the ID of the character.
 			int agentWhoHasBeenHitIdx = network.characters.Where(x => x.Value.Equals(hit.transform.gameObject)).FirstOrDefault().Key;	
-			Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitIdx);
+			//Debug.Log("The ID for the agent that was hit was: " + agentWhoHasBeenHitIdx);
 			// Send who was hit to the server and have the server take the health from the agent being hit on all other sessions.
 			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitIdx);
 		}
@@ -378,32 +486,62 @@ public class HumanEnemyAI : PrimitiveScript {
 		// set's the health of the human back to it's max health.
 		controller.setHealth (controller.getMaxHealth());
 		//Debug.Log ("After revive:" + controller.health);
-		
+
+		// send all clients the speed param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+
 		// Make the player invisible until they respawn
 		GetComponent<Renderer>().gameObject.SetActive (false);
+		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, false);
+
+		// set animation param LOCALLY
 		anim.SetBool ("Dead", false);
+		// Send which agent's to update and the animation parameter to update. (GLOBALLY)
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Dead", anim.GetBool("Dead"));
+
 		dead = false;
 		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
 		// Move forward (or any movement with updatePosition() in it) to fire the network update.
 		controller.moveForward ();
 		// Make the agent visible again.
 		GetComponent<Renderer>().gameObject.SetActive(true);
+		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, true);
 	}
 	
 	IEnumerator reloadAmmo()
 	{
 		anim.SetBool ("Reloading", true);
+
+		// send all clients the param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Reloading", anim.GetBool("Reloading"));
+
 		//Debug.Log ("Reloading!");
 		currentAmmo = ammoPerClip;
 		// wait for a bit for the animation to finish before resetting the bool to false.
 		yield return new WaitForSeconds(2.6f);
 		anim.SetBool ("Reloading", false);
+	
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Reloading", anim.GetBool("Reloading"));
 	} 
 
 
 	public void onDeath(){
+		// Set animation param LOCALLY
 		anim.SetTrigger("Dying");
+
+		// send all clients the param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("setTheTrigger", RPCMode.Others, agentToUpdateIdx, "Dying");
+
+		// Set animation param LOCALLY
 		anim.SetBool ("Dead", true);
+	
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Dead", anim.GetBool("Dead"));
 	}
 
 	// ------------------------End of Shooting helper methods -----------------------------------

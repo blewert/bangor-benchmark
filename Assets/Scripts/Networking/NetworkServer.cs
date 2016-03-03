@@ -149,7 +149,27 @@ public class NetworkServer : MonoBehaviour
 	public void takeHealthAndUpdate(int whoHasBeenHit){
 		characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (10.0f);
 	}
-	
+
+	[RPC]
+	public void updateSpeed(int agentToUpdateIdx, float speed){
+		characters[agentToUpdateIdx].GetComponent<Animator> ().SetFloat("Speed", speed);
+	}
+
+	[RPC]
+	public void updateBool(int agentToUpdateIdx, string param, bool value){
+		characters[agentToUpdateIdx].GetComponent<Animator> ().SetBool(param, value);
+	}
+
+	[RPC]
+	public void setTheTrigger(int agentToUpdateIdx, string param){
+		characters[agentToUpdateIdx].GetComponent<Animator> ().SetTrigger(param);
+	}
+
+	[RPC]
+	public void networkWideShowOrHideAgent(int agentToUpdateIdx, bool param){
+		characters [agentToUpdateIdx].gameObject.SetActive (param);
+	}
+
 	public void createCharacter(string prefabPath, Vector3 position, Quaternion rotation)
 	{
 		 //Creates an object locally or on the network.

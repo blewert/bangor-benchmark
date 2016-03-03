@@ -67,6 +67,11 @@ public class PlayerController : PrimitiveScript {
 		float v = Input.GetAxis("Vertical");				// setup v variables as our vertical input axis
 		anim.SetFloat("Speed", v);							// set our animator's float parameter 'Speed' equal to the vertical input axis				
 
+		// send all clients the speed param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+		// Send which agent's speed to update and the speed to update it with.
+		network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
+
 		if (!anim.GetBool ("Dead")) {
 			Move ();
 			Turning ();
@@ -129,6 +134,12 @@ public class PlayerController : PrimitiveScript {
 		if(Input.GetKeyDown(KeyCode.RightControl)) { // reload button pressed.
 			if (currentAmmo != ammoPerClip) {
 				anim.SetBool ("Firing", false);
+
+				// send all clients the animation param for the animations for this agent
+				int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+				// Send which agent's to update and the animation parameter to update.
+				network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Firing", anim.GetBool("Firing"));
+
 				StartCoroutine("reloadAmmo");
 			}
 		}
@@ -142,6 +153,11 @@ public class PlayerController : PrimitiveScript {
 		}
 		else if (!Input.GetMouseButton (0)){ // left click up
 			anim.SetBool ("Firing", false);
+
+			// send all clients the animation param for the animations for this agent
+			int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+			// Send which agent's to update and the animation parameter to update.
+			network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Firing", anim.GetBool("Firing"));
 		}
 	}
 
@@ -150,6 +166,12 @@ public class PlayerController : PrimitiveScript {
 		// left click down, not out of ammo and it has been long enough since last shot.
 		if (Time.time > nextFire && currentAmmo > 0) { 
 			anim.SetBool ("Firing", true);
+
+			// send all clients the animation param for the animations for this agent
+			int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+			// Send which agent's to update and the animation parameter to update.
+			network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Firing", anim.GetBool("Firing"));
+
 			nextFire = Time.time + delay; // recalculate next possible shot
 			OnBulletHit(gun.Fire()); // shoots a bullet
 			currentAmmo -= 1; // deduct one ammo from the player.
@@ -157,6 +179,12 @@ public class PlayerController : PrimitiveScript {
 		}
 		else if(currentAmmo <= 0){ // out of ammo
 			anim.SetBool ("Firing", false);
+
+			// send all clients the animation param for the animations for this agent
+			int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+			// Send which agent's to update and the animation parameter to update.
+			network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Firing", anim.GetBool("Firing"));
+
 			StartCoroutine("reloadAmmo");
 		}
 		// Wait delay amount before attempting to fire a new shot after restarting the coroutine.
@@ -202,15 +230,24 @@ public class PlayerController : PrimitiveScript {
 		controller.setHealth (controller.getMaxHealth());
 		Debug.Log ("After revive:" + controller.health);
 
+		// send all clients the speed param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;
+
 		// Make the player invisible until they respawn
 		GetComponent<Renderer>().gameObject.SetActive (false);
+		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, false);
 		anim.SetBool ("Dead", false);
+
+		// Send which agent's to update and the animation parameter to update. (GLOBALLY)
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Dead", anim.GetBool("Dead"));
+
 		dead = false;
 		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
 		// Move forward (or any movement with updatePosition() in it) to fire the network update.
 		controller.moveForward ();
 		// Make the agent visible again.
 		GetComponent<Renderer>().gameObject.SetActive(true);
+		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, true);
 
 		// reset ammo to full
 		currentAmmo = ammoPerClip;
@@ -219,17 +256,36 @@ public class PlayerController : PrimitiveScript {
 
 	public void onDeath(){
 		anim.SetTrigger("Dying");
+
+		// send all clients the speed param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;
+
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("setTheTrigger", RPCMode.Others, agentToUpdateIdx, "Dying");
+
 		anim.SetBool ("Dead", true);
+
+		// Send which agent's to update and the animation parameter to update. (GLOBALLY)
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Dead", anim.GetBool("Dead"));
 	}
 
 	IEnumerator reloadAmmo()
 	{
 		anim.SetBool ("Reloading", true);
+
+		// send all clients the param for the animations for this agent
+		int agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Reloading", anim.GetBool("Reloading"));
+
 		Debug.Log ("Reloading!");
 		currentAmmo = ammoPerClip;
 		// wait for a bit for the animation to finish before resetting the bool to false.
 		yield return new WaitForSeconds(2.6f);
 		anim.SetBool ("Reloading", false);
+
+		// Send which agent's to update and the animation parameter to update.
+		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Reloading", anim.GetBool("Reloading"));
 	} 
 	//--------------------------------------------------------------
 

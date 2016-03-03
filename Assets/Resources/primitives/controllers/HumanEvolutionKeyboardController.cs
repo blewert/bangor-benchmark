@@ -17,6 +17,7 @@ public class HumanEvolutionKeyboardController : MonoBehaviour
 	
 	private Text guiToChange;
 	private GameObject guiPanel;
+	private bool gameOver = false;
 	
 	public void Start()
 	{
@@ -46,34 +47,115 @@ public class HumanEvolutionKeyboardController : MonoBehaviour
 	public void onSelfHit(GameObject source)
 	{
 		locomotionScript.takeHealth (0.5f);
+		
+		//Debug.Log ("hit called");
+		
+		if(!locomotionScript.dead && locomotionScript.health > 0.0f)
+			return;
+		
+		//Debug.Log ("definitely dead: " + locomotionScript.health);
+		
+		//Find all objects
+		var allObjs = GameObject.FindGameObjectsWithTag("Player");
+		
+		//Find objects on this team
+		var filteredObjs = allObjs.Where (x => (x.getID() != gameObject.getID ()) && (x.getTeam () == gameObject.getTeam ()));
+		
+		if(filteredObjs != null && filteredObjs.Count () > 0)
+		{
+			var pickedObj = filteredObjs.First (); 
+			
+			//Add human controller, remove ai controller
+			Destroy (pickedObj.GetComponent<CaptureTheFlagEvolutionController>());
+			pickedObj.AddComponent<HumanEvolutionKeyboardController>();
+			
+			//Set target
+			GameObject.Find ("Observer").GetComponent<CameraFollowCharacter>().target = pickedObj;
+		}
+		else
+		{	
+			gameOver = true;		
+			
+			//Add human controller, remove ai controller						
+			GameObject.Find ("Observer").GetComponent<CameraFollowCharacter>().target = source;
+			
+			guiPanel.SetActive(true);
+			guiPanel.GetComponentInChildren<Text>().text = "You lost the round!";
+			guiToChange.text = "--";
+		}
+		
+		//Destroy this
+		Destroy (this);
+		Destroy (gameObject);
+	}
+	
+	public void onReceiveHelpRequest(Vector3 position)
+	{
 	}
 	
 	public void Update()
 	{
+		if(gameOver)
+			return;
+			
+		if(locomotionScript.health <= 0.0f)
+		{
+			//Find all objects
+			var aallObjs = GameObject.FindGameObjectsWithTag("Player");
+			
+			//Find objects on this team
+			var filteredObjs = aallObjs.Where (x => (x.getID() != gameObject.getID ()) && (x.getTeam () == gameObject.getTeam ()));
+			
+			if(filteredObjs != null && filteredObjs.Count () > 0)
+			{
+				var pickedObj = filteredObjs.First (); 
+				
+				//Add human controller, remove ai controller
+				Destroy (pickedObj.GetComponent<CaptureTheFlagEvolutionController>());
+				pickedObj.AddComponent<HumanEvolutionKeyboardController>();
+				
+				//Set target
+				GameObject.Find ("Observer").GetComponent<CameraFollowCharacter>().target = pickedObj;
+			}
+			else
+			{	
+				gameOver = true;		
+				
+				//Add human controller, remove ai controller						
+				//GameObject.Find ("Observer").GetComponent<CameraFollowCharacter>().target = source;
+				
+				guiPanel.SetActive(true);
+				guiPanel.GetComponentInChildren<Text>().text = "You lost the round!";
+				guiToChange.text = "--";
+			}
+			
+			//Destroy this
+			Destroy (this);
+			Destroy (gameObject);
+		}
+			
 		var allObjs = GameObject.FindGameObjectsWithTag("Player");
 		
-		var blueObjCount = allObjs.Where (x => x.getTeam ().Equals ("Blue")).Count ();
-		var redObjCount  = allObjs.Where (x => x.getTeam ().Equals ("Red")).Count ();
+		var blueObjCount = allObjs.Where (x => x.getTeam ().Equals ("Blue") && !x.getData().Equals("Flag")).Count ();
+		var redObjCount  = allObjs.Where (x => x.getTeam ().Equals ("Red") && !x.getData().Equals("Flag")).Count ();
 		
-		guiToChange.text = "Health: " + locomotionScript.health + " | Blue: " + blueObjCount + " | Red: " + redObjCount;
-		
-		
+		guiToChange.text = "Health: " + Mathf.Round (locomotionScript.health) + " | Blue: " + blueObjCount + " | Red: " + redObjCount;
 		
 		if(redObjCount == 0 || blueObjCount == 0)
 		{
+			guiPanel.SetActive(true);
+			
 			var textObj = guiPanel.GetComponentInChildren<Text>();
 			
 			var myTeam = gameObject.getTeam();
 			
 			if((redObjCount == 0 && myTeam.Equals("Red")) || (blueObjCount == 0 && myTeam.Equals ("Blue")))
 			{
-				textObj.text = "You lost the round!";
-				guiPanel.SetActive(true);
+				textObj.text = "You lost the round!";	
 			}	
 			else
 			{
 				textObj.text = "You won the round!";
-				guiPanel.SetActive (true);
 			}
 		}
 							
@@ -127,6 +209,8 @@ public class HumanEvolutionKeyboardController : MonoBehaviour
 						
 						//Set them to be under fire
 						controller.underFire = true;
+						
+						closestObj.seenOBJ.transform.FindChild ("hitParticleSystem(Clone)").GetComponent<ParticleSystem>().Emit (1);
 					}
 				}
 			}

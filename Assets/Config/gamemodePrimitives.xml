@@ -51,7 +51,7 @@
 		<possibleSettings>
 			<possibleSetting>
 				<name>playerCount</name>
-				<type>int/range{2, 8}</type>
+				<type>int/range{2, 16}</type>
 			</possibleSetting>
 			<possibleSetting>
 				<name>flagSpawnRadius</name>
@@ -67,6 +67,10 @@
 			</possibleSetting>
 			<possibleSetting>
 				<name>runNumber</name>
+				<type>int/scalar</type>
+			</possibleSetting>
+			<possibleSetting>
+				<name>generationType</name>
 				<type>int/scalar</type>
 			</possibleSetting>
 		</possibleSettings>

@@ -29,6 +29,12 @@ public class CapsuleLocomotion : ILocomotionScript
 		transform.rotation = Quaternion.Lerp (transform.rotation, newRotation, Time.time * Mathf.Abs (speed));
 	}
 	
+	public void Update()
+	{
+		if(Input.GetKeyUp(KeyCode.S))
+			movingBackwards = false;
+	}
+	
 	public void modifyTurnRate (float rate)
 	{
 		turnSpeed *= rate;

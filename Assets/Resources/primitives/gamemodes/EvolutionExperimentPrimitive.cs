@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define EVOLUTION_PICK_RANDOM
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -21,6 +23,7 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 	private int playerCount;
 	private int higherLimit;
 	private int availableGenerations;
+	private int generationType;
 
 	private GameObject flagPrefab;
 		
@@ -32,6 +35,7 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		//Find base path for results directory so we can pull out agent genes. Also pull out the run number (part of the path too)
 		resultsPath = (string)SettingParser.getSetting(instance, "resultsDirectory");
 		runNumber   = (int)SettingParser.getSetting (instance, "runNumber");
+		generationType = (int)SettingParser.getSetting(instance, "generationType");
 		
 		//Tell the parser to pull results from this directory
 		EvolutionResultsParser.setResultsDirectory(resultsPath);		
@@ -69,19 +73,26 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		var npcs = blueTeam.Concat (redTeam);
 		
 		//Get the prefab from resources
-		var prefab = Resources.Load ("prefabs/healthParticleSystem");
+		var healthPrefab = Resources.Load ("prefabs/healthParticleSystem");
+		var hitPrefab    = Resources.Load ("prefabs/hitParticleSystem");
 		
 		
 		//Instantiate the object
 		foreach(var npc in npcs)
 		{
-			var obj = Instantiate (prefab, npc.transform.position, npc.transform.rotation) as GameObject;
+			var objHealth = Instantiate (healthPrefab, npc.transform.position, npc.transform.rotation) as GameObject;
+			var objHit    = Instantiate (hitPrefab, npc.transform.position, npc.transform.rotation) as GameObject;
 			
-			obj.transform.parent = npc.transform;
-			obj.transform.localPosition = Vector3.zero;
-			obj.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
+			objHealth.transform.parent = npc.transform;
+			objHealth.transform.localPosition = Vector3.zero;
+			objHealth.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
 			
-			obj.GetComponentInChildren<ParticleSystem>().Stop();
+			objHit.transform.parent = npc.transform;
+			objHit.transform.localPosition = Vector3.zero;
+			objHit.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
+			
+			objHealth.GetComponentInChildren<ParticleSystem>().Stop();
+			objHit.GetComponentInChildren<ParticleSystem>().Stop();
 		}
 		
 	}
@@ -128,6 +139,39 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		var lowGenerations  = new List<EvolutionAgent>();
 		var highGenerations = new List<EvolutionAgent>();
 		
+#if EVOLUTION_PICK_RANDOM
+
+		var randLowIndex = UnityEngine.Random.Range (0, lowerLimit);
+		var randHighIndex = UnityEngine.Random.Range (higherLimit, availableGenerations);
+		
+		//Get low generation data
+		var lowGenerationData = EvolutionResultsParser.getEvolutionData(runNumber, randLowIndex);
+		var highGenerationData = EvolutionResultsParser.getEvolutionData(runNumber, randHighIndex);
+		
+		//Set low generations
+		lowGenerations = lowGenerationData.Select (x => x.Value).OrderByDescending(x => x.fitness).ToList ();
+		//lowGenerations = lowGenerationData.Select (x => x.Value).ToList ();
+		highGenerations = lowGenerationData.Select (x => x.Value).OrderByDescending(x => x.fitness).ToList();
+		
+		var team = blueTeam.Concat (redTeam).ToList ();
+		
+		for(int i = 0; i < team.Count(); i++)
+		{
+			if(generationType == 0)
+				team[i].GetComponent<CaptureTheFlagEvolutionController>().setGenes(lowGenerations[i].genes);
+				
+			else
+				team[i].GetComponent<CaptureTheFlagEvolutionController>().setGenes (highGenerations[i].genes);
+		}
+		
+		if(generationType == 0)
+			DebugLogger.Log ("low generation picked: #" + randLowIndex);
+		
+		else
+			DebugLogger.Log ("high generation picked: #" + randHighIndex);
+		
+#else
+		
 		for(int i = 0; i <= lowerLimit; i++)
 		{
 			//Run through every generation. Get all agents for this generation.
@@ -140,13 +184,15 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 			lowGenerations.Add (highestFitness[0].Value);
 		}
 		
-		for(int i = higherLimit; i < availableGenerations - 1; i++)
+		for(int i = higherLimit; i < availableGenerations; i++)
 		{
 			//Run through every generation. Get all agents for this generation.
 			var generationData = EvolutionResultsParser.getEvolutionData(runNumber, i);
 			
 			//Get the highest fitness
 			var highestFitness = generationData.OrderByDescending(x => x.Value.fitness).ToList ();
+			
+			Debug.Log ("picked: " + highestFitness[0].Key + " with " + highestFitness[0].Value.fitness + " and " + String.Join (",", highestFitness[0].Value.genes.Select (x => "" + x).ToArray ()));
 			
 			//Add this agent with the highest fitness to the list of agents
 			highGenerations.Add (highestFitness[0].Value);
@@ -160,8 +206,13 @@ public class EvolutionExperimentPrimitive : GamemodeScript
 		
 		for(int i = 0; i < team.Count(); i++)
 		{
-			team[i].GetComponent<CaptureTheFlagEvolutionController>().setGenes(highGenerations[i].genes);
+			if(generationType == 0)
+				team[i].GetComponent<CaptureTheFlagEvolutionController>().setGenes(lowGenerations[i].genes);
+			else
+				team[i].GetComponent<CaptureTheFlagEvolutionController>().setGenes(highGenerations[i].genes);
 		}
+		
+#endif
 
 	}
 	

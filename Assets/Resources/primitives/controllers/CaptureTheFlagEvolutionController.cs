@@ -24,13 +24,14 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 	private float closeRadius = 5f;
 	
 	private Vector3 helpPosition;
+	private Vector3 lastPositionSeen;
 	public bool underFire = false;
 	
 	private float targetRotation = default(float);
 	
 	public List<Action> actions = new List<Action>();
 	public List<Action> genes = new List<Action>();
-	private int[] localGeneIndices;
+	public int[] localGeneIndices;
 	
 	private bool startCalled = false;
 
@@ -75,6 +76,7 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 			genes = geneIndices.Select (x => actions[x]).ToList ();
 			//Debug.Log ("gene idx (new): " + String.Join (", ", newindices));
 		}
+		
 		//genes.AddRange (geneIndices.Select (x => actions[x]).ToArray ());
 		
 		//var newindices = genes.Select (x => genes.IndexOf(x).ToString ()).ToArray();
@@ -83,9 +85,7 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 	}
 	
 	private void setupActions()
-	{
-		Debug.Log ("setup actions fired");
-		
+	{		
 		//Set up global actions
 		Action[] localActions = 
 		{
@@ -132,6 +132,8 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		//setGenes (localGeneIndices);
+		
 		//Is the npc dead?
 		if(npc.dead)
 		{
@@ -185,6 +187,8 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 		{
 			if(!opponentSeen())
 			{
+				lastPositionSeen = Vector3.zero;
+				
 				//An opponent is not seen, and their health is low. So go back to base:
 				if(healthIsLow ())
 					//fleeToBase();
@@ -199,6 +203,10 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 			}
 			else
 			{
+				var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.getData ().Equals ("NPC") && x.seenOBJ.getTeam () != gameObject.getTeam());				
+				var closestObj = objs.OrderBy(x => Vector3.Distance (x.seenOBJ.transform.position, transform.position)).FirstOrDefault();
+				lastPositionSeen = closestObj.seenOBJ.transform.position;
+				
 				if(teammatesNearby())
 				{
 					//They have seen an opponent and there are team-mates nearby. If they have low hp, signal and go to base.
@@ -237,6 +245,8 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 		{
 			if(!opponentSeen())
 			{
+				lastPositionSeen = Vector3.zero;
+				
 				if(hasBeenSignalled())
 				{
 					if(healthIsLow())
@@ -261,6 +271,7 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 			}
 			else
 			{
+				
 				if(teammatesNearby())
 				{
 					if(healthIsLow())
@@ -385,14 +396,30 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 				var controller = closestObj.seenOBJ.GetComponent<CaptureTheFlagEvolutionController>();
 				
 				//Set them to be under fire
-				controller.underFire = true;
+				if(controller != null)
+					controller.underFire = true;
 			}
+		}		
+	}
+	
+	private void moveToLastPosition()
+	{
+		if(lastPositionSeen != Vector3.zero)
+		{
+			if(getSteerDirection(lastPositionSeen) > 0)
+				npc.turnRight ();
+			else
+				npc.turnLeft ();
+				
+			npc.moveForward();
 		}		
 	}
 	
 	private void attackEnemy()
 	{
 		var objs = castdar.GetSeenObject().Where (x => x.seenOBJ.getData ().Equals ("NPC") && x.seenOBJ.getTeam () != gameObject.getTeam());
+		
+		npc.moveForward();
 		
 		var closestObj = objs.OrderBy(x => Vector3.Distance (x.seenOBJ.transform.position, transform.position)).FirstOrDefault();
 		
@@ -425,8 +452,6 @@ public class CaptureTheFlagEvolutionController : MonoBehaviour
 				}
 			}
 		}
-
-		npc.moveForward();
 	}
 	
 	private bool opponentSeen()

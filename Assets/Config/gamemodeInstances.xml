@@ -74,13 +74,13 @@
 	</instance>
 	
 	<instance>
-		<name>Evolution (8 player)</name>
+		<name>CTF-E (16) #1</name>
 		<primitive>Evolution Experiment</primitive>
 		
 		<settings>
 			<setting>
 				<name>playerCount</name>
-				<value>8</value>
+				<value>16</value>
 			</setting>
 			<setting>
 				<name>flagSpawnRadius</name>
@@ -92,11 +92,47 @@
 			</setting>
 			<setting>
 				<name>resultsDirectory</name>
-				<value>C:\University\git\hl-multiagent\evolution\results</value>
+				<value>T:\git\hl-multiagent\evolution\results</value>
+			</setting>
+			<setting>
+				<name>runNumber</name>
+				<value>27</value>
+			</setting>
+			<setting>
+				<name>generationType</name>
+				<value>0</value>
+			</setting>
+		</settings>
+	</instance>
+	
+	<instance>
+		<name>CTF-E (16) #2</name>
+		<primitive>Evolution Experiment</primitive>
+		
+		<settings>
+			<setting>
+				<name>playerCount</name>
+				<value>16</value>
+			</setting>
+			<setting>
+				<name>flagSpawnRadius</name>
+				<value>15</value>
+			</setting>
+			<setting>
+				<name>flagPrefab</name>
+				<value>prefabs/flag</value>
+			</setting>
+			<setting>
+				<name>resultsDirectory</name>
+				<value>T:\git\hl-multiagent\evolution\results</value>
 			</setting>
 			<setting>
 				<name>runNumber</name>
 				<value>28</value>
+			</setting>
+			<setting>
+				<name>generationType</name>
+				<value>1</value>
 			</setting>
 		</settings>
 	</instance>

@@ -96,7 +96,7 @@
 			</setting>
 			<setting>
 				<name>playerCount</name>
-				<value>8</value>
+				<value>3</value>
 			</setting>
 			<setting>
 				<name>flagSpawnRadius</name>

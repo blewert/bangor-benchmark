@@ -23,7 +23,7 @@ public class NetworkServer : MonoBehaviour
 	//Timing
 	private float nextNetworkUpdateTime = 0.0f;
 	public float networkUpdateIntervalMax = 0.05f;
-		
+	
 	public GameObject lastCharacter;
 	
 	public void Start()
@@ -37,7 +37,7 @@ public class NetworkServer : MonoBehaviour
 		//A server cannot connect to stuff..
 		if(!startTypeClient)
 			return;
-			
+		
 		//Attempt to connect to the server
 		Network.Connect(ip, port, password);
 	}
@@ -51,10 +51,10 @@ public class NetworkServer : MonoBehaviour
 	{
 		if(!isMultiplayer)
 			return;
-
+		
 		players.Add(player);
 	}
-
+	
 	void OnPlayerDisconnected(NetworkPlayer player) 
 	{
 		if(!isMultiplayer)
@@ -69,7 +69,7 @@ public class NetworkServer : MonoBehaviour
 		//Clients can't start the server..
 		if(startTypeClient)
 			return;
-			
+		
 		//Set up server. First set the incoming password.
 		Network.incomingPassword = serverPassword;
 		
@@ -87,7 +87,7 @@ public class NetworkServer : MonoBehaviour
 			networkView.RPC ("onClientNPCUpdate", RPCMode.Others, id, newPosition, newRotation);
 		}
 	}
-
+	
 	[RPC]
 	public void onClientNPCUpdate(int id, Vector3 newPosition, Quaternion newRotation)
 	{
@@ -96,7 +96,7 @@ public class NetworkServer : MonoBehaviour
 		foundCharacter.transform.position = newPosition;
 		foundCharacter.transform.rotation = newRotation;
 	}
-
+	
 	[RPC]
 	public void testRPC(string message)
 	{
@@ -113,68 +113,88 @@ public class NetworkServer : MonoBehaviour
 		addedObject.setTeam("Default");
 		addedObject.assignID();
 		addedObject.setData ("NPC");	
-
+		
 		characters.Add((int)addedObject.getID(), addedObject);
-
+		
 		lastCharacter = addedObject;
 	}
-
+	
 	// Make the client execute this method.
 	[RPC]
 	private void setHumanControlledCharacter(int npcID)
 	{
 		Debug.Log ("I need to attach a human controller to " + npcID);
-
+		
 		//Find the player with the given npc id
 		var thePlayer = characters [npcID];
-
+		
 		thePlayer.AddComponent<HumansController>();
 		
 		thePlayer.GetComponent<HumansController>().onUpdate += onNPCUpdate;
 		
 		// apply playerContoller script to that character.
 		thePlayer.AddComponent<PlayerController>();
-
+		
 		// uncheck or remove humanAIcontroller
 		//thePlayer.GetComponent<HumanEnemyAI> ().enabled = false;
-
+		
 		//Get rid of the main camera for now
 		Camera.main.enabled = false;
 		thePlayer.transform.Find("Main Camera").gameObject.SetActive(true);
-	
+		
 		
 	}
-
+	
 	[RPC]
 	public void takeHealthAndUpdate(int whoHasBeenHit){
-		characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (10.0f);
+		characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (25.0f);
 	}
-
+	
 	[RPC]
 	public void updateSpeed(int agentToUpdateIdx, float speed){
 		characters[agentToUpdateIdx].GetComponent<Animator> ().SetFloat("Speed", speed);
 	}
-
+	
 	[RPC]
 	public void updateBool(int agentToUpdateIdx, string param, bool value){
 		characters[agentToUpdateIdx].GetComponent<Animator> ().SetBool(param, value);
 	}
-
+	
 	[RPC]
 	public void setTheTrigger(int agentToUpdateIdx, string param){
 		characters[agentToUpdateIdx].GetComponent<Animator> ().SetTrigger(param);
 	}
-
+	
 	[RPC]
 	public void networkWideShowOrHideAgent(int agentToUpdateIdx, bool param){
 		characters [agentToUpdateIdx].gameObject.SetActive (param);
 	}
+	
+	[RPC]
+	public void setColour(int npc, int colour){
+		var renderers = characters [npc].GetComponentsInChildren<SkinnedMeshRenderer> ();
+		
+		foreach (var renderer in renderers) 
+		{
+			Debug.Log (colour);
+			if(colour == 0)
+				renderer.material.color = Color.red;
+			
+			if(colour == 1)
+				renderer.material.color = Color.blue;
 
+			if(colour == 2)
+				renderer.material.color = Color.green;
+			
+		}
+		
+	}
+	
 	public void createCharacter(string prefabPath, Vector3 position, Quaternion rotation)
 	{
-		 //Creates an object locally or on the network.
+		//Creates an object locally or on the network.
 		//..
-	
+		
 		if(isMultiplayer)	
 		{
 			networkView.RPC ("createSyncedCharacter", RPCMode.All, prefabPath, position, rotation);
@@ -184,16 +204,16 @@ public class NetworkServer : MonoBehaviour
 		GameObject addedObject = null;
 		
 		addedObject = (GameObject)Instantiate(Resources.Load (prefabPath), position, rotation);
-
+		
 		addedObject.setTeam("Default");
 		addedObject.assignID();
 		addedObject.setData ("NPC");	
 		
 		characters.Add((int)addedObject.getID(), addedObject);
-
+		
 		lastCharacter = addedObject;
 	}
-
+	
 	public GameObject createObject(Object prefab, Vector3 position, Quaternion rotation)
 	{
 		//Creates an object locally or on the network.
@@ -210,12 +230,12 @@ public class NetworkServer : MonoBehaviour
 		
 		return addedObject;	
 	}
-
+	
 	public void OnApplicationQuit()
 	{
 		Network.Disconnect();
 		MasterServer.UnregisterHost();
 	}
-
-
+	
+	
 }

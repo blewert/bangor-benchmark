@@ -109,7 +109,7 @@ public abstract class GamemodeScript : PrimitiveScript
 		var character = instantiateCharacter(position, rotation, controllerScript);
 		
 		Vector3 temp = position;
-
+		
 		if (character.tag == "Player") {
 			// for human models.
 			temp.y = -0.02072453f;
@@ -117,7 +117,7 @@ public abstract class GamemodeScript : PrimitiveScript
 			temp.y = Terrain.activeTerrain.SampleHeight (temp);
 			//temp.y += character.GetComponent<MeshFilter>().mesh.bounds.extents.y * character.transform.localScale.y;
 			temp.y += character.GetComponent<Collider> ().bounds.extents.y * character.transform.localScale.y;
-		
+			
 			character.transform.position = temp;
 		}
 		return character;

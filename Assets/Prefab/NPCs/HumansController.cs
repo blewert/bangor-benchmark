@@ -4,7 +4,7 @@ using System.Collections;
 public class HumansController : ILocomotionScript {
 	
 	public float force = 1; 
-	public float turningSpeed = 2;
+	public float turningSpeed = 2.0f;
 	private Rigidbody playerRigidbody;
 	private float slowDown = 0.05f;
 
@@ -31,6 +31,11 @@ public class HumansController : ILocomotionScript {
 	public override void moveBackward(){
 		updatePosition ();
 		applyMovement (-force);
+	}
+
+	public void humanTurn(float dx, float sensitivityX){
+		updatePosition ();
+		transform.Rotate(0, dx * sensitivityX, 0);
 	}
 
 	private void applyMovement(float mforce)

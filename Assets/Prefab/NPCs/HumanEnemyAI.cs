@@ -462,7 +462,7 @@ public class HumanEnemyAI : PrimitiveScript {
 		if (hit.transform.tag.Equals ("Player") || hit.transform.tag.Equals ("NPC")) {
 			//Debug.Log(hit.transform.tag);
 			// Take health from the opponent LOCALLY
-			hit.transform.GetComponent<ILocomotionScript> ().takeHealth (10.0f);
+			hit.transform.GetComponent<ILocomotionScript> ().takeHealth (25.0f);
 			//Debug.Log(hit.transform.name + ": " + hit.transform.GetComponent<ILocomotionScript> ().getHealth() + " life left.");
 
 			// Update person you hit's health server-wide
@@ -475,11 +475,6 @@ public class HumanEnemyAI : PrimitiveScript {
 			// Send who was hit to the server and have the server take the health from the agent being hit on all other sessions.
 			network.networkView.RPC("takeHealthAndUpdate", RPCMode.Others, agentWhoHasBeenHitIdx);
 		}
-	}
-	
-	[RPC]
-	public void takeHealthAndUpdate(int whoHasBeenHit){
-		network.characters[whoHasBeenHit].GetComponent<ILocomotionScript> ().takeHealth (10.0f);
 	}
 
 	public void respawn(){

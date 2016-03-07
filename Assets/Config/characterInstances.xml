@@ -80,7 +80,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>15.0</value>
+				<value>30.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -128,7 +128,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>15.0</value>
+				<value>30.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -176,7 +176,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>15.0</value>
+				<value>30.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -224,7 +224,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>15.0</value>
+				<value>30.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -272,7 +272,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>15.0</value>
+				<value>30.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -320,7 +320,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>15.0</value>
+				<value>30.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>

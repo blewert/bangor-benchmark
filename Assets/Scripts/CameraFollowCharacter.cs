@@ -25,29 +25,29 @@ public class CameraFollowCharacter : MonoBehaviour
 			if(Input.GetKeyDown(KeyCode.LeftArrow))
 			{
 				targetIdx = (targetIdx - 1) % (targets.Count);
-			   
+				
 				if(targetIdx < 0)
 					targetIdx = targets.Count - 1;
 			}
-			   
+			
 			else if(Input.GetKeyDown(KeyCode.RightArrow))
-			   targetIdx = (targetIdx + 1) % (targets.Count);
+				targetIdx = (targetIdx + 1) % (targets.Count);
 			
 			target = targets[targetIdx];	
 		}
 		
-		var targetPos = getOffsetPosition();
+		//var targetPos = getOffsetPosition();
 		
-		camera.transform.position = Vector3.Lerp (camera.transform.position, targetPos, lerpSpeed);
-		camera.transform.LookAt(target.transform.position);
+		//camera.transform.position = Vector3.Lerp (camera.transform.position, targetPos, lerpSpeed);
+		//camera.transform.LookAt(target.transform.position);
 	}
 	
 	public Vector3 getOffsetPosition()
 	{
 		Vector3 targetPos = target.transform.position;
-
+		
 		var zExtent = target.GetComponent<Collider>().bounds.extents.z;
-
+		
 		targetPos = target.transform.TransformPoint(Vector3.forward * -Mathf.Abs (dist) * zExtent);
 		targetPos.y += height;
 		//targetPos = target.transform.position - (target.transform.forward * zExtent * Mathf.Abs (dist));

@@ -67,6 +67,10 @@
 				<name>Refresh Wall Scan</name>
 				<type>float/scalar</type>
 			</possibleSetting>
+			<possibleSetting>
+				<name>shotDistance</name>
+				<type>float/scalar</type>
+			</possibleSetting>
 		</possibleSettings>	
 	</character>
 </characters>

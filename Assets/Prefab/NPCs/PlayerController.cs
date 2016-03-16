@@ -36,6 +36,8 @@ public class PlayerController : PrimitiveScript {
 
 		gun.OnBulletHit += OnBulletHit;
 
+		gun.shotDistance = 200.0f;
+
 		currentAmmo = ammoPerClip;
 
 		attachLocomotionScripts ();

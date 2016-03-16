@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+
 using UnityEngine;
 using System.Collections;
 
@@ -28,3 +30,4 @@ public class TerrainGen : MonoBehaviour {
 		terrain.terrainData.SetHeights(0, 0, heights);
 	}
 }
+#endif

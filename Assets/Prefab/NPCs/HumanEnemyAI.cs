@@ -69,11 +69,8 @@ public class HumanEnemyAI : PrimitiveScript {
 		gun = GetComponentInChildren<Gun>();
 		gun.OnBulletHit += OnBulletHit;
 		currentAmmo = ammoPerClip;
-		
-		// gen COT behaviour choice
-		float cotChecker = Random.Range (0, 100);
-		//Debug.Log (cotChecker);
-		highCOT = (cotChecker < COT);
+		// set range for the gun
+		gun.shotDistance = (float)SettingParser.getSetting (characterInstance, "shotDistance");
 		
 		// gets the network version of the agent
 		agentToUpdateIdx = network.characters.Where(x => x.Value.Equals(transform.gameObject)).FirstOrDefault().Key;	
@@ -100,16 +97,24 @@ public class HumanEnemyAI : PrimitiveScript {
 		}
 		//------------------------------------------------
 		// If the agent is not dead
-		if (!anim.GetBool ("Dead")) {
+		if (!dead) {
 			
 			// Not attacking someone as of yet.
 			if (attackingHuman == false) { 
 				
 				// I will react when I do see someone.
 				if (reactionDiceRoll ()) {
-					
+					Debug.Log("I can react!");
 					// Do I see someone? yes, then...
 					if (canISeeAHumanBool ()) {
+
+						// Set aggressiveness mode.
+						aggressivenessBehaviour();
+
+						// gen COT behaviour choice
+						float cotChecker = Random.Range (0, 100);
+						highCOT = (cotChecker < COT);
+						Debug.Log ("HighCOT = " + highCOT);
 						
 						// Find and persue the target.
 						attackingHuman = true;
@@ -144,8 +149,8 @@ public class HumanEnemyAI : PrimitiveScript {
 	bool reactionDiceRoll(){
 		float reactionChecker = Random.Range (0, reactionTime);
 		//Debug.Log (reactionChecker);
-		// if it a value that is less than or equal to 1 is generated.
-		return (reactionChecker <= 1);
+		// if it a value that is less than or equal to 10 is generated.
+		return (reactionChecker <= 10);
 	}
 	
 	void persueStateActivate(Vector3 playerCoords, float distBtwnPlayerAndNPC){
@@ -176,6 +181,7 @@ public class HumanEnemyAI : PrimitiveScript {
 	}
 	
 	void behaviourIPD(Vector3 playerCoords, float distBtwnPlayerAndNPC, System.Collections.Generic.IEnumerable<Castdar.HitObject> playersHit){
+	
 		if (distBtwnPlayerAndNPC > IPD) { 
 			if(shootingStyle != "defensive"){ // aggressive	
 				if(backoff == false){
@@ -310,7 +316,11 @@ public class HumanEnemyAI : PrimitiveScript {
 		// list of all objects that are hit.
 		var objectHit = cast.GetSeenObject();
 		// list all objects with the tag Player or objects which parents have tag Player.
-		var playersHit = objectHit.Where (x => x.seenOBJ.tag.Equals("Player") || x.seenOBJ.transform.root.tag.Equals("Player") || x.seenOBJ.tag.Equals("NPC") || x.seenOBJ.transform.root.tag.Equals("NPC"));
+		var playersHit = objectHit.Where (x => x.seenOBJ.tag.Equals("Player") && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
+		                                  || x.seenOBJ.transform.root.tag.Equals("Player") && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
+		                                  || x.seenOBJ.tag.Equals("NPC") && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
+		                                  || x.seenOBJ.transform.root.tag.Equals("NPC")&& x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
+		                                  );
 		// returns a list of all humans it can see at that time.
 		return playersHit;
 	}
@@ -322,12 +332,12 @@ public class HumanEnemyAI : PrimitiveScript {
 	
 	
 	void checkIfFoundPlayer(){
-		
-		//Debug.Log (highCOT);
-		
+
 		// get a list of all the humans that are seen at this iteration.
 		System.Collections.Generic.IEnumerable<Castdar.HitObject> playersHit = canISeeAHuman ();
-		
+		for (int i = 0; i < playersHit.Count(); i++) {
+			Debug.Log(playersHit.ElementAt(i).seenOBJ.getTeam());
+		}
 		//------
 		// gets vectors from NPC to enemies seen
 		Vector3[] playersSeenVectors = new Vector3[playersHit.Count()];
@@ -361,11 +371,6 @@ public class HumanEnemyAI : PrimitiveScript {
 			distance = Vector3.Distance (playersHit.FirstOrDefault ().seenOBJ.transform.position, transform.position);
 		}
 		// -------------------------
-		
-		// Set aggressiveness mode.
-		if(shootingStyle == "not assigned yet"){
-			aggressivenessBehaviour();
-		}
 		
 		// aggressive = run at enemy, defensive = stop and shoot from distance.
 		behaviourIPD (localPos, distance, playersHit);
@@ -404,6 +409,7 @@ public class HumanEnemyAI : PrimitiveScript {
 			//do conservative
 			setShootingStyle("defensive");
 		}
+		Debug.Log ("Shooting = " + shootingStyle);
 	}
 	
 	IEnumerator shoot(float delay){
@@ -452,8 +458,7 @@ public class HumanEnemyAI : PrimitiveScript {
 	}
 	
 	public void respawn(){
-		// set's the health of the human back to it's max health.
-		controller.setHealth (controller.getMaxHealth());
+
 		//Debug.Log ("After revive:" + controller.health);
 		
 		// Make the player invisible until they respawn
@@ -464,14 +469,16 @@ public class HumanEnemyAI : PrimitiveScript {
 		anim.SetBool ("Dead", false);
 		// Send which agent's to update and the animation parameter to update. (GLOBALLY)
 		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Dead", anim.GetBool("Dead"));
-		
-		dead = false;
+
 		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
 		// Move forward (or any movement with updatePosition() in it) to fire the network update.
 		controller.moveForward ();
 		// Make the agent visible again.
 		GetComponent<Renderer>().gameObject.SetActive(true);
 		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, true);
+		dead = false;
+		// set's the health of the human back to it's max health.
+		controller.setHealth (controller.getMaxHealth());
 	}
 	
 	IEnumerator reloadAmmo()

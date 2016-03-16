@@ -1,4 +1,6 @@
 ﻿//#define DEBUG_NON_RELEASE
+#if UNITY_EDITOR
+using UnityEditor;
 
 using UnityEngine;
 using System.Linq;
@@ -117,3 +119,4 @@ public class TankSpawner : MonoBehaviour
 		return (GameObject)Instantiate ((Object)prefab, position, Quaternion.Euler (euler));
 	}
 }
+#endif

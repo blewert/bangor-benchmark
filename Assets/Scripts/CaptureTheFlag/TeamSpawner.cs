@@ -1,6 +1,7 @@
 ﻿//#define DEBUG_NON_RELEASE
-
+#if UNITY_EDITOR
 using UnityEngine;
+
 using System.Linq;
 using System.Collections;
 using UnityStandardAssets.Utility;
@@ -117,3 +118,4 @@ public class TeamSpawner : MonoBehaviour
 		return (GameObject)Instantiate ((Object)prefab, position, Quaternion.Euler (euler));
 	}
 }
+#endif

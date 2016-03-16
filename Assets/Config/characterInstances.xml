@@ -80,7 +80,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>30.0</value>
+				<value>200.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -89,6 +89,10 @@
 			<setting>
 				<name>Refresh Wall Scan</name>
 				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>shotDistance</name>
+				<value>200.0</value>
 			</setting>
 		</settings>
 	</instance>
@@ -128,7 +132,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>30.0</value>
+				<value>200.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -137,6 +141,10 @@
 			<setting>
 				<name>Refresh Wall Scan</name>
 				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>shotDistance</name>
+				<value>200.0</value>
 			</setting>
 		</settings>
 	</instance>
@@ -176,7 +184,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>30.0</value>
+				<value>200.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -185,6 +193,10 @@
 			<setting>
 				<name>Refresh Wall Scan</name>
 				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>shotDistance</name>
+				<value>200.0</value>
 			</setting>
 		</settings>
 	</instance>
@@ -224,7 +236,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>30.0</value>
+				<value>200.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -233,6 +245,10 @@
 			<setting>
 				<name>Refresh Wall Scan</name>
 				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>shotDistance</name>
+				<value>200.0</value>
 			</setting>
 		</settings>
 	</instance>
@@ -272,7 +288,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>30.0</value>
+				<value>200.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -281,6 +297,10 @@
 			<setting>
 				<name>Refresh Wall Scan</name>
 				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>shotDistance</name>
+				<value>200.0</value>
 			</setting>
 		</settings>
 	</instance>
@@ -320,7 +340,7 @@
 			</setting>
 			<setting>
 				<name>Radar Range</name>
-				<value>30.0</value>
+				<value>200.0</value>
 			</setting>
 			<setting>
 				<name>Refresh Object Scan</name>
@@ -329,6 +349,10 @@
 			<setting>
 				<name>Refresh Wall Scan</name>
 				<value>0.5</value>
+			</setting>
+			<setting>
+				<name>shotDistance</name>
+				<value>200.0</value>
 			</setting>
 		</settings>
 	</instance>

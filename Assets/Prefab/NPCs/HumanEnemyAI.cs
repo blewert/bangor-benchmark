@@ -104,17 +104,15 @@ public class HumanEnemyAI : PrimitiveScript {
 				
 				// I will react when I do see someone.
 				if (reactionDiceRoll ()) {
-					Debug.Log("I can react!");
+					
 					// Do I see someone? yes, then...
 					if (canISeeAHumanBool ()) {
-
-						// Set aggressiveness mode.
+						
 						aggressivenessBehaviour();
-
+						
 						// gen COT behaviour choice
 						float cotChecker = Random.Range (0, 100);
 						highCOT = (cotChecker < COT);
-						Debug.Log ("HighCOT = " + highCOT);
 						
 						// Find and persue the target.
 						attackingHuman = true;
@@ -155,7 +153,9 @@ public class HumanEnemyAI : PrimitiveScript {
 	
 	void persueStateActivate(Vector3 playerCoords, float distBtwnPlayerAndNPC){
 		// Go towards player.
-		controller.moveForward ();
+		if (shootingStyle != "defensive") {
+			controller.moveForward ();
+		}
 		// if player is on the right side of the ray cast.
 		if (playerCoords.x >= 0) {
 			controller.turnRight ();
@@ -181,7 +181,7 @@ public class HumanEnemyAI : PrimitiveScript {
 	}
 	
 	void behaviourIPD(Vector3 playerCoords, float distBtwnPlayerAndNPC, System.Collections.Generic.IEnumerable<Castdar.HitObject> playersHit){
-	
+		
 		if (distBtwnPlayerAndNPC > IPD) { 
 			if(shootingStyle != "defensive"){ // aggressive	
 				if(backoff == false){
@@ -203,9 +203,11 @@ public class HumanEnemyAI : PrimitiveScript {
 				}
 			}else{ // defensive
 				anim.SetFloat ("Speed", 0.0f);
-				
 				// Send which agent's speed to update and the speed to update it with.
 				network.networkView.RPC("updateSpeed", RPCMode.Others, agentToUpdateIdx, anim.GetFloat("Speed"));
+				
+				// turn to aim at opponent
+				persueStateActivate(playerCoords, distBtwnPlayerAndNPC);
 			}
 		}
 		else { // <-- distBtwnPlayerAndNPC <= IPD)
@@ -316,10 +318,12 @@ public class HumanEnemyAI : PrimitiveScript {
 		// list of all objects that are hit.
 		var objectHit = cast.GetSeenObject();
 		// list all objects with the tag Player or objects which parents have tag Player.
-		var playersHit = objectHit.Where (x => x.seenOBJ.tag.Equals("Player") && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
-		                                  || x.seenOBJ.transform.root.tag.Equals("Player") && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
-		                                  || x.seenOBJ.tag.Equals("NPC") && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
-		                                  || x.seenOBJ.transform.root.tag.Equals("NPC")&& x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
+		var playersHit = objectHit.Where (x => x.seenOBJ.tag.Equals("Player")
+		                                  && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0 
+		                                  && !x.seenOBJ.transform.gameObject.Equals(transform.gameObject)
+		                                  || x.seenOBJ.transform.root.tag.Equals("Player")
+		                                  && x.seenOBJ.GetComponent<ILocomotionScript> ().getHealth() > 0
+		                                  && !x.seenOBJ.transform.gameObject.Equals(transform.gameObject) 
 		                                  );
 		// returns a list of all humans it can see at that time.
 		return playersHit;
@@ -332,12 +336,12 @@ public class HumanEnemyAI : PrimitiveScript {
 	
 	
 	void checkIfFoundPlayer(){
-
+		
 		// get a list of all the humans that are seen at this iteration.
 		System.Collections.Generic.IEnumerable<Castdar.HitObject> playersHit = canISeeAHuman ();
-		for (int i = 0; i < playersHit.Count(); i++) {
-			Debug.Log(playersHit.ElementAt(i).seenOBJ.getTeam());
-		}
+
+
+		
 		//------
 		// gets vectors from NPC to enemies seen
 		Vector3[] playersSeenVectors = new Vector3[playersHit.Count()];
@@ -409,7 +413,6 @@ public class HumanEnemyAI : PrimitiveScript {
 			//do conservative
 			setShootingStyle("defensive");
 		}
-		Debug.Log ("Shooting = " + shootingStyle);
 	}
 	
 	IEnumerator shoot(float delay){
@@ -458,27 +461,18 @@ public class HumanEnemyAI : PrimitiveScript {
 	}
 	
 	public void respawn(){
-
-		//Debug.Log ("After revive:" + controller.health);
-		
-		// Make the player invisible until they respawn
-		GetComponent<Renderer>().gameObject.SetActive (false);
-		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, false);
-		
-		// set animation param LOCALLY
-		anim.SetBool ("Dead", false);
+		dead = false;
 		// Send which agent's to update and the animation parameter to update. (GLOBALLY)
-		network.networkView.RPC("updateBool", RPCMode.Others, agentToUpdateIdx, "Dead", anim.GetBool("Dead"));
+		network.networkView.RPC("updateBool", RPCMode.All, agentToUpdateIdx, "Dead", false);
+		// set's the health of the human back to it's max health.
+		network.networkView.RPC("changeHealth", RPCMode.All, agentToUpdateIdx, controller.getMaxHealth());
 
 		transform.position = new Vector3(Random.Range(200,300), -0.02072453f , Random.Range(200,300));
+
 		// Move forward (or any movement with updatePosition() in it) to fire the network update.
 		controller.moveForward ();
-		// Make the agent visible again.
-		GetComponent<Renderer>().gameObject.SetActive(true);
-		network.networkView.RPC("networkWideShowOrHideAgent", RPCMode.Others, agentToUpdateIdx, true);
-		dead = false;
-		// set's the health of the human back to it's max health.
-		controller.setHealth (controller.getMaxHealth());
+
+
 	}
 	
 	IEnumerator reloadAmmo()

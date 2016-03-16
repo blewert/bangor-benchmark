@@ -144,6 +144,11 @@ public class NetworkServer : MonoBehaviour
 		
 		
 	}
+
+	[RPC]
+	public void changeHealth(int whoToCheck, float whatToSetHealthTo){
+		characters [whoToCheck].GetComponent<ILocomotionScript> ().setHealth (whatToSetHealthTo);
+	}
 	
 	[RPC]
 	public void takeHealthAndUpdate(int whoHasBeenHit){
